@@ -1,0 +1,25 @@
+# Top-level EditorConfig file
+root = true
+
+# Apply to all files
+[*]
+charset = utf-8
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+indent_style = space
+indent_size = 4
+
+# C/C++ source and headers
+[*.{c,cpp,h,hpp}]
+indent_style = space
+indent_size = 4
+
+# CMake files
+[*.cmake]
+indent_style = space
+indent_size = 2
+
+# Markdown and plaintext
+[*.{md,txt}]
+trim_trailing_whitespace = false  # Avoid trimming intentional trailing whitespace in prose

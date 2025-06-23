@@ -1,0 +1,23 @@
+# This is a work in progress and may not fully embody the desired style.
+BasedOnStyle: LLVM
+IndentWidth: 4
+UseTab: Never
+NamespaceIndentation: All
+AllowShortFunctionsOnASingleLine: Inline
+ColumnLimit: 96
+
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterClass: false
+  AfterControlStatement: false
+  AfterEnum: false
+  AfterFunction: true
+  AfterNamespace: false
+  AfterStruct: false
+  AfterUnion: false
+  BeforeCatch: false
+  BeforeElse: false
+  IndentBraces: false
+
+# Control spacing behavior
+SpaceBeforeParens: ControlStatements
