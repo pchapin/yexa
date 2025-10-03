@@ -1,2 +1,4 @@
 Yexa
 Chapin
+Watcom
+CLion
