@@ -1,6 +1,5 @@
 # Define screen library
 add_library(screen STATIC
-    src/ansiscr.cpp
     src/CommandWindow.cpp
     src/debug.cpp
     src/DisplayWindow.cpp

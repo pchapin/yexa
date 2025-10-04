@@ -1,10 +1,17 @@
 # CMake generated files and build artifacts
 build
 
+# Sublime user-specific configuration files
+*.sublime-workspace
+
+# The list of ignored files was suggested by ChatGPT. However, for CMake projects, most (all) of
+# these files should be generated in the build directory, which is already ignored by the first
+# line above.
+
 # Prerequisites
 *.d
 
-# Compiled Object files
+# Compiled object files
 *.slo
 *.lo
 *.o

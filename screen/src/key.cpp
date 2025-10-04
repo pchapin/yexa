@@ -13,18 +13,15 @@
 #include <utility>
 
 // Produce an error for alien operating systems.
-#if !(eOPSYS == eDOS   || \
-      eOPSYS == eWIN32 || \
-      eOPSYS == eOS2   || \
-      eOPSYS == ePOSIX || defined(SCR_ANSI))
-#error Scr only supports DOS, OS/2, Win32, Unix (curses), or SCR_ANSI.
+#if !(eOPSYS == eWINDOWS || eOPSYS == ePOSIX)
+#error Scr only supports Windows and POSIX systems.
 #endif
 
-#if (eOPSYS == eWIN32)
+#if (eOPSYS == eWINDOWS)
 #include <windows.h>
 #endif
 
-#if (eOPSYS == eDOS) || (eOPSYS == eOS2) || (eOPSYS == eWIN32)
+#if eOPSYS == eWINDOWS
 // For the getch() function. Used by key().
 #include <conio.h>
 #endif
@@ -417,7 +414,6 @@ namespace scr {
     // See comments in key_wait below. This table is necessary because the values associated with
     // the ALT+letter keys are not in any order.
     //
-#if eOPSYS == eWIN32
     static int alt_letter_table[] = {
         K_ALTA, K_ALTB, K_ALTC, K_ALTD, K_ALTE, K_ALTF, K_ALTG, K_ALTH,
         K_ALTI, K_ALTJ, K_ALTK, K_ALTL, K_ALTM, K_ALTN, K_ALTO, K_ALTP,
@@ -428,18 +424,13 @@ namespace scr {
         K_ALT0, K_ALT1, K_ALT2, K_ALT3, K_ALT4,
         K_ALT5, K_ALT6, K_ALT7, K_ALT8, K_ALT9
     };
-#endif
 
 
     int key_wait( )
     {
         int ch;
 
-#if eOPSYS == eDOS
-        if( ( ch = getch( ) ) != 0 ) return( ch );
-        return getch( ) + XF;
-
-#elif eOPSYS == eWIN32
+#if eOPSYS == eWINDOWS
         if ( ( (ch = _getch( ) ) != 0 ) && ( ch != 0xE0 ) ) {
             // This is a bit of a hack. The VC++ getch() does not process ALT+letter
             // keys the way it was done by MS-DOS. Instead of rewriting getch() using
@@ -453,10 +444,6 @@ namespace scr {
             return ch;
         }
         return _getch( ) + XF;
-
-#elif eOPSYS == eOS2
-        if ( ( (ch = getch( ) ) != 0 ) && ( ch != 0xE0 ) ) return ch;
-        return getch( ) + XF;
 
 #elif eOPSYS == ePOSIX
         return getch( );

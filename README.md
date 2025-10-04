@@ -30,7 +30,8 @@ GCC, clang, and MSVC.
 ## Tooling
 
 Yexa uses CMake as its build system. Visual Studio (Windows), Visual Studio Code, and CLion
-(cross-platform) are supported IDEs, but other editors will likely also work well.
+(cross-platform) are supported IDEs, but other editors will likely also work well (Emacs,
+Neovim, Sublime, Helix, etc.).
 
 TODO: Add additional information about how to set up a development environment.
 
@@ -44,6 +45,9 @@ $ cd build
 $ cmake ..
 $ cmake --build .
 ``` 
+
+This should work on all supported platforms. Any IDE that understands CMake should also be able
+to build the project.
 
 Peter Chapin  
 spicacality@kelseymountain.org  

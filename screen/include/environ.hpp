@@ -30,14 +30,14 @@
 //-----------------------------
 
 // The following are the allowed values of eCOMPILER.
-#define eVANILLA     1  // Generic, Standard C++ only
+#define eVANILLA     1  // Generic, Standard C++ 2020 only
 #define eCLANG       2  // clang++
-#define eCOMPAQ      3  // Compaq C++
+#define eCOMPAQ      3  // Compaq C++ (remove?)
 #define eGCC         4  // g++
-#define eIBM         5  // IBM's Visual Age C++
-#define eMETROWERKS  6  // Metrowerks CodeWarrior
+#define eIBM         5  // IBM's Visual Age C++ (remove?)
+#define eMETROWERKS  6  // Metrowerks CodeWarrior (remove?)
 #define eMICROSOFT   7  // Microsoft Visual C++
-#define eOPENWATCOM  8  // Open Watcom
+#define eOPENWATCOM  8  // Open Watcom C++
 // TODO: What about Intel's compiler?
 
 // Choose your compiler! This file can autodetect all of the compilers mentioned above. If the
@@ -76,7 +76,7 @@
 #define eCOMPILER eVANILLA
 #endif
 
-// It might make sense to encode the compiler version also.
+// TODO: It might make sense to encode the compiler version also.
 
 //-------------------------------------
 //           Operating System
@@ -87,9 +87,10 @@
 #define eMAC     2  // macOS (modern system).
 #define eNETWARE 3  // NetWare NLM. Assume v4.x or higher (NDS support).
 #define eOS2     4  // OS/2 (32 bit only).
-#define ePOSIX   5  // POSIX is intended to support all Unix flavors.
+#define ePOSIX   5  // POSIX is intended to support all Unix flavors including macOS.
 #define eVMS     6  // DEC's VMS operating system.
-#define eWIN32   7  // Windows NT+ only. Win95/98/Me are obsolete.
+#define eWINDOWS 7  // Windows NT+ only. Win95/98/Me are obsolete.
+#define eWIN32   7  // Same as "eWINDOWS". This macro is for compatibility. It is deprecated.
 
 // Choose your operating system! In most cases this file can autodetect the operating system
 // from the compiler that is being used. If that is not the case, you will have to specify the
@@ -117,26 +118,25 @@
 #if defined(__TOS_OS2__)
 #define eOPSYS eOS2
 #elif defined(__TOS_WIN__)
-#define eOPSYS eWIN32
+#define eOPSYS eWINDOWS
 #endif
 #endif
 
-// CodeWarrior supports Mac and Win32 programming.
+// CodeWarrior supports macOS and Win32 programming.
 // TODO: CodeWarrior no longer supports either of the above platforms. What now?
 #if eCOMPILER == eMETROWERKS
 #if defined(macintosh)
 #define eOPSYS eMAC
 #elif defined(__INTEL__)
-#define eOPSYS eWIN32
+#define eOPSYS eWINDOWS
 #endif
 #endif
 
-// Visual C++ supports Win32 and Mac(?!) programming.
+// Visual C++ supports Windows programming.
+// TODO: What about 32 vs 64-bit?
 #if eCOMPILER == eMICROSOFT
 #if defined(_WIN32)
-#define eOPSYS eWIN32
-#elif defined(_MAC)
-#define eOPSYS eMAC
+#define eOPSYS eWINDOWS
 #endif
 #endif
 
@@ -147,7 +147,7 @@
 #elif defined(__OS2__)
 #define eOPSYS eOS2
 #elif defined(__NT__)
-#define eOPSYS eWIN32
+#define eOPSYS eWINDOWS
 #elif defined(__NETWARE__)
 #define eOPSYS eNETWARE
 #elif defined(__LINUX__)
@@ -162,7 +162,7 @@
 // The following are the allowed values of eGUI.
 #define eNONE   1   // Text mode application.
 #define ePM     2   // The OS/2 graphical interface. This also implies WPS.
-#define eWIN    3   // Windows NT+ only.
+#define eWIN    3   // Windows NT+ only. (Consider renaming; too similar to eWINDOWS)
 #define eXWIN   4   // X Windows.
 
 // Choose your GUI. This file does not currently autodetect any GUI. The default GUI is eNONE.
@@ -173,8 +173,8 @@
 
 // Do a few checks to make sure the GUI selection makes sense.
 
-#if eGUI == eWIN && eOPSYS != eWIN32
-#error Can not specify the Windows GUI without the Win32 operating system!
+#if eGUI == eWIN && eOPSYS != eWINDOWS
+#error Can not specify the Windows GUI without the Windows operating system!
 #endif
 
 #if eGUI == ePM && eOPSYS != eOS2
@@ -192,7 +192,7 @@
 // TODO: Eliminate the need for eMULTITHREADED? Isn't it just the default now?
 //
 // Note that if eMULTITHREADED is defined when eOPSYS is ePOSIX, Posix threads are implied. If
-// eOPSYS is eWIN32, Windows threads are implied. If eOPSYS is eOS2, OS/2 threads are implied.
+// eOPSYS is eWINDOWS, Windows threads are implied. If eOPSYS is eOS2, OS/2 threads are implied.
 //
 
 #if eCOMPILER == eClang

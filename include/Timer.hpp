@@ -8,16 +8,8 @@
 
 #include "environ.hpp"
 
-#if eOPSYS == eDOS
-#include <dos.h>
-#endif
-
 #if eOPSYS == eWINDOWS
 #include <windows.h>
-#endif
-
-#if eOPSYS == eOS2
-#include <ctime>
 #endif
 
 #if eOPSYS == ePOSIX
@@ -51,18 +43,8 @@ namespace spica {
             STOPPED     //!< Timer is not active. Accumulated time remembered.
         };
 
-        #if eOPSYS == eDOS
-        typedef struct dostime_t timer_t;
-        #endif
-
         #if eOPSYS == eWINDOWS
         typedef LARGE_INTEGER timer_t;
-        #endif
-
-        #if eOPSYS == eOS2
-        struct timer_t {
-            std::clock_t ticks;
-        };
         #endif
 
         #if eOPSYS == ePOSIX

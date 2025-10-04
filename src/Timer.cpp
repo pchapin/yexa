@@ -14,10 +14,6 @@ typedef spica::Timer::timer_t mytimer_t;
 //
 static void get_time_as_integer( mytimer_t &result )
 {
-    #if eOPSYS == eDOS
-    _dos_gettime( &result );
-    #endif
-
     #if eOPSYS == eWINDOWS
     SYSTEMTIME raw;
     FILETIME   cooked;
@@ -26,10 +22,6 @@ static void get_time_as_integer( mytimer_t &result )
     SystemTimeToFileTime( &raw, &cooked );
     result.LowPart  = cooked.dwLowDateTime;
     result.HighPart = cooked.dwHighDateTime;
-    #endif
-
-    #if eOPSYS == eOS2
-    result.ticks = std::clock( );
     #endif
 
     #if eOPSYS == ePOSIX
@@ -47,22 +39,10 @@ static void get_time_as_integer( mytimer_t &result )
 //
 static long get_adjusted_time( const mytimer_t &the_time )
 {
-    #if eOPSYS == eDOS
-    long temp = the_time.hsecond * 10L;
-    temp += the_time.second * 1000L;
-    temp += the_time.minute * 60000L;
-    temp += the_time.hour * ( 60 * 60000L );
-    return temp;
-    #endif
-
     #if eOPSYS == eWINDOWS
     long long temp = the_time.QuadPart;
     temp /= 10000;
     return static_cast< long >( temp );
-    #endif
-
-    #if eOPSYS == eOS2
-    return 1000L * ( the_time.ticks / CLOCKS_PER_SEC );
     #endif
 
     #if eOPSYS == ePOSIX
@@ -82,31 +62,8 @@ static mytimer_t operator+( const mytimer_t &left, const mytimer_t &right )
 {
     mytimer_t result;
 
-    #if eOPSYS == eDOS
-    result.hour    = static_cast< char >( left.hour    + right.hour );
-    result.minute  = static_cast< char >( left.minute  + right.minute );
-    result.second  = static_cast< char >( left.second  + right.second );
-    result.hsecond = static_cast< char >( left.hsecond + right.hsecond );
-    if( result.hsecond > 100 ) {
-        ++result.second;
-        result.hsecond -= 100;
-    }
-    if( result.second > 60 ) {
-        ++result.minute;
-        result.second -= 60;
-    }
-    if( result.minute > 60 ) {
-        ++result.hour;
-        result.minute -= 60;
-    }
-    #endif
-
     #if eOPSYS == eWINDOWS
     result.QuadPart = left.QuadPart + right.QuadPart;
-    #endif
-
-    #if eOPSYS == eOS2
-    result.ticks = left.ticks + right.ticks;
     #endif
 
     #if eOPSYS == ePOSIX
@@ -126,23 +83,8 @@ static mytimer_t operator-( const mytimer_t &left, const mytimer_t &right )
 {
     mytimer_t result;
 
-    #if eOPSYS == eDOS
-    long difference = ( get_adjusted_time( left ) - get_adjusted_time( right ) ) / 10;
-    result.hsecond = static_cast< unsigned char >( difference % 100 );
-    difference /= 100;
-    result.second = static_cast< unsigned char >( difference % 60 );
-    difference /= 60;
-    result.minute = static_cast< unsigned char >( difference % 60 );
-    difference /= 60;
-    result.hour = static_cast< unsigned char >( difference );
-    #endif
-
     #if eOPSYS == eWINDOWS
     result.QuadPart = left.QuadPart - right.QuadPart;
-    #endif
-
-    #if eOPSYS == eOS2
-    result.ticks = left.ticks - right.ticks;
     #endif
 
     #if eOPSYS == ePOSIX
@@ -170,20 +112,9 @@ namespace spica {
     {
         internal_state = RESET;
 
-        #if eOPSYS == eDOS
-        accumulated.hour    = 0;
-        accumulated.minute  = 0;
-        accumulated.second  = 0;
-        accumulated.hsecond = 0;
-        #endif
-
         #if eOPSYS == eWINDOWS
         accumulated.LowPart  = 0;
         accumulated.HighPart = 0;
-        #endif
-
-        #if eOPSYS == eOS2
-        accumulated.ticks = 0;
         #endif
 
         #if eOPSYS == ePOSIX
@@ -200,20 +131,9 @@ namespace spica {
     {
         internal_state = RESET;
 
-        #if eOPSYS == eDOS
-        accumulated.hour    = 0;
-        accumulated.minute  = 0;
-        accumulated.second  = 0;
-        accumulated.hsecond = 0;
-        #endif
-
         #if eOPSYS == eWINDOWS
         accumulated.LowPart = 0;
         accumulated.HighPart = 0;
-        #endif
-
-        #if eOPSYS == eOS2
-        accumulated.ticks = 0;
         #endif
 
         #if eOPSYS == ePOSIX

@@ -6,28 +6,8 @@
 #include "environ.hpp"
 
 // Produce an error for alien operating systems.
-#if !(eOPSYS == eDOS   || \
-      eOPSYS == eWIN32 || \
-      eOPSYS == eOS2   || \
-      eOPSYS == ePOSIX || defined(SCR_ANSI))
-#error Scr only supports DOS, OS/2, Win32, Unix (curses), or SCR_ANSI.
-#endif
-
-// Force the user to decide: "Direct" video RAM access or ANSI escape sequences. This decision
-// does not need to be made on POSIX systems.
-//
-#if !(defined(SCR_DIRECT) || defined(SCR_ANSI)) && eOPSYS != ePOSIX
-#error You must #define SCR_DIRECT or SCR_ANSI.
-#endif
-
-// POSIX doesn't support "direct" video access.
-#if defined(SCR_DIRECT) && (eOPSYS == ePOSIX)
-#error POSIX does not support direct video access.
-#endif
-
-// POSIX doesn't need SCR_ANSI specified.
-#if defined(SCR_ANSI) && (eOPSYS == ePOSIX)
-#error POSIX does not want SCR_ANSI defined. The Curses library is used.
+#if !(eOPSYS == eWINDOWS || eOPSYS == ePOSIX)
+#error Scr only supports Windows and POSIX systems.
 #endif
 
 #include <cctype>
@@ -36,32 +16,15 @@
 #include <cstdio>
 #include <cstring>
 
-#if (eOPSYS == eDOS) && defined(SCR_DIRECT)
-// The DOS SCR_DIRECT version needs access to int86() for BIOS stuff.
-#include <dos.h>
-#ifdef __386__
-#define do_interrupt(x,y,z) int386(x,y,z)
-#else
-#define do_interrupt(x,y,z) int86(x,y,z)
-#endif
-#endif
 
-#if (eOPSYS == eOS2) && defined(SCR_DIRECT)
-#define INCL_VIO
-// The OS/2 SCR_DIRECT version needs access to Vio functions.
-#include <os2.h>
-#endif
-
-#if (eOPSYS == eWIN32) && defined(SCR_DIRECT)
-// The Win32 SCR_DIRECT version needs access to console functions.
+#if eOPSYS == eWINDOWS
 #include <windows.h>
 #endif
 
 #if eOPSYS == ePOSIX
 #include <map>
 
-// Defining NCURSES_NOMACROS disables the function-like macros in curses.h in favor of actual
-// functions.
+// Defining NCURSES_NOMACROS disables the function-like macros in curses.h.
 #define NCURSES_NOMACROS
 #include <curses.h>
 #include <term.h>
@@ -73,18 +36,13 @@
 
 #include "scr.hpp"
 
-#if defined(SCR_ANSI)
-// If we're going to use ANSI, we'll need the basic ANSI functions.
-#include "ansiscr.hpp"
-#endif
-
 namespace scr {
 
     //=================================
     //           Global Data
     //=================================
 
-#if defined(SCR_DIRECT)
+#if eOPSYS == eWINDOWS
     namespace {
         int total_rows = 25;      // Total number of rows on the IBM PC screen.
         int total_columns = 80;   // Total number of columns on the IBM PC screen.
@@ -92,7 +50,7 @@ namespace scr {
     }
 #endif
 
-#if defined(SCR_ANSI) || (eOPSYS == ePOSIX)
+#if eOPSYS == ePOSIX
     namespace {
         int total_rows = 24;      // Total number of rows on the screen.
         int total_columns = 80;   // Total number of columns on the screen.
@@ -101,11 +59,7 @@ namespace scr {
         char *physical_image;
         int physical_row = 1;     // Actual position of the cursor.
         int physical_column = 1;  //   etc...
-    }
-#endif
 
-#if eOPSYS == ePOSIX
-    namespace {
         typedef std::pair<const unsigned char, chtype> CharacterPair;
         typedef std::map<unsigned char, chtype, std::less<>> CharacterMap;
         typedef std::pair<const int, int> ColorPair;
@@ -120,26 +74,6 @@ namespace scr {
         CharacterMap box_character_map;  // Maps scr box drawing characters to curses.
         ColorMap colors_map;   // Maps Scr colors to Curses colors.
         bool color_works;  // =true if the terminal supports color.
-    }
-#endif
-
-#if (eOPSYS == eDOS) && defined(SCR_DIRECT)
-#define VIDEO_MONO           0  // Symbolic names for the two video modes.
-#define VIDEO_COLOR          1
-
-#define BIOS_VIDEO        0x10  // INT number for BIOS.
-#define SET_CRTMODE          0  // BIOS function numbers.
-#define SET_CURSORTYPE       1
-#define SET_CURSORPOS        2
-#define GET_CURSORPOS        3
-#define SCROLL_UP            6
-#define SCROLL_DOWN          7
-#define GET_CRTMODE         15
-
-    namespace {
-        int       old_mode       = 0;             // Video mode before `initialize`.
-        unsigned  screen_segment = 0xB800;        // Segment address of video RAM.
-        int       video_mode     = VIDEO_COLOR;   // Current video mode.
     }
 #endif
 
@@ -170,7 +104,7 @@ namespace scr {
         char work_buffer[maximum_print_size + 1];  // Used by `print`
     }
 
-#if eOPSYS == eWIN32
+#if eOPSYS == eWINDOWS
     namespace {
         CHAR_INFO *console_image;    // Win32 requires this as well.
     }
@@ -433,14 +367,6 @@ namespace scr {
      */
     bool initialize( )
     {
-#if (eOPSYS == eOS2) && defined(SCR_DIRECT)
-        VIOMODEINFO screen_info;
-#endif
-
-#if (eOPSYS == eDOS) && defined(SCR_DIRECT)
-        union REGS r;
-#endif
-
         // Return at once if already initialized.
         if( initialize_counter > 0 ) {
             ++initialize_counter;
@@ -449,13 +375,7 @@ namespace scr {
 
         initialize_key( );
 
-#if (eOPSYS == eOS2) && defined(SCR_DIRECT)
-        VioGetMode( &screen_info, 0 );
-        max_rows = total_rows = screen_info.row;
-        max_columns = total_columns = screen_info.col;
-#endif
-
-#if (eOPSYS == eWIN32) && defined (SCR_DIRECT)
+#if eOPSYS == eWINDOWS
         CONSOLE_SCREEN_BUFFER_INFO scrninfo;
 
         GetConsoleScreenBufferInfo( GetStdHandle( STD_OUTPUT_HANDLE ), &scrninfo );
@@ -463,7 +383,7 @@ namespace scr {
         max_columns = total_columns = scrninfo.srWindow.Right - scrninfo.srWindow.Left + 1;
 #endif
 
-#if (eOPSYS == ePOSIX)
+#if eOPSYS == ePOSIX
         // Initialize the Curses package.
         initscr( );
         raw( );
@@ -479,36 +399,14 @@ namespace scr {
         max_columns = total_columns = COLS;
 #endif
 
-#if (eOPSYS == eDOS) && defined(SCR_DIRECT)
-        // Learn what video mode is currently being used.
-        r.h.ah = static_cast<unsigned char>( GET_CRTMODE );
-        do_interrupt( BIOS_VIDEO, &r, &r );
-
-        // Save the old video mode.
-        old_mode = r.h.al;
-
-        // If it's mode 7 (monochrome), adjust our records.
-        if( r.h.al == 7 ) {
-            screen_segment = 0xB000;
-            video_mode = VIDEO_MONO;
-        }
-
-        // Otherwise, force mode 3 (25x80 color).
-        else if( r.h.al != 3 ) {
-            r.h.ah = static_cast<unsigned char>( SET_CRTMODE );
-            r.h.al = 3;
-            do_interrupt( BIOS_VIDEO, &r, &r );
-        }
-#endif
-
         // Allocate screen images.
         screen_image = new char[total_rows * 2 * total_columns];
 
-#if (eOPSYS == ePOSIX) || defined(SCR_ANSI)
+#if eOPSYS == ePOSIX
         physical_image = new char[total_rows * 2 * total_columns];
 #endif
 
-#if (eOPSYS == eWIN32) && defined(SCR_DIRECT)
+#if eOPSYS == eWINDOWS
         console_image = new CHAR_INFO[total_rows * total_columns];
 #endif
 
@@ -535,15 +433,11 @@ namespace scr {
      */
     void terminate( )
     {
-#if (eOPSYS == eDOS) && defined(SCR_DIRECT)
-        union REGS  r;
-#endif
-
         if( initialize_counter == 0 ) return;  // initialize( ) never called.
         --initialize_counter;
         if( initialize_counter != 0 ) return;  // initialize( ) called more than once.
 
-#if ((eOPSYS == eOS2) || (eOPSYS == eWIN32)) && defined(SCR_DIRECT)
+#if eOPSYS == eWINDOWS
         // Clear the screen and home the cursor.
         for( int counter = 0; counter < total_rows * 2 * total_columns; counter += 2 ) {
             screen_image[counter]     = ' ';
@@ -554,17 +448,7 @@ namespace scr {
         redraw( );
 #endif
 
-#if defined(SCR_ANSI)
-        // Clear the screen and home the cursor. (We don't need to update `screen_image` or
-        // `physical_image`. This is the last Scr function that will be called until another
-        // `initialize`).
-        //
-        reset_screen( );
-        erase_screen( );
-        position_cursor( 1, 1 );
-#endif
-
-#if (eOPSYS == ePOSIX)
+#if eOPSYS == ePOSIX
         // Clear the screen and home the cursor.
         for( int counter = 0; counter < total_rows * 2 * total_columns; counter += 2 ) {
             screen_image[counter]     = ' ';
@@ -579,41 +463,14 @@ namespace scr {
 
         box_character_map.erase( box_character_map.begin( ), box_character_map.end( ) );
 #endif
-
-#if (eOPSYS == eDOS) && defined(SCR_DIRECT)
-        // Learn what video mode is currently being used. It's either 3 or 7.
-        r.h.ah = static_cast< unsigned char >( GET_CRTMODE );
-        do_interrupt( BIOS_VIDEO, &r, &r );
-
-        // If this is different than the old mode, change back to the old mode.
-        if( r.h.al != old_mode ) {
-            r.h.ah = static_cast< unsigned char >( SET_CRTMODE );
-            r.h.al = static_cast< unsigned char >( old_mode );
-            do_interrupt( BIOS_VIDEO, &r, &r );
-        }
-
-        // Otherwise clear the screen and home the cursor (mode switching has this effect so we
-        // don't need to mess with this above).
-        //
-        else {
-            for( int counter = 0; counter < total_rows * 2 * total_columns; counter += 2 ) {
-                screen_image[counter]     = ' ';
-                screen_image[counter + 1] = WHITE|REV_BLACK;
-            }
-            virtual_row = 1;
-            virtual_column = 1;
-            redraw( );
-        }
-#endif
-
         // Free dynamic data structures.
         delete [] screen_image; screen_image = nullptr;
 
-#if eOPSYS == ePOSIX || defined(SCR_ANSI)
+#if eOPSYS == ePOSIX
         delete [] physical_image; physical_image = nullptr;
 #endif
 
-#if eOPSYS == eWIN32 && defined(SCR_DIRECT)
+#if eOPSYS == eWINDOWS
         delete [] console_image; console_image = nullptr;
 #endif
 
@@ -655,27 +512,13 @@ namespace scr {
      */
     bool is_monochrome( )
     {
-#if (eOPSYS == eOS2) && defined(SCR_DIRECT)
-        // Assume all OS/2 machines can do color.
-        return false;
-#endif
-
-#if (eOPSYS == eWIN32) && defined(SCR_DIRECT)
+#if eOPSYS == eWINDOWS
         // Assume all Win32 machines can do color.
         return false;
 #endif
 
-#if defined(SCR_ANSI)
-        // Assume all ANSI terminals can do color.
-        return false;
-#endif
-
-#if (eOPSYS == ePOSIX)
+#if eOPSYS == ePOSIX
         return !color_works;
-#endif
-
-#if (eOPSYS == eDOS) && defined(SCR_DIRECT)
-        return video_mode == VIDEO_MONO;
 #endif
     }
 
@@ -689,7 +532,7 @@ namespace scr {
     {
         // I assume that ANSI screen handling and all OS/2 and Win32 systems can do color.
 
-#if (eOPSYS == ePOSIX)
+#if eOPSYS == ePOSIX
         // Return at once with the attribute unchanged if not the monochrome mode.
         if( color_works ) return attribute;
 
@@ -702,19 +545,6 @@ namespace scr {
         else {
             attribute |= REV_WHITE;
             attribute &= 0xF8;         // Zero out (make black) foreground only.
-        }
-#endif
-
-#if (eOPSYS == eDOS) && defined(SCR_DIRECT)
-        if( video_mode != VIDEO_MONO ) return attribute;
-
-        if( ( attribute & 0x70 ) == REV_BLACK ) {
-            attribute |= WHITE;
-        }
-
-        else {
-            attribute |= REV_WHITE;
-            attribute &= 0xF8;
         }
 #endif
 
@@ -1198,7 +1028,7 @@ namespace scr {
      *  an external shell.
      */
 
-#if defined(SCR_DIRECT)
+#if eOPSYS == eWINDOWS
 
     void clear_screen( )
     {
@@ -1211,41 +1041,6 @@ namespace scr {
 
     void redraw( )
     {
-#if (eOPSYS == eDOS)
-        union REGS r;
-        char far *screen_pointer = ( char far * )screen_image;
-
-#ifndef __386__
-        // Use movedata() if we are not using the DOS/4GW DOS extender.
-        // Put the text and attributes into video RAM.
-        movedata(
-            FP_SEG( screen_pointer ),
-            FP_OFF( screen_pointer ),
-            screen_segment,
-            0x0000,
-            total_rows * 2 * total_columns);
-#else
-        // Just copy stuff to raw linear addresses if we are using the extender.
-        std::memcpy( ( char * )0x000B8000, screen_image, total_rows * 2 * total_columns );
-#endif
-
-        // Position the cursor to the correct location.
-        r.h.ah = ( unsigned char ) SET_CURSORPOS;
-        r.h.dh = ( unsigned char ) ( virtual_row - 1 );
-        r.h.dl = ( unsigned char ) ( virtual_column - 1 );
-        r.h.bh = ( unsigned char ) 0;
-        do_interrupt( BIOS_VIDEO, &r, &r );
-#endif
-
-#if (eOPSYS == eOS2)
-        // Put the text and attributes into video RAM.
-        VioWrtCellStr( screen_image, total_rows * 2 * total_columns, 0, 0, 0 );
-
-        // Position the cursor to the correct location.
-        VioSetCurPos( virtual_row - 1, virtual_column - 1, 0 );
-#endif
-
-#if (eOPSYS == eWIN32)
         // This assumes total_columns and total_rows are both < 32k.
         COORD  where = { 0, 0 };
         COORD  size  = { static_cast< SHORT >( total_columns ),
@@ -1275,190 +1070,12 @@ namespace scr {
         where.X = static_cast< SHORT >( virtual_column - 1 );
         where.Y = static_cast< SHORT >( virtual_row - 1 );
         SetConsoleCursorPosition( hStdOut, where );
-#endif
     }
 
 
     void refresh( )
     {
         redraw( );
-    }
-
-
-    void off( )
-    {
-        // Do nothing. (Is this really right?)
-    }
-
-
-    void on( )
-    {
-        // Do nothing. (Is this really right?)
-    }
-
-#endif
-
-
-#if defined(SCR_ANSI)
-
-    static int foreground_table[] = {
-        /* 0 => Black   */ F_BLACK,
-        /* 1 => Blue    */ F_BLUE,
-        /* 2 => Green   */ F_GREEN,
-        /* 3 => Cyan    */ F_CYAN,
-        /* 4 => Red     */ F_RED,
-        /* 5 => Magenta */ F_MAGENTA,
-        /* 6 => Brown   */ F_YELLOW,
-        /* 7 => White   */ F_WHITE
-    };
-
-    static int background_table[] = {
-        /* 0 => Black   */ B_BLACK,
-        /* 1 => Blue    */ B_BLUE,
-        /* 2 => Green   */ B_GREEN,
-        /* 3 => Cyan    */ B_CYAN,
-        /* 4 => Red     */ B_RED,
-        /* 5 => Magenta */ B_MAGENTA,
-        /* 6 => Brown   */ B_YELLOW,
-        /* 7 => White   */ B_WHITE
-    };
-
-
-    void clear_screen( )
-    {
-        int counter;
-
-        // Clear the physical screen.
-        reset_screen( );
-        erase_screen( );
-
-        // Make the arrays correct.
-        for( counter = 0; counter < total_rows * 2 * total_columns; counter += 2 ) {
-            screen_image[counter]        = ' ';
-            screen_image[counter + 1]    = WHITE|REV_BLACK;
-            physical_image[counter]      = ' ';
-            physical_image[counter + 1]  = WHITE|REV_BLACK;
-        }
-
-        // Position the cursor. Record the location of the real cursor.
-        position_cursor( 1, 1 );
-        virtual_row     = 1;
-        virtual_column  = 1;
-        physical_row    = 1;
-        physical_column = 1;
-    }
-
-
-    void redraw( )
-    {
-        int     current_attribute; // Color/attribute of last character printed.
-        int     row_count;
-        int     column_count;
-        char   *current_character; // Points at next character in the screen
-                                   // image that we want to print.
-
-        // Scan over the entire screen, one row at a time.
-        for( row_count = 1; row_count <= total_rows; row_count++ ) {
-
-            // Put the cursor at the start of the row and force the current color/attribute
-            // state to something we know.
-            //
-            current_attribute = WHITE|REV_BLACK;
-            position_cursor( row_count, 1 );
-            reset_screen( );
-
-            // Point into the screen image.
-            current_character = screen_image + ( row_count - 1 ) *  2 * total_columns;
-
-            // Scan down the row...
-            for( column_count = 1; column_count <= total_columns; column_count++ ) {
-
-                // If the current character's color is different than the current state, change
-                // color/attribute as needed.
-                //
-                if( current_attribute != current_character[1] ) {
-                    reset_screen( );
-                    if( current_character[1] & BRIGHT ) bold_on( );
-                    if( current_character[1] & BLINK  ) blink_on( );
-                    set_color( foreground_table[current_character[1] & 0x07] );
-                    set_color( background_table[( current_character[1] & 0x70 ) >> 4] );
-                    current_attribute = current_character[1];
-                }
-
-                // Print the character.
-                std::putchar( *current_character );
-                current_character += 2;
-            }
-        }
-
-        // Ok. We're done with the screen. Now we've got to position the cursor and reset the
-        // screen.
-        //
-        position_cursor( virtual_row, virtual_column );
-        reset_screen( );
-    }
-
-
-    void refresh( )
-    {
-        int   current_attribute;    // Current printing attribute.
-        int   desired_attribute;    // The total attribute that we want.
-        int   desired_foreground;   // The ANSI color number of what we want.
-        int   desired_background;   // The ANSI color number of what we want.
-        int   row_count;
-        int   column_count;
-
-        // Set the colors to a known value.
-        reset_screen( );
-        current_attribute = WHITE|REV_BLACK;
-
-        // Loop over the entire screen.
-        for( row_count = 1; row_count <= total_rows; row_count++ ) {
-            for( column_count = 1; column_count <= total_columns; column_count++ ) {
-
-                // Compute offset into the image arrays of the current character.
-                int array_index = ( row_count - 1 ) * 2 * total_columns + 2 * ( column_count - 1 );
-
-                // If this character is already what we want, skip it.
-                if( screen_image[array_index]     == physical_image[array_index] &&
-                    screen_image[array_index + 1] == physical_image[array_index + 1] )
-                    continue;
-
-                // Otherwise, position the cursor if it's in the wrong place.
-                if( row_count != physical_row || column_count != physical_column ) {
-                    position_cursor( row_count, column_count );
-                    physical_row = row_count;
-                    physical_column = column_count;
-                }
-
-                // Is the current color what we want? If not, adjust it.
-                desired_attribute  = screen_image[array_index + 1];
-
-                if( desired_attribute != current_attribute ) {
-                    reset_screen( );
-                    desired_foreground = foreground_table[  desired_attribute & 0x07];
-                    desired_background = background_table[( desired_attribute & 0x70 ) >> 4];
-                    set_color( desired_foreground );
-                    set_color( desired_background );
-                    if( desired_attribute & BRIGHT ) bold_on( );
-                    if( desired_attribute & BLINK ) blink_on( );
-                    current_attribute = desired_attribute;
-                }
-
-                // Print the character! (And adjust our record of the cursor position).
-                std::putchar( screen_image[array_index] );
-                physical_column++;
-
-                // Update the physical image.
-                physical_image[array_index]     = screen_image[array_index];
-                physical_image[array_index + 1] = screen_image[array_index + 1];
-            }
-        }
-
-        // Position the cursor to its final resting place.
-        position_cursor( virtual_row, virtual_column );
-        physical_row = virtual_row;
-        physical_column = virtual_column;
     }
 
 
