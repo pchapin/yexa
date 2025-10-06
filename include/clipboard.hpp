@@ -12,4 +12,3 @@
 extern EditList clipboard;
 
 #endif
-

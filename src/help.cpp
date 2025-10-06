@@ -11,10 +11,10 @@
 
 #include <cstdio>
 
+#include "TextWindow.hpp"
 #include "help.hpp"
 #include "scr.hpp"
 #include "support.hpp"
-#include "TextWindow.hpp"
 
 static const char *const help_1[] = {
     "HELP ON HELP",
@@ -32,8 +32,7 @@ static const char *const help_1[] = {
     "",
     "Shift+F5       Technical information on Y\'s file list.",
     "Shift+F6       Technical information on the current file.",
-    NULL
-};
+    NULL};
 
 static const char *const help_2[] = {
     "INVOKING AND TERMINATING",
@@ -50,8 +49,7 @@ static const char *const help_2[] = {
     "Alt+Y          Exit, save changes, save state information.",
     "Alt+X          Exit, save changes.",
     "Alt+Q          Exit, abandon changes.",
-    NULL
-};
+    NULL};
 
 static const char *const help_3[] = {
     "MOVING THE CURSOR",
@@ -71,8 +69,7 @@ static const char *const help_3[] = {
     "",
     "F9                       Jump to line number.",
     "Alt+F9                   Jump to column number.",
-    NULL
-};
+    NULL};
 
 static const char *const help_4[] = {
     "CREATING AND DESTROYING TEXT",
@@ -92,29 +89,26 @@ static const char *const help_4[] = {
     "Certain control characters must be prefixed with ^Q  to be",
     "put into the file. Namely  ^E, ^I (TAB), ^K, ^M (CR),  ^Q,",
     "^R, and ^[ (ESC). Don\'t try to put ^J or ^@ into the file.",
-    NULL
-};
+    NULL};
 
-static const char *const help_5[] = {
-    "HANDLING FILES",
-    "",
-    "Whenever files (or blocks) are saved, Y strips trailing",
-    "whitespace from each line. Y expands tabs to spaces when",
-    "reading files.",
-    "",
-    "F1        Edit another file (wildcards ok).",
-    "F2        Save current file or save block to a new file.",
-    "F3        Switch to the next file in Y\'s file list.",
-    "F4        Remove file from list, saving it.",
-    "Alt+F1    Reload a fresh copy of file from disk.",
-    "Alt+F2    Rename the current file or block.",
-    "Alt+F3    Switch to the previous file in Y\'s file list.",
-    "Alt+F4    Remove file or block without saving.",
-    "",
-    "F8        Insert a file into the current file.",
-    "Alt+F8    Insert current file or block into a file.",
-    NULL
-};
+static const char *const help_5[] = {"HANDLING FILES",
+                                     "",
+                                     "Whenever files (or blocks) are saved, Y strips trailing",
+                                     "whitespace from each line. Y expands tabs to spaces when",
+                                     "reading files.",
+                                     "",
+                                     "F1        Edit another file (wildcards ok).",
+                                     "F2        Save current file or save block to a new file.",
+                                     "F3        Switch to the next file in Y\'s file list.",
+                                     "F4        Remove file from list, saving it.",
+                                     "Alt+F1    Reload a fresh copy of file from disk.",
+                                     "Alt+F2    Rename the current file or block.",
+                                     "Alt+F3    Switch to the previous file in Y\'s file list.",
+                                     "Alt+F4    Remove file or block without saving.",
+                                     "",
+                                     "F8        Insert a file into the current file.",
+                                     "Alt+F8    Insert current file or block into a file.",
+                                     NULL};
 
 static const char *const help_6[] = {
     "BLOCK MODE",
@@ -133,8 +127,7 @@ static const char *const help_6[] = {
     "",
     "If block mode is not on, F6 will cut the current line to",
     "the clipboard. Alt+F6 works similarly.",
-    NULL
-};
+    NULL};
 
 static const char *const help_7[] = {
     "USING EXTERNAL COMMANDS",
@@ -154,8 +147,7 @@ static const char *const help_7[] = {
     "",
     "Shft+F10  Pipe file or block into STDIN of external",
     "          program.",
-    NULL
-};
+    NULL};
 
 static const char *const help_8[] = {
     "SEARCH AND REPLACE",
@@ -174,8 +166,7 @@ static const char *const help_8[] = {
     "",
     "If block mode is on, a search and replace operation is",
     "done only over the block.",
-    NULL
-};
+    NULL};
 
 static const char *const help_9[] = {
     "KEYBOARD MACROS",
@@ -195,8 +186,7 @@ static const char *const help_9[] = {
     "",
     "Keyboard macros can contain repeat sequences. Keyboard",
     "macros can be repeated.",
-    NULL
-};
+    NULL};
 
 static const char *const help_10[] = {
     "MISC COMMANDS",
@@ -209,23 +199,16 @@ static const char *const help_10[] = {
     "          wrapped and short lines are filled.",
     "",
     "Alt+T     Change tab stop distance for the current file.",
-    NULL
-};
+    NULL};
 
 const HelpScreen h_screens[] = {
-    { help_1,  &h_screens[ 1], &h_screens[ 9] },
-    { help_2,  &h_screens[ 2], &h_screens[ 0] },
-    { help_3,  &h_screens[ 3], &h_screens[ 1] },
-    { help_4,  &h_screens[ 4], &h_screens[ 2] },
-    { help_5,  &h_screens[ 5], &h_screens[ 3] },
-    { help_6,  &h_screens[ 6], &h_screens[ 4] },
-    { help_7,  &h_screens[ 7], &h_screens[ 5] },
-    { help_8,  &h_screens[ 8], &h_screens[ 6] },
-    { help_9,  &h_screens[ 9], &h_screens[ 7] },
-    { help_10, &h_screens[ 0], &h_screens[ 8] }
-};
+    {help_1, &h_screens[1], &h_screens[9]}, {help_2, &h_screens[2], &h_screens[0]},
+    {help_3, &h_screens[3], &h_screens[1]}, {help_4, &h_screens[4], &h_screens[2]},
+    {help_5, &h_screens[5], &h_screens[3]}, {help_6, &h_screens[6], &h_screens[4]},
+    {help_7, &h_screens[7], &h_screens[5]}, {help_8, &h_screens[8], &h_screens[6]},
+    {help_9, &h_screens[9], &h_screens[7]}, {help_10, &h_screens[0], &h_screens[8]}};
 
-static const char *const editor_1[]={
+static const char *const editor_1[] = {
     "                             Y",
     "                A Programmer\'s Text Editor",
     "",
@@ -239,14 +222,11 @@ static const char *const editor_1[]={
     "Randolph Center, VT. I\'d like to thank the students and",
     "faculty of VTC  for finding so many bugs in the earlier",
     "versions of this program.",
-    NULL
-};
+    NULL};
 
-const HelpScreen e_screens[] = {
-    { editor_1, &e_screens[0], &e_screens[0] }
-};
+const HelpScreen e_screens[] = {{editor_1, &e_screens[0], &e_screens[0]}};
 
-static const char *const legal_1[]={
+static const char *const legal_1[] = {
     "                  LICENSE INFORMATION",
     "",
     "This program is free software; you can redistribute it and",
@@ -260,65 +240,56 @@ static const char *const legal_1[]={
     "warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR",
     "PURPOSE. See the GNU General Public License for more",
     "details.",
-    NULL
-};
+    NULL};
 
-static const char *const legal_2[]={
-    "                  CONTACT INFORMATION",
-    "",
-    "Y\'s author can be reached at",
-    "",
-    "     Peter C. Chapin",
-    "     Vermont Technical College",
-    "     Williston, VT 05495 (USA)",
-    "     chapinp@acm.org",
-    NULL
-}; 
+static const char *const legal_2[] = {"                  CONTACT INFORMATION",
+                                      "",
+                                      "Y\'s author can be reached at",
+                                      "",
+                                      "     Peter C. Chapin",
+                                      "     Vermont Technical College",
+                                      "     Williston, VT 05495 (USA)",
+                                      "     chapinp@acm.org",
+                                      NULL};
 
-const HelpScreen l_screens[] = {
-    { legal_1, &l_screens[1], &l_screens[1] },
-    { legal_2, &l_screens[0], &l_screens[0] }
-};
+const HelpScreen l_screens[] = {{legal_1, &l_screens[1], &l_screens[1]},
+                                {legal_2, &l_screens[0], &l_screens[0]}};
 
-
-const HelpScreen *display_screens
-    ( const HelpScreen *const base, const HelpScreen *current, const int size )
+const HelpScreen *display_screens(const HelpScreen *const base, const HelpScreen *current,
+                                  const int size)
 {
-    const int viewer_width = 60;   // If these change, the data above will need to be reformated
+    const int viewer_width = 60; // If these change, the data above will need to be reformated
     const int viewer_height = 20;
     scr::TextWindow view_port;
 
-    view_port.open(
-        ( scr::number_of_rows( )/2 - viewer_height/2 ) + 1,
-        ( scr::number_of_columns( )/2 - viewer_width/2 ) + 1,
-        viewer_width,
-        viewer_height,
-        scr::BLACK | scr::REV_WHITE, scr::DOUBLE_LINE );
+    view_port.open((scr::number_of_rows() / 2 - viewer_height / 2) + 1,
+                   (scr::number_of_columns() / 2 - viewer_width / 2) + 1, viewer_width,
+                   viewer_height, scr::BLACK | scr::REV_WHITE, scr::DOUBLE_LINE);
 
     // Turn cursor off.
-    scr::set_cursor_position( scr::number_of_rows( ) + 1, 1 );
+    scr::set_cursor_position(scr::number_of_rows() + 1, 1);
 
     // Loop until the user says "enough!!"
-    for( ;; ) {
+    for (;;) {
 
         // Write the screen number in the lower left corner.
         char buffer[20];
-        std::sprintf( buffer, "%2d/%2d", static_cast<int>( current - base ) + 1, size );
-        view_port.print_at( viewer_height - 3, viewer_width - 8, buffer );
+        std::sprintf(buffer, "%2d/%2d", static_cast<int>(current - base) + 1, size);
+        view_port.print_at(viewer_height - 3, viewer_width - 8, buffer);
 
         // Paint the help screen.
         int i;
         bool stop = false;
-        view_port.home( );
-        for( i = 1; !stop && i <= viewer_height - 2; i++ ) {
-            if( current->current_screen[i-1] == NULL )
+        view_port.home();
+        for (i = 1; !stop && i <= viewer_height - 2; i++) {
+            if (current->current_screen[i - 1] == NULL)
                 stop = true;
             else
-                view_port.print( current->current_screen[i-1] );
+                view_port.print(current->current_screen[i - 1]);
         }
-        
+
         int ch;
-        switch( ch = scr::key( ) ) {
+        switch (ch = scr::key()) {
         case scr::K_PGDN:
             current = current->next_screen;
             break;
@@ -332,16 +303,14 @@ const HelpScreen *display_screens
             ;
         }
 
-        if( ch == scr::K_PGUP  ||  ch == scr::K_PGDN ) {
-            scr::clear(
-                view_port.row( ),   view_port.column( ),
-                view_port.width( ), view_port.height( ),
-                view_port.color( )
-            );
+        if (ch == scr::K_PGUP || ch == scr::K_PGDN) {
+            scr::clear(view_port.row(), view_port.column(), view_port.width(),
+                       view_port.height(), view_port.color());
         }
 
         // Break out of infinite loop if user's seen enough.
-        if( ch == scr::K_ESC ) break;
+        if (ch == scr::K_ESC)
+            break;
     }
     return current;
 }

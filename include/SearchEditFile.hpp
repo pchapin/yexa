@@ -10,9 +10,9 @@
 
 //! Adds simple search abilities to class EditFile.
 class SearchEditFile : private virtual EditFile {
-public:
+  public:
     //! Adjusts current point to start of string if found.
-    bool simple_search( const char *search_string );
+    bool simple_search(const char *search_string);
 };
 
 #endif

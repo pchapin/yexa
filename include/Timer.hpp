@@ -36,37 +36,36 @@ namespace spica {
      */
     class Timer {
 
-    public:
+      public:
         enum timer_state {
-            RESET,      //!< No time accumulated. Timer not keeping time.
-            RUNNING,    //!< Timer is active.
-            STOPPED     //!< Timer is not active. Accumulated time remembered.
+            RESET,   //!< No time accumulated. Timer not keeping time.
+            RUNNING, //!< Timer is active.
+            STOPPED  //!< Timer is not active. Accumulated time remembered.
         };
 
-        #if eOPSYS == eWINDOWS
+#if eOPSYS == eWINDOWS
         typedef LARGE_INTEGER timer_t;
-        #endif
+#endif
 
-        #if eOPSYS == ePOSIX
+#if eOPSYS == ePOSIX
         struct timer_t {
             time_t seconds;
-            int    milliseconds;
+            int milliseconds;
         };
-        #endif
+#endif
 
-    private:
-        timer_t      start_time;      //!< Time that the timer was last started.
-        timer_t      accumulated;     //!< Total accumulated time.
-        timer_state  internal_state;  //!< Current state of timer object.
+      private:
+        timer_t start_time;         //!< Time that the timer was last started.
+        timer_t accumulated;        //!< Total accumulated time.
+        timer_state internal_state; //!< Current state of timer object.
 
-    public:
-
+      public:
         //! Constructs a Timer object.
         /*!
          * The constructor ensures that the timer has no accumulated time and is in the reset
          * state.
          */
-        Timer( );
+        Timer();
 
         //! Resets the timer.
         /*!
@@ -74,12 +73,11 @@ namespace spica {
          * is in the same state as it is after construction. If the timer was running when
          * `reset` is called, it is stopped.
          */
-        void reset( );
+        void reset();
 
         //! Read the timer state.
         /*! Return the internal state of the timer. */
-        timer_state state( )
-            { return internal_state; }
+        timer_state state() { return internal_state; }
 
         //! Start the timer.
         /*!
@@ -87,14 +85,14 @@ namespace spica {
          * start time is replaced by the new one. This causes the last, partially finished
          * timing interval to be lost. The accumulated time is, however, not changed.
          */
-        void start( );
+        void start();
 
         //! Stop the timer.
         /*!
          * This method stops the timer and updates the value of accumulated time. The old value
          * of accumulated time is not lost; timer objects allow frequent starts and stops.
          */
-        void stop( );
+        void stop();
 
         //! Read the timer.
         /*!
@@ -102,9 +100,9 @@ namespace spica {
          * if the timer is running when this function is called, it correctly evaluates the
          * time. The state of the timer is unchanged.
          */
-        long time( );
+        long time();
     };
 
-}
+} // namespace spica
 
 #endif

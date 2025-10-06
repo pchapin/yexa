@@ -14,8 +14,8 @@
 #include <cstdlib>
 
 #include "EditBuffer.hpp"
-#include "macro_stack.hpp"
 #include "WordSource.hpp"
+#include "macro_stack.hpp"
 
 Stack<WordSource *> macro_stack;
 
@@ -25,26 +25,24 @@ Stack<WordSource *> macro_stack;
  * is done at program startup.
  */
 class StackInitializer {
-public:
-    StackInitializer( );
+  public:
+    StackInitializer();
 };
 
-
-StackInitializer::StackInitializer( )
+StackInitializer::StackInitializer()
 {
     KeyboardWord *keyboard = new KeyboardWord;
-    macro_stack.push( keyboard );
+    macro_stack.push(keyboard);
 }
 
 static StackInitializer setup_stack;
-
 
 /*!
  * Get the next macro word. This function invokes the get_word method for the object currently
  * at the top of the macro stack. If that function returns false, it tries to pop that object
  * off the stack and kill it.
  */
-void get_word( EditBuffer &next_word )
+void get_word(EditBuffer &next_word)
 {
     // Ask the object at the top of the stack to get the next word. Keep trying until we find an
     // object that can comply. The KeyboardWord object at the bottom of the stack will comply;
@@ -52,30 +50,28 @@ void get_word( EditBuffer &next_word )
     //
     bool result;
     do {
-        WordSource *current_source = *macro_stack.get( );
-        result = current_source->get_word( next_word );
+        WordSource *current_source = *macro_stack.get();
+        result = current_source->get_word(next_word);
 
         // If it couldn't do it, kill this WordSource and try the next.
-        if( result == false ) {
-            macro_stack.pop( current_source );
+        if (result == false) {
+            macro_stack.pop(current_source);
             delete current_source;
         }
 
-    } while( result == false );
+    } while (result == false);
 }
 
-
-void start_macro_string( const char *macro_text )
+void start_macro_string(const char *macro_text)
 {
     // Create a new StringWord containing the macro and push it onto the macro stack.
-    StringWord *new_source = new StringWord( macro_text );
-    macro_stack.push( new_source );
+    StringWord *new_source = new StringWord(macro_text);
+    macro_stack.push(new_source);
 }
 
-
-void start_macro_file( const char *file_name )
+void start_macro_file(const char *file_name)
 {
     // Create a FileWord containing the macro and push it onto the macro stack.
-    FileWord *new_source = new FileWord( file_name );
-    macro_stack.push( new_source );
+    FileWord *new_source = new FileWord(file_name);
+    macro_stack.push(new_source);
 }

@@ -17,25 +17,17 @@ namespace scr {
      * particular item.
      */
     class SelectWindow : public DisplayWindow {
-    private:
-        int  highlight_color;
+      private:
+        int highlight_color;
         bool show_bar;
 
-    public:
-        bool open(
-            int row,
-            int column,
-            int width,
-            int height,
-            int color,
-            int status_color,
-            BoxType border,
-            int border_color = WINDOW_COLOR);
+      public:
+        bool open(int row, int column, int width, int height, int color, int status_color,
+                  BoxType border, int border_color = WINDOW_COLOR);
 
-        void show( );
-        int  select( long forced = -1L );
+        void show();
+        int select(long forced = -1L);
     };
-}
+} // namespace scr
 
 #endif
-

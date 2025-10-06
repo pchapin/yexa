@@ -3,20 +3,16 @@
  *  \author  Peter Chapin <spicacality@kelseymountain.org>
  */
 
-#include <cstring>
 #include "ImageBuffer.hpp"
 #include "scr.hpp"
+#include <cstring>
 
-static
-void check_region( int row, int column, int width, int height )
+static void check_region(int row, int column, int width, int height)
 {
-    if( row    < 1 ||
-        column < 1 ||
-        row + height - 1   > scr::number_of_rows( ) ||
-        column + width - 1 > scr::number_of_columns( ) )
-            throw scr::BadRegion( row, column, width, height );
+    if (row < 1 || column < 1 || row + height - 1 > scr::number_of_rows() ||
+        column + width - 1 > scr::number_of_columns())
+        throw scr::BadRegion(row, column, width, height);
 }
-
 
 namespace scr {
 
@@ -35,17 +31,18 @@ namespace scr {
      *
      * \throws std::bad_alloc If there is insufficient memory to create the image.
      */
-    ImageBuffer::ImageBuffer( int width, int height, int color, char letter )
+    ImageBuffer::ImageBuffer(int width, int height, int color, char letter)
     {
-        if( width < 1 ) width = 1;
-        if( height < 1 ) height = 1;
+        if (width < 1)
+            width = 1;
+        if (height < 1)
+            height = 1;
 
-        this->width  = width;
+        this->width = width;
         this->height = height;
-        buffer = new char[ 2 * width * height ];
-        clear( color, letter );
+        buffer = new char[2 * width * height];
+        clear(color, letter);
     }
-
 
     //! Copies an ImageBuffer
     /*!
@@ -54,21 +51,19 @@ namespace scr {
      * \param other The existing image to be copied.
      * \throws std::bad_alloc If there is insufficient memory to copy the existing image.
      */
-    ImageBuffer::ImageBuffer( const ImageBuffer &other )
+    ImageBuffer::ImageBuffer(const ImageBuffer &other)
     {
-        width  = other.width;
+        width = other.width;
         height = other.height;
-        buffer = new char[ 2 * width * height ];
-        std::memcpy( buffer, other.buffer, 2 * width * height );
+        buffer = new char[2 * width * height];
+        std::memcpy(buffer, other.buffer, 2 * width * height);
     }
-
 
     //! Destroys an ImageBuffer
-    ImageBuffer::~ImageBuffer( )
+    ImageBuffer::~ImageBuffer()
     {
-        delete [] buffer;
+        delete[] buffer;
     }
-
 
     //! Assigns an ImageBuffer
     /*!
@@ -78,18 +73,17 @@ namespace scr {
      * \param other The existing image to be copied.
      * \throws std::bad_alloc If there is insufficient memory to copy the existing image.
      */
-    ImageBuffer &ImageBuffer::operator=( const ImageBuffer &other )
+    ImageBuffer &ImageBuffer::operator=(const ImageBuffer &other)
     {
-        char *temp_buffer = new char[ 2 * other.width * other.height ];
+        char *temp_buffer = new char[2 * other.width * other.height];
 
-        width  = other.width;
+        width = other.width;
         height = other.height;
-        delete [] buffer;
+        delete[] buffer;
         buffer = temp_buffer;
-        std::memcpy( buffer, other.buffer, 2 * width * height );
+        std::memcpy(buffer, other.buffer, 2 * width * height);
         return *this;
     }
-
 
     //! Clears an ImageBuffer
     /*!
@@ -99,14 +93,13 @@ namespace scr {
      * \param color The color attribute to used to initialize each character cell.
      * \param letter The character used to initialized each character cell.
      */
-    void ImageBuffer::clear( int color, char letter )
+    void ImageBuffer::clear(int color, char letter)
     {
-        for( int i = 0; i < width * height; ++i ) {
-            buffer[ 2*i ] = letter;
-            buffer[ 2*i + 1 ] = static_cast< char >( color );
+        for (int i = 0; i < width * height; ++i) {
+            buffer[2 * i] = letter;
+            buffer[2 * i + 1] = static_cast<char>(color);
         }
     }
-
 
     //! Copies a C style string into an ImageBuffer
     /*!
@@ -123,31 +116,35 @@ namespace scr {
      * \param extent The maximum number of characters to copy.
      * \param color The color attribute to use for each character copied into the image.
      */
-    void ImageBuffer::copy( const char *source, int row, int column, std::size_t extent, int color )
+    void ImageBuffer::copy(const char *source, int row, int column, std::size_t extent,
+                           int color)
     {
         // Make sure starting position is in range.
-        if( row    < 1 ) row = 1;
-        if( column < 1 ) column = 1;
+        if (row < 1)
+            row = 1;
+        if (column < 1)
+            column = 1;
 
         // Compute the number of character positions left in the region.
-        int offset = ( row - 1 ) * width + ( column - 1 );
+        int offset = (row - 1) * width + (column - 1);
         int space_left = width * height - offset;
 
         // Truncate the string at the end of the region.
-        if( space_left <= 0 ) return;
-        if( extent > static_cast<std::size_t>( space_left ) ) extent = space_left;
+        if (space_left <= 0)
+            return;
+        if (extent > static_cast<std::size_t>(space_left))
+            extent = space_left;
 
         // Copy the characters to the region.
         char *p = buffer + 2 * offset;
-        while( *source && extent != 0 ) {
-            *( p + 0 ) = *source;
-            *( p + 1 ) =  color;
+        while (*source && extent != 0) {
+            *(p + 0) = *source;
+            *(p + 1) = color;
             p += 2;
             ++source;
             --extent;
         }
     }
-
 
     //! Reads an ImageBuffer from the screen.
     /*!
@@ -158,15 +155,15 @@ namespace scr {
      * boundaries, a Bad_Region exception is thrown.
      *
      * \param row The upper left corner of the screen region that is read (first row is 1).
-     * \param column The upper left corner of the screen region that is read (first column is 1).
+     * \param column The upper left corner of the screen region that is read (first column is
+     * 1).
      * \throws Bad_Region if the region being read overlaps or is outside the screen boundary.
      */
-    void ImageBuffer::read( int row, int column )
+    void ImageBuffer::read(int row, int column)
     {
-        check_region( row, column, width, height );
-        scr::read( row, column, width, height, buffer );
+        check_region(row, column, width, height);
+        scr::read(row, column, width, height, buffer);
     }
-
 
     //! Writes an ImageBuffer to the screen.
     /*!
@@ -178,14 +175,14 @@ namespace scr {
      *
      * \param row The upper left corner of the screen region that is written (first is 1).
      * \param column The upper left corner of the screen region that is written (first is 1).
-     * \throws Bad_Region if the region being written overlaps or is outside the screen boundary.
+     * \throws Bad_Region if the region being written overlaps or is outside the screen
+     * boundary.
      */
-    void ImageBuffer::write( int row, int column )
+    void ImageBuffer::write(int row, int column)
     {
-        check_region( row, column, width, height );
-        scr::write( row, column, width, height, buffer );
+        check_region(row, column, width, height);
+        scr::write(row, column, width, height, buffer);
     }
-
 
     //! Resizes an ImageBuffer
     /*!
@@ -203,37 +200,39 @@ namespace scr {
      * \param letter The character used to initialize new character cells (if any).
      * \throws std::bad_alloc If there is insufficient memory to create the new image.
      */
-    void ImageBuffer::resize( int new_width, int new_height, int color, char letter )
+    void ImageBuffer::resize(int new_width, int new_height, int color, char letter)
     {
-        if( new_width  < 1 ) new_width  = 1;
-        if( new_height < 1 ) new_height = 1;
+        if (new_width < 1)
+            new_width = 1;
+        if (new_height < 1)
+            new_height = 1;
 
-        char *temp = new char[ 2 * new_width * new_height ];
+        char *temp = new char[2 * new_width * new_height];
 
         // Copy old data one row at a time.
-        for( int i = 1; i <= new_height; ++i ) {
+        for (int i = 1; i <= new_height; ++i) {
 
             // Fill row i of the new region with given letter and color.
-            for( int j = 1; j <= new_width; ++j ) {
-                int new_offset = ( i - 1 ) * new_width + ( j - 1 );
-                temp[ 2 * new_offset ] = letter;
-                temp[ 2 * new_offset + 1 ] = color;
+            for (int j = 1; j <= new_width; ++j) {
+                int new_offset = (i - 1) * new_width + (j - 1);
+                temp[2 * new_offset] = letter;
+                temp[2 * new_offset + 1] = color;
             }
 
             // If we are not off the end of the old region...
-            if( i <= height ) {
-                int new_offset = ( i - 1 ) * new_width;
-                int old_offset = ( i - 1 ) * width;
-                int copy_width = ( new_width < width ) ? new_width : width;
-                std::memcpy( temp + ( 2 * new_offset ), buffer + ( 2 * old_offset ), copy_width );
+            if (i <= height) {
+                int new_offset = (i - 1) * new_width;
+                int old_offset = (i - 1) * width;
+                int copy_width = (new_width < width) ? new_width : width;
+                std::memcpy(temp + (2 * new_offset), buffer + (2 * old_offset), copy_width);
             }
         }
 
         // Update current object.
-        delete [] buffer;
+        delete[] buffer;
         buffer = temp;
-        width  = new_width;
+        width = new_width;
         height = new_height;
     }
 
-}
+} // namespace scr

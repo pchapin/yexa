@@ -23,19 +23,20 @@ namespace scr {
      * be used to scroll information arbitrarily.
      */
     class ListWindow : public Window {
-    private:
-        std::list<std::string> managed_list;  //!< Strings to display.
-        std::size_t max_items;                //!< Maximum number of strings in the list.
+      private:
+        std::list<std::string> managed_list; //!< Strings to display.
+        std::size_t max_items;               //!< Maximum number of strings in the list.
 
-    public:
-        ListWindow( Manager *my_manager, std::size_t max, int row, int column, int width, int height ) :
-            Window( my_manager, row, column, width, height ), max_items( max )
-            { }
+      public:
+        ListWindow(Manager *my_manager, std::size_t max, int row, int column, int width,
+                   int height)
+            : Window(my_manager, row, column, width, height), max_items(max)
+        {
+        }
 
-        virtual ImageBuffer *get_image( );
-        void insert( const char *new_line );
+        virtual ImageBuffer *get_image();
+        void insert(const char *new_line);
     };
-}
+} // namespace scr
 
 #endif
-

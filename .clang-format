@@ -5,6 +5,13 @@ UseTab: Never
 NamespaceIndentation: All
 AllowShortFunctionsOnASingleLine: Inline
 ColumnLimit: 96
+ReflowComments: true
+
+# Optional niceties related to comment handling
+#AlignTrailingComments: true
+#SpacesBeforeTrailingComments: 1
+# If you use markers you don't want touched, list them here (regex):
+#CommentPragmas: 'NOLINT.*|IWYU pragma:.*'
 
 BreakBeforeBraces: Custom
 BraceWrapping:
@@ -15,9 +22,13 @@ BraceWrapping:
   AfterNamespace: false
   AfterStruct: false
   AfterUnion: false
-  BeforeCatch: false
-  BeforeElse: false
+  BeforeCatch: true
+  BeforeElse: true
   IndentBraces: false
 
 # Control spacing behavior
 SpaceBeforeParens: ControlStatements
+SpacesInParens: Never
+PointerAlignment: Right
+ReferenceAlignment: Right
+DerivePointerAlignment: false

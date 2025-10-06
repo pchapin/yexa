@@ -16,21 +16,20 @@ namespace scr {
      * that the region being shaded does not change while the shadow is displayed.
      */
     class Shadow {
-    private:
-        char *background;    //!< Points at true background. (NULL if not open)
-        int   top_row;       //!< Row coordinate of shadow's upper left corner.
-        int   left_column;   //!< Column coordinate of shadow's upper left corner.
-        int   shadow_width;  //!< Width of shadow.
-        int   shadow_height; //!< Height of shadow.
+      private:
+        char *background;  //!< Points at true background. (NULL if not open)
+        int top_row;       //!< Row coordinate of shadow's upper left corner.
+        int left_column;   //!< Column coordinate of shadow's upper left corner.
+        int shadow_width;  //!< Width of shadow.
+        int shadow_height; //!< Height of shadow.
 
-    public:
-        Shadow( ) { background = 0; }
-       ~Shadow( ) { close( ); }
+      public:
+        Shadow() { background = 0; }
+        ~Shadow() { close(); }
 
-        void open( int row, int column, int width, int height );
-        void close( );
+        void open(int row, int column, int width, int height);
+        void close();
     };
-}
+} // namespace scr
 
 #endif
-

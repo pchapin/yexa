@@ -20,19 +20,19 @@
 // The debugging system is only available if DEBUG is defined.
 #ifdef DEBUG
 
-#include "scr.hpp"
 #include "TextWindow.hpp"
+#include "scr.hpp"
 
-#define DBG_TOP    1
+#define DBG_TOP 1
 #define DBG_BOTTOM 2
 
 namespace scr {
 
-    typedef void ( *snapshot_function_t )( );
+    typedef void (*snapshot_function_t)();
 
-    void register_snapshot( const char *name, snapshot_function_t picture );
-    void initialize_debugging( int window_placement = DBG_TOP );
-    void terminate_debugging( );
+    void register_snapshot(const char *name, snapshot_function_t picture);
+    void initialize_debugging(int window_placement = DBG_TOP);
+    void terminate_debugging();
 
     //! Objects of this type cause breakpoints on construction.
     /*!
@@ -45,23 +45,23 @@ namespace scr {
      * something else good to do with them.
      */
     class Tracer {
-        const char *breakpoint_name;  //!< Name for this Tracer object.
-        int   breakpoint_level;       //!< Associated detail level for this object.
-        bool  show_trace;             //!< True if destructor is to activate a breakpoint.
+        const char *breakpoint_name; //!< Name for this Tracer object.
+        int breakpoint_level;        //!< Associated detail level for this object.
+        bool show_trace;             //!< True if destructor is to activate a breakpoint.
 
-    public:
-        Tracer( const char *trace_name, int trace_level, const char *format = NULL, ... );
+      public:
+        Tracer(const char *trace_name, int trace_level, const char *format = NULL, ...);
 
         // ~Tracer( );
     };
 
     //! Objects of this type are for snapshot functions to use to display stuff.
     class DebugWindow : public TextWindow {
-    public:
-        DebugWindow( const char *header, int width = 74, int height = 5, int color = REV_WHITE );
-       ~DebugWindow( );
+      public:
+        DebugWindow(const char *header, int width = 74, int height = 5, int color = REV_WHITE);
+        ~DebugWindow();
     };
-}
+} // namespace scr
 
 #endif
 
@@ -69,6 +69,6 @@ namespace scr {
 
     //! This is true or false depending on the state of DEBUG at compile time.
     extern bool debugging_available;
-}
+} // namespace scr
 
 #endif

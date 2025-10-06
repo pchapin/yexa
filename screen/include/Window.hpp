@@ -6,9 +6,9 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
-#include <memory>
 #include "ImageBuffer.hpp"
 #include "scr.hpp"
+#include <memory>
 
 namespace scr {
 
@@ -23,65 +23,56 @@ namespace scr {
      * material quickly as with, for example, message boxes.
      */
     class SimpleWindow {
-    private:
-        int total_row;      //!< Top row of window (including border).
-        int total_column;   //!< Left column of window (including border).
-        int total_width;    //!< Total width (including border).
-        int total_height;   //!< Total height (including border).
+      private:
+        int total_row;    //!< Top row of window (including border).
+        int total_column; //!< Left column of window (including border).
+        int total_width;  //!< Total width (including border).
+        int total_height; //!< Total height (including border).
 
-        int window_row;     //!< Top row of printable area.
-        int window_column;  //!< Left column of printable area.
-        int window_width;   //!< Width (without border).
-        int window_height;  //!< Height (without border).
-        int window_color;   //!< Color attribute of window interior.
-        BoxType window_border_type;  //!< Border type.
-        int window_border_color;     //!< Color attribute of border.
+        int window_row;             //!< Top row of printable area.
+        int window_column;          //!< Left column of printable area.
+        int window_width;           //!< Width (without border).
+        int window_height;          //!< Height (without border).
+        int window_color;           //!< Color attribute of window interior.
+        BoxType window_border_type; //!< Border type.
+        int window_border_color;    //!< Color attribute of border.
 
-        char *hidden;       //!< Window image when a window is hidden.
-        char *save_data;    //!< Saved background material.
+        char *hidden;    //!< Window image when a window is hidden.
+        char *save_data; //!< Saved background material.
 
         // Disable copying of SimpleWindow objects.
-        SimpleWindow( const SimpleWindow &existing ) = delete;
-        SimpleWindow &operator=( const SimpleWindow &existing ) = delete;
+        SimpleWindow(const SimpleWindow &existing) = delete;
+        SimpleWindow &operator=(const SimpleWindow &existing) = delete;
 
-    protected:
-        bool is_defined;    //!< True when open( ) has been used without error.
-        bool is_hidden;     //!< True when window is in a hidden state.
+      protected:
+        bool is_defined; //!< True when open( ) has been used without error.
+        bool is_hidden;  //!< True when window is in a hidden state.
 
-    public:
-        SimpleWindow( );
-       ~SimpleWindow( );
+      public:
+        SimpleWindow();
+        ~SimpleWindow();
 
-        bool open(
-            int row,
-            int column,
-            int width,
-            int height,
-            int color,
-            BoxType border_type,
-            int border_color = WINDOW_COLOR
-        );
+        bool open(int row, int column, int width, int height, int color, BoxType border_type,
+                  int border_color = WINDOW_COLOR);
 
-        void redraw_border( BoxType border_type, int attribute = WINDOW_COLOR );
-        void hide( );
-        void show( );
-        void move( int new_row, int new_column );
-        void clear( );
-        void close( );
+        void redraw_border(BoxType border_type, int attribute = WINDOW_COLOR);
+        void hide();
+        void show();
+        void move(int new_row, int new_column);
+        void clear();
+        void close();
 
         // Accessor methods.
-        int row( ) const { return window_row;     }
-        int column( ) const { return window_column;  }
-        int width( ) const { return window_width;   }
-        int height( ) const { return window_height;  }
-        int color( ) const { return window_color;   }
-        BoxType border_type( ) const { return window_border_type;  }
-        int border_color( ) const { return window_border_color; }
+        int row() const { return window_row; }
+        int column() const { return window_column; }
+        int width() const { return window_width; }
+        int height() const { return window_height; }
+        int color() const { return window_color; }
+        BoxType border_type() const { return window_border_type; }
+        int border_color() const { return window_border_color; }
     };
 
-    void window_center_coordinates( int width, int height, int *row, int *column );
-
-
+    void window_center_coordinates(int width, int height, int *row, int *column);
 
     class Manager;
 
@@ -92,25 +83,25 @@ namespace scr {
      * window. Each window type *must* provide a function that returns the window's image.
      */
     class Window {
-    private:
+      private:
         bool is_registered;
 
-    protected:
-        Manager    *my_manager;  //!< Pointer to the manager that is managing this window.
-        ImageBuffer image;       //!< The image of what is currently in the window.
+      protected:
+        Manager *my_manager; //!< Pointer to the manager that is managing this window.
+        ImageBuffer image;   //!< The image of what is currently in the window.
 
-    public:
-        Window( Manager *my_manager, int row, int column, int width, int height );
-        virtual ~Window( );
+      public:
+        Window(Manager *my_manager, int row, int column, int width, int height);
+        virtual ~Window();
 
-        virtual ImageBuffer *get_image( );
-        virtual bool process_keystroke( int &key_code );
-        virtual int  cursor_row( );
-        virtual int  cursor_column( );
-        virtual bool reposition( int new_row, int new_column );
-        virtual bool resize( int new_width, int new_height );
+        virtual ImageBuffer *get_image();
+        virtual bool process_keystroke(int &key_code);
+        virtual int cursor_row();
+        virtual int cursor_column();
+        virtual bool reposition(int new_row, int new_column);
+        virtual bool resize(int new_width, int new_height);
     };
 
-}
+} // namespace scr
 
 #endif

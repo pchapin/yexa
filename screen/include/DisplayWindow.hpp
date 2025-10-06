@@ -6,9 +6,9 @@
 #ifndef DISPLAYWINDOW_HPP
 #define DISPLAYWINDOW_HPP
 
+#include "Window.hpp"
 #include <list>
 #include <string>
-#include "Window.hpp"
 
 namespace scr {
 
@@ -30,35 +30,23 @@ namespace scr {
      */
     class DisplayWindow : public SimpleWindow {
 
-    protected:
-        const char  *title;        //!< Name of text.
-        long         top_line;     //!< Line number at top of window.
-        int          left_column;  //!< Column number at left of window.
-        std::list< std::string > *text;  //!< Points to the text to display.
+      protected:
+        const char *title;            //!< Name of text.
+        long top_line;                //!< Line number at top of window.
+        int left_column;              //!< Column number at left of window.
+        std::list<std::string> *text; //!< Points to the text to display.
 
-    public:
-        void set(
-            const char  *input_title,
-            std::list<std::string> *input_text,
-            long         start_line = 0L,
-            int          start_column = 0
-        );
+      public:
+        void set(const char *input_title, std::list<std::string> *input_text,
+                 long start_line = 0L, int start_column = 0);
 
-        bool open(
-            int row,
-            int column,
-            int width,
-            int height,
-            int color,
-            int status_color,
-            BoxType border,
-            int border_color = WINDOW_COLOR
-        );
+        bool open(int row, int column, int width, int height, int color, int status_color,
+                  BoxType border, int border_color = WINDOW_COLOR);
 
-        void show( );
-        int  display( long forced = -1L );
+        void show();
+        int display(long forced = -1L);
     };
 
-}
+} // namespace scr
 
 #endif

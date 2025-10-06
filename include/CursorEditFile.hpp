@@ -11,26 +11,24 @@
 //! Adds cursor movement abilities to EditFile.
 class CursorEditFile : private virtual EditFile {
 
-public:
+  public:
     //! Return the current point to the client.
     /*!
      * The client can manipulate the current point freely to implement special movements.
      */
-    FilePosition &CP()
-        { return current_point; }
+    FilePosition &CP() { return current_point; }
 
     //! Moves current point to the beginning of the line.
-    void home( );
+    void home();
 
     //! Moves current point to the end of the line.
-    void end( );
+    void end();
 
     //! Moves current point to the top of the file.
-    void top_of_file( );
+    void top_of_file();
 
     //! Moves current point to the bottom of the file.
-    void bottom_of_file( );
-
+    void bottom_of_file();
 };
 
 #endif

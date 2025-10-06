@@ -24,23 +24,22 @@
  * information members.
  */
 class BlockEditFile : private virtual EditFile {
-public:
-
+  public:
     struct BlockInfo {
         friend class BlockEditFile;
-    private:
-        bool          is_on;    //!< true if block mode was on.
-        long          anchor;   //!< The anchor line number of block mode.
-        FilePosition  limit;    //!< The current point of the other end of the block.
+
+      private:
+        bool is_on;         //!< true if block mode was on.
+        long anchor;        //!< The anchor line number of block mode.
+        FilePosition limit; //!< The current point of the other end of the block.
     };
 
-    void get_blockinfo( BlockInfo & );
-    void set_blockinfo( const BlockInfo & );
-    void toggle_block( );
-    bool get_block( EditList & );
-    void delete_block( );
-    bool insert_block( EditList & );
+    void get_blockinfo(BlockInfo &);
+    void set_blockinfo(const BlockInfo &);
+    void toggle_block();
+    bool get_block(EditList &);
+    void delete_block();
+    bool insert_block(EditList &);
 };
 
 #endif
-

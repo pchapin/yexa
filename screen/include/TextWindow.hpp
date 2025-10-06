@@ -11,23 +11,24 @@
 namespace scr {
 
     class TextWindow : public SimpleWindow {
-    private:
+      private:
         int current_row;
 
-    public:
-        TextWindow( ) : current_row( 0 ) { }
+      public:
+        TextWindow() : current_row(0) {}
 
-        void print( const char *format_string, ... );
+        void print(const char *format_string, ...);
 
         //! Sets the current row to new_row.
-        void set_row( int new_row )
-            { current_row = ( new_row <= height( ) - 1 ) ? new_row : height( ) - 1; }
-        void print_at( int row, int column, const char *format_string, ... );
-        void clear( int row_offset );
-        void home( );
-        void get( int start_row, int start_column, char *buffer, int size );
+        void set_row(int new_row)
+        {
+            current_row = (new_row <= height() - 1) ? new_row : height() - 1;
+        }
+        void print_at(int row, int column, const char *format_string, ...);
+        void clear(int row_offset);
+        void home();
+        void get(int start_row, int start_column, char *buffer, int size);
     };
-}
+} // namespace scr
 
 #endif
-

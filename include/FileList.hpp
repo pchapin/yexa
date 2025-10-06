@@ -32,47 +32,47 @@ class YEditFile;
 namespace FileList {
 
     //! Returns a reference to the active YEditFile.
-    YEditFile &active_file( );
+    YEditFile &active_file();
 
     //! Returns the number of files currently in the list.
-    unsigned count( );
+    unsigned count();
 
     //! Inserts active file into specified file.
     /*!
      * This is a somewhat strange function. Is there a better (more general) way to handle the
      * problem this function solves?
      */
-    bool insert_active( const char *name );
+    bool insert_active(const char *name);
 
     //! Removes active file from list and marks next file as active.
-    void kill( );
+    void kill();
 
     //! Activates a currently loaded file with the given name.
-    bool lookup( const char *name );
+    bool lookup(const char *name);
 
     //! Makes the next file in the list the focus of user interaction (active).
-    void next( );
+    void next();
 
     //! Creates a new YEditFile and tries to load it from disk.
-    bool new_file( const char *name );
+    bool new_file(const char *name);
 
     //! Returns TRUE if no files are changed.
-    bool no_changes( );
+    bool no_changes();
 
     //! Makes the previous file in the list the focus of user interaction (active).
-    void previous( );
+    void previous();
 
     //! Read more recent files from disk.
-    bool reload_files( );
+    bool reload_files();
 
     //! Save all files that have changed and resets their changed flag.
-    bool save_changes( );
+    bool save_changes();
 
     //! Remembers current file and position.
-    void set_bookmark( );
+    void set_bookmark();
 
-   //! Exchanges bookmark and current point.
-    void toggle_bookmark( );
-};
+    //! Exchanges bookmark and current point.
+    void toggle_bookmark();
+}; // namespace FileList
 
 #endif

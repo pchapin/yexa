@@ -7,7 +7,7 @@
  * \mainpage
  *
  * \section Introduction
- * 
+ *
  * This library contains a number of screen and keyboard handling functions at both a low and
  * high level. The functions are suitable for dealing with a *text mode* screen where the
  * screen is divided into fixed sized character positions. This is not a graphics package.
@@ -35,7 +35,7 @@
  * This is not true on some platforms. A future version of Scr may address this issue.
  *
  * \section Compiling
- * 
+ *
  * Scr is written in C++98 and intended to be compilable using the Open Watcom compiler. Since
  * Open Watcom supports several legacy platforms such as DOS and OS/2, it is the intention that
  * Scr also support those platforms.
@@ -96,7 +96,7 @@
  *
  * A screen attribute is an 8-bit quantity specified by ORing together the following symbols.
  *
- * 
+ *
  *     WHITE           REV_WHITE
  *     BLACK           REV_BLACK
  *     RED             REV_RED
@@ -127,61 +127,61 @@
  * true. You can test for that case in your application and adjust the colors accordingly. The
  * function `scr::convert_attribute` is provided to facilitate converting color attributes from
  * general colors to colors suitable for a monochrome display.
- * 
+ *
  * \section Screen Access Levels
- * 
+ *
  * Scr provides three levels of screen access. Although it is possible to use the features of a
  * lower level on top of a higher level, this should be done with care. The levels are
  * independent of each other and do not know about each other (except that the implementation of
  * the higher levels is done in terms of the lower levels). Applications should decide which
  * level is to be used and employ lower level functionality only in specialized, focused
  * situations.
- * 
+ *
  * Note that Scr takes control of the keyboard as well as the screen and manages all input and
  * output. Once any of the levels is initialized, no further use of the standard console I/O
  * functions is possible. However, Scr does provide a way for applications to temporarily
  * suspend Scr so that the standard console I/O functions can be used again. See `scr::off` and
  * `scr::on` for more information. The intent of this facility is to allow Scr-based
  * applications a way of "shelling out" to other programs that might not be Scr-aware.
- * 
+ *
  * + Level 1: Direct Screen Access
- * 
+ *
  *   Level one uses the functions that are directly contained in the `scr`  or `scr::ansi`
  *   namespaces. These functions provide direct access to arbitrary screen regions but provide
  *   no additional services such as boundary checking, automatic scrolling, etc. Using these
  *   functions it is possible to write text anywhere on the screen with no consideration of what
  *   might already be there.
- * 
+ *
  * + Level 2: Simple Window
- * 
+ *
  *   Level two uses the class hierarchy rooted at `scr::SimpleWindow`. Simple Windows do provide
  *   boundaries, borders, and (in some cases) scrolling support. Simple Windows also manage
  *   their background, restoring the material that was behind a window automatically when a
  *   Simple Window is closed. However, Simple Windows do not give the user any direct control
  *   over their size and placement. They layout of Simple Windows is determined by the
  *   application's logic.
- * 
+ *
  * + Level 3: Window Manager
- * 
+ *
  *   Level three uses the class hierarchy rooted at `scr::Window`. These windows are all
  *   coordinated via a `scr::Manager` object. Users can communicate with the Manager to control
  *   the size and placement of an application's windows independently of the application's
  *   logic. However, at this time there is no mouse support; all interaction with the Manager is
  *   done using key commands in a special input mode called *system mode*.
- * 
+ *
  * \section Future Directions
- * 
+ *
  * Scr is a work in progress. The following is a list of possible future enhancements.
- * 
+ *
  * + Support for more modern key bindings
- * 
+ *
  *   Scr currently supports only the traditional IBM PC key bindings. This reflects Scr's
  *   heritage as a DOS application library. Such applications traditionally made very heavy use
  *   of function keys as a way of giving users convenient access to application functionality.
  *   Unfortunately, many modern systems use the functions keys for communication with the
  *   desktop or overarching window manager. This makes it difficult for Scr-based applications
  *   to use the function keys in a portable way.
- * 
+ *
  *   The point of the SCR_ASCIIKEYS option is to allow Scr-based applications to simulate the
  *   old-style function keys without redefining the meaning of the physical function keys. While
  *   this can work, it leads to an awkward UI experience for users of Scr applications. However,
@@ -190,31 +190,31 @@
  *   solution would be to provide an ability to create virtual, on-screen function keys that Scr
  *   applications could present to the user in some convenient way. The details still need to be
  *   envisioned.
- * 
+ *
  * + Support for screen size changes
- * 
+ *
  *   Scr currently assumes that the screen size will not change during the lifetime of the
  *   program. This is not true on some platforms. For example, on Unix-like systems it is
  *   commonly possible to dynamically resize the window of a terminal emulator. Scr should be
  *   able to handle this situation.
- * 
+ *
  *   Unfortunately, this will require a major redesign of Scr's internal data structures. It
  *   will also require redesigning applications that make use of Scr to deal with unexpected
  *   changes to the screen size. This would be a non-trivial task.
- * 
+ *
  * + Support for mouse input
- * 
+ *
  *   It would be convenient for Level 3 users to have mouse support for moving and resizing
  *   windows. This would require accessing mouse location information inside a text-mode
  *   console. It is not clear how to do this in a portable way.
- * 
+ *
  * + Support for a full GUI
- * 
+ *
  *   It would be nice for applications written to the Scr interface to be compilable as native
  *   GUI applications on the platforms that support GUIs. It should be noted, however, that Scr
  *   does assume that a fixed-width font is being used, which might appear unnatural in many GUI
  *   environments.
- * 
+ *
  *   Note that support for a full GUI will require the same sort of internal redesign effort as
  *   required to handle screen size changes *and* mouse support. This would be a major
  *   undertaking.

@@ -23,35 +23,34 @@ class EditBuffer;
  *  EditBuffers rather than pointers to pointers to EditBuffers.
  */
 class EditList : private List<EditBuffer *> {
-public:
-
-    //lint -e{1509} The base class is private so virtualness of its destructor is not important.
+  public:
+    // lint -e{1509} The base class is private so virtualness of its destructor is not
+    // important.
     //! Destructor
     /*!
      * Deletes all the EditBuffers pointed at by the elements of the list. Be sure no EditBuffer
      * is shared between two EditList instances.
      */
-   virtual ~EditList( )
-        { clear( ); }
+    virtual ~EditList() { clear(); }
 
     //! Returns the next EditBuffer* in the list.
     /*!
      * \return NULL if there are no other elements.
      */
-    EditBuffer *next( )
+    EditBuffer *next()
     {
-        EditBuffer * const * const result = List<EditBuffer *>::next( );
-        return( result == NULL ? NULL : *result );
+        EditBuffer *const *const result = List<EditBuffer *>::next();
+        return (result == NULL ? NULL : *result);
     }
 
     //! Returns the previous EditBuffer* in the list.
     /*!
      * \return NULL if there are no other elements.
      */
-    EditBuffer *previous( )
+    EditBuffer *previous()
     {
-        EditBuffer * const * const result = List<EditBuffer *>::previous( );
-        return( result == NULL ? NULL : *result );
+        EditBuffer *const *const result = List<EditBuffer *>::previous();
+        return (result == NULL ? NULL : *result);
     }
 
     //! Inserts a new EditBuffer* before the list's current point.
@@ -61,24 +60,23 @@ public:
      * \return The same pointer it is given.
      * \throws std::bad_alloc if insufficient memory.
      */
-    EditBuffer *insert( EditBuffer *const item )
+    EditBuffer *insert(EditBuffer *const item)
     {
-        EditBuffer *const *const result = List<EditBuffer *>::insert( item );
-        return( *result );
+        EditBuffer *const *const result = List<EditBuffer *>::insert(item);
+        return (*result);
     }
 
     //! Returns the EditBuffer* at the list's current point.
-    EditBuffer *get( )
+    EditBuffer *get()
     {
-        EditBuffer *const *const result = List<EditBuffer *>::get( );
-        return( result == NULL ? NULL : *result );
+        EditBuffer *const *const result = List<EditBuffer *>::get();
+        return (result == NULL ? NULL : *result);
     }
 
-    void clear( );
+    void clear();
 
     //! Moves the list's current point to just past the end.
-    void set_end( )
-        { List<EditBuffer *>::jump_to( size( ) ); }
+    void set_end() { List<EditBuffer *>::jump_to(size()); }
 
     // Make these names from the private base class public.
     using List<EditBuffer *>::current_index;

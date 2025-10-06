@@ -19,18 +19,17 @@ namespace scr {
      * status lines with one StatusLine object.
      */
     class StatusLine : public SimpleWindow {
-    private:
-        const char *( *make_line )( );
+      private:
+        const char *(*make_line)();
 
-    public:
-        StatusLine( );
+      public:
+        StatusLine();
 
-        void set( const char *( *function )( ) )
-            { make_line = function; }
+        void set(const char *(*function)()) { make_line = function; }
 
-        bool open( int row, int column, int width, int attribute );
-        void show( );
+        bool open(int row, int column, int width, int attribute);
+        void show();
     };
-}
+} // namespace scr
 
 #endif

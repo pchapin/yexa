@@ -3,7 +3,7 @@
 #define SCREEN_SCREEN_HPP
 
 namespace screen {
-    void initialize( );
+    void initialize();
 }
 
 #endif

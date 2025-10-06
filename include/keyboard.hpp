@@ -7,7 +7,7 @@
 #define KEYBOARD_HPP
 
 namespace KeyHandler {
-    int get_key( );
+    int get_key();
 }
 
 #endif

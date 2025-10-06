@@ -17,9 +17,9 @@
  * next word from the source.
  */
 class WordSource {
-public:
-             WordSource( ) : current_state( NORMAL ) { }
-    virtual ~WordSource( ) { return; }
+  public:
+    WordSource() : current_state(NORMAL) {}
+    virtual ~WordSource() { return; }
 
     /*!
      * Returns the next word from the word source by way of its parameter. Returns false if
@@ -27,13 +27,21 @@ public:
      * returns true. This function makes multiple calls on the virtual functions get() and
      * unget() to read the actual word source.
      */
-    virtual bool get_word( EditBuffer &word );
+    virtual bool get_word(EditBuffer &word);
 
-private:
+  private:
     // These states are used by the finite state machine in get_word() used to extract words.
     enum State {
-        NORMAL,     COMMENT,   COLLECT_NAME, STRING,    ESC,
-        BIG_STRING, BIG_WHITE, BIG_COMMENT,  BIG_QUOTE, BIG_ESC
+        NORMAL,
+        COMMENT,
+        COLLECT_NAME,
+        STRING,
+        ESC,
+        BIG_STRING,
+        BIG_WHITE,
+        BIG_COMMENT,
+        BIG_QUOTE,
+        BIG_ESC
     };
 
     // Initially NORMAL.
@@ -43,67 +51,61 @@ private:
      * Returns the next character from the word source or EOF if source is empty. Repeated calls
      * against an empty source will continue to return EOF.
      */
-    virtual int get( ) = 0;
+    virtual int get() = 0;
 
     /*!
      * Pushs the given character back into the word source so that the next call to get() will
      * return that character. It is undefined to unget() to a word source for which has not yet
      * had a call to get(). Only one level of push back is supported.
      */
-    virtual void unget( int ch ) = 0;
-  };
-
+    virtual void unget(int ch) = 0;
+};
 
 //! The following class encapsulates a source of words that are stored in a string.
 class StringWord : public WordSource {
-public:
-    explicit StringWord( const char *const source_string ) :
-        WordSource( ),
-        string_buffer( source_string ),
-        length( string_buffer.length( ) ),
-        offset( 0 )
-    { }
+  public:
+    explicit StringWord(const char *const source_string)
+        : WordSource(), string_buffer(source_string), length(string_buffer.length()), offset(0)
+    {
+    }
 
-private:
+  private:
     EditBuffer string_buffer; //!< The text in question.
-    std::size_t     length;        //!< The number of characters in string_buffer.
-    std::size_t     offset;        //!< Current get() location.
+    std::size_t length;       //!< The number of characters in string_buffer.
+    std::size_t offset;       //!< Current get() location.
 
-    virtual int  get( );
-    virtual void unget( int ch );
+    virtual int get();
+    virtual void unget(int ch);
 };
-
 
 //! Objects of this class take words from the keyboard.
 class KeyboardWord : public WordSource {
-public:
-    virtual bool get_word( EditBuffer &word );
+  public:
+    virtual bool get_word(EditBuffer &word);
 
-private:
-    virtual int  get( );
-    virtual void unget( int ch );
+  private:
+    virtual int get();
+    virtual void unget(int ch);
 };
-
 
 //! The following class encapsulates a source of words that are stored in a text file.
 class FileWord : public WordSource {
-public:
-    explicit FileWord( const char *file_name );
-   ~FileWord( );
+  public:
+    explicit FileWord(const char *file_name);
+    ~FileWord();
 
-private:
+  private:
     std::FILE *input_file;
 
-    virtual int  get( );
-    virtual void unget( int ch );
+    virtual int get();
+    virtual void unget(int ch);
 };
-
 
 /*!
  * Allows the caller to install a line of macro text into the key map at the key with the
  * specified name. This modifies the stream of macro words returned by a KeyboardWord object.
  * This function is used to remap the keyboard.
  */
-void modify_key_association( const char *key_name, const char *new_macro_text );
+void modify_key_association(const char *key_name, const char *new_macro_text);
 
 #endif

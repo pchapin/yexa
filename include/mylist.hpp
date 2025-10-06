@@ -17,56 +17,52 @@
  * Standard C++. It was created for Y many years agoe and is retained because eliminating it
  * would be more work than it would be worth (probably).
  */
-template< typename T >
-class List {
-private:
-
+template <typename T> class List {
+  private:
     //! Structure that holds the pointers that form the list.
     struct Link {
         Link *next;
         Link *previous;
 
-        virtual ~Link( );
+        virtual ~Link();
     };
 
     //! Derived structure to hold an object of the desired type.
     struct Node : public Link {
         T data;
 
-        explicit Node( const T &existing ) : data( existing ) { }
+        explicit Node(const T &existing) : data(existing) {}
     };
 
-    Link *head;        //!< Points at head sentinel (Only a Link).
-    Link *tail;        //!< Points at tail sentinel (Only a Link).
-    Link *current;     //!< Points at current point in list (Normally a Node).
-    long  item_count;  //!< Number of items on the list ( >= 0).
-    long  index;       //!< Index of current point ( >= 0).
+    Link *head;      //!< Points at head sentinel (Only a Link).
+    Link *tail;      //!< Points at tail sentinel (Only a Link).
+    Link *current;   //!< Points at current point in list (Normally a Node).
+    long item_count; //!< Number of items on the list ( >= 0).
+    long index;      //!< Index of current point ( >= 0).
 
-    void initialize( );
+    void initialize();
 
-public:
-    List( );
-    List( const List & );
-    List &operator=( const List & );
-   ~List( );
+  public:
+    List();
+    List(const List &);
+    List &operator=(const List &);
+    ~List();
 
-    void jump_to( long new_index );
-    T *next( );
-    T *previous( );
-    T *insert( const T &new_data );
-    void erase( );
-    void clear( );
+    void jump_to(long new_index);
+    T *next();
+    T *previous();
+    T *insert(const T &new_data);
+    void erase();
+    void clear();
 
     //! Returns a pointer to the object at the current point.
-    T *get( );
+    T *get();
 
     //! Returns the index of the current point.
-    long  current_index( ) const
-        { return( index ); }
+    long current_index() const { return (index); }
 
     //! Returns the number of objects in the list.
-    long  size( ) const
-        { return( item_count ); }
+    long size() const { return (item_count); }
 
     //! Special index used to represent the next new slot.
     static const long off_end = -1L;
@@ -78,14 +74,16 @@ public:
      * manner.
      */
     class Mark {
-    private  : long  old_index; //!< Original index of the list.
-    protected: List &the_list;  //!< The list in which the bookmark is placed.
-    public   :
+      private:
+        long old_index; //!< Original index of the list.
+      protected:
+        List &the_list; //!< The list in which the bookmark is placed.
+      public:
         //! Constructor remembers the list and it's current point.
-        explicit Mark( List &L ) : old_index( L.current_index( ) ), the_list( L ) { }
+        explicit Mark(List &L) : old_index(L.current_index()), the_list(L) {}
 
         //! Destructor restores the current point.
-       virtual ~Mark( ) { the_list.jump_to( old_index ); }
+        virtual ~Mark() { the_list.jump_to(old_index); }
     };
 
     //! Used to iterate over a list.
@@ -95,47 +93,47 @@ public:
      * finished.
      */
     class Iterator : private Mark {
-    public:
+      public:
         //! Constructor remembers the list's current point and sets CP to zero.
-        explicit Iterator( List &L ) : Mark( L ) { Mark::the_list.jump_to( 0 ); }
+        explicit Iterator(List &L) : Mark(L) { Mark::the_list.jump_to(0); }
 
         //! Returns pointer to next item on the list or NULL of none left.
-        T *operator( )( ) { return Mark::the_list.next( ); }
+        T *operator()() { return Mark::the_list.next(); }
     };
 };
 
-template< typename T >
-inline T *List< T >::get( )
-  { return( current == tail ? 0 : &( static_cast< Node * >( current )->data ) ); }
-
+template <typename T> inline T *List<T>::get()
+{
+    return (current == tail ? 0 : &(static_cast<Node *>(current)->data));
+}
 
 /*=====================================*/
 /*           Private Members           */
 /*=====================================*/
 
-template< typename T > List< T >::Link::~Link( )
-  { return; }
-
+template <typename T> List<T>::Link::~Link()
+{
+    return;
+}
 
 //! Prepares the list for use. Called by constructors.
 /*!
  * \throws std::bad_alloc if insufficient memory.
  */
-template< typename T >
-void List< T >::initialize( )
+template <typename T> void List<T>::initialize()
 {
     head = new Link;
     tail = new Link;
 
     // Initialize the members of the list object.
-    current    = tail;
+    current = tail;
     item_count = 0L;
-    index      = 0L;
+    index = 0L;
 
     // Link the sentinels.
     head->previous = head;
-    tail->next     = tail;
-    head->next     = tail;
+    tail->next = tail;
+    head->next = tail;
     tail->previous = head;
 }
 
@@ -147,64 +145,56 @@ void List< T >::initialize( )
 /*!
  * \throws std::bad_alloc if insufficient memory.
  */
-template< typename T >
-List< T >::List( )
+template <typename T> List<T>::List()
 {
-    initialize( );
+    initialize();
 }
-
 
 //! Copy constructor.
 /*!
  * \throws std::bad_alloc if insufficient memory.
  */
-template< typename T >
-List< T >::List( const List &existing )
+template <typename T> List<T>::List(const List &existing)
 {
     T *object_ptr;
-  
-    initialize( );
-    Iterator stepper( const_cast< List & >( existing ) );
-    while( ( object_ptr = stepper( ) ) != NULL ) {
-        insert( *object_ptr );
+
+    initialize();
+    Iterator stepper(const_cast<List &>(existing));
+    while ((object_ptr = stepper()) != NULL) {
+        insert(*object_ptr);
     }
 }
-
 
 //! Assignment operator.
 /*!
  * If an exception occurs during the copy, the target list is unchanged.
  * \throws std::bad_alloc if insufficient memory.
  */
-template< typename T >
-List< T > &List< T >::operator=( const List &existing )
+template <typename T> List<T> &List<T>::operator=(const List &existing)
 {
     T *object_ptr;
-    List  temp;
+    List temp;
 
-    Iterator stepper( const_cast< List & >( existing ) );
-    while( ( object_ptr = stepper( ) ) != NULL ) {
-        temp.insert( *object_ptr );
+    Iterator stepper(const_cast<List &>(existing));
+    while ((object_ptr = stepper()) != NULL) {
+        temp.insert(*object_ptr);
     }
-    std::swap( head,       temp.head       );
-    std::swap( tail,       temp.tail       );
-    std::swap( current,    temp.current    );
-    std::swap( item_count, temp.item_count );
-    std::swap( index,      temp.index      );
+    std::swap(head, temp.head);
+    std::swap(tail, temp.tail);
+    std::swap(current, temp.current);
+    std::swap(item_count, temp.item_count);
+    std::swap(index, temp.index);
 
     return *this;
 }
 
-
 //! Destructor
-template< typename T >
-List< T >::~List( )
+template <typename T> List<T>::~List()
 {
     clear();
     delete head;
     delete tail;
 }
-
 
 //! Moves the current point to the specified index.
 /*!
@@ -218,13 +208,12 @@ List< T >::~List( )
  *
  * \param new_index The desired location of the current point (zero based).
  */
-template< typename T >
-void List< T >::jump_to( const long new_index )
+template <typename T> void List<T>::jump_to(const long new_index)
 {
     enum start_type { HEAD, CURRENT, TAIL };
 
     // Handle case of out of bounds index.
-    if( new_index < 0L  ||  new_index >= item_count ) {
+    if (new_index < 0L || new_index >= item_count) {
         current = tail;
         index = item_count;
         return;
@@ -232,80 +221,80 @@ void List< T >::jump_to( const long new_index )
 
     // Compute distance between desired index and the three reference points.
     long distances[3];
-    distances[HEAD]    = new_index;
+    distances[HEAD] = new_index;
     distances[CURRENT] = std::labs(new_index - index);
-    distances[TAIL]    = item_count - new_index;
+    distances[TAIL] = item_count - new_index;
 
     // Find out which is minimum.
     start_type best_start = HEAD;
     long min = distances[HEAD];
-    if( distances[CURRENT] < min ) {
+    if (distances[CURRENT] < min) {
         best_start = CURRENT;
-        min        = distances[CURRENT];
+        min = distances[CURRENT];
     }
-    if( distances[TAIL] < min ) {
+    if (distances[TAIL] < min) {
         best_start = TAIL;
-        min        = distances[TAIL];
+        min = distances[TAIL];
     }
 
     // Do the actual work of moving the current point.
-    switch( best_start ) {
+    switch (best_start) {
     case HEAD:
         current = head->next;
-        for ( ; min != 0L; min--) current = current->next;
+        for (; min != 0L; min--)
+            current = current->next;
         break;
 
     case CURRENT:
         if (new_index - index >= 0L) {
-            for ( ; min != 0L; min--) current = current->next;
+            for (; min != 0L; min--)
+                current = current->next;
         }
         else {
-            for ( ; min != 0L; min--) current = current->previous;
+            for (; min != 0L; min--)
+                current = current->previous;
         }
         break;
 
     case TAIL:
         current = tail;
-        for ( ; min != 0L; min--) current = current->previous;
+        for (; min != 0L; min--)
+            current = current->previous;
         break;
-
     }
 
     // Set the current index.
     index = new_index;
 }
 
-
 //! Like *p++.
 /*!
  * \return NULL if nothing left in the list. Current point not changed in that case.
  */
-template< typename T >
-T *List< T >::next( )
+template <typename T> T *List<T>::next()
 {
-    if( index == item_count ) return NULL;
+    if (index == item_count)
+        return NULL;
 
-    T *const result = &( static_cast< Node * >( current )->data );
+    T *const result = &(static_cast<Node *>(current)->data);
     current = current->next;
     index++;
-    return( result );
+    return (result);
 }
-
 
 //! Like *--p.
 /*!
  * \return NULL if nothing left in the list. Current point not changed in that case.
  */
-template< typename T >
-T *List< T >::previous( )
+template <typename T> T *List<T>::previous()
 {
-    if ( index == 0 ) return NULL;
-  
+    if (index == 0)
+        return NULL;
+
     current = current->previous;
     index--;
-    return &( static_cast< Node * >( current )->data );
+    return &(static_cast<Node *>(current)->data);
 }
-
 
 //! Inserts a new data item before the current point.
 /*
@@ -313,28 +302,26 @@ T *List< T >::previous( )
  * \return A pointer to the new copy of the object.
  * \throws std::bad_alloc if there is insufficient memory.
  */
-template< typename T >
-T *List< T >::insert( const T &new_data )
+template <typename T> T *List<T>::insert(const T &new_data)
 {
-    Node *const fresh = new Node( new_data );
+    Node *const fresh = new Node(new_data);
     item_count++;
-    fresh->next             = current;
-    fresh->previous         = current->previous;
+    fresh->next = current;
+    fresh->previous = current->previous;
     current->previous->next = fresh;
-    current->previous       = fresh;
+    current->previous = fresh;
     index++;
-    return( &fresh->data );
+    return (&fresh->data);
 }
-
 
 //! Erases object at the current point and advances the current point.
 /*!
  * The current point is advanced to the next item on the list.
  */
-template< typename T >
-void List< T >::erase( )
+template <typename T> void List<T>::erase()
 {
-    if( current == tail ) return;
+    if (current == tail)
+        return;
     Link *old = current;
 
     current = current->next;
@@ -344,19 +331,17 @@ void List< T >::erase( )
     delete old;
 }
 
-
 //! Removes all elements in the list.
 /*!
  * The list is usable after this method executes.
  */
-template< typename T >
-void List< T >::clear( )
+template <typename T> void List<T>::clear()
 {
     Link *temp;
-    
+
     // Trash all the nodes in the list.
     current = head->next;
-    while( current->next != current ) {
+    while (current->next != current) {
         temp = current;
         current = current->next;
         delete temp;
@@ -364,10 +349,10 @@ void List< T >::clear( )
 
     // Make sure these members are correct.
     item_count = 0L;
-    index      = 0L;
+    index = 0L;
 
     // Make sure the head and tail sentinels are linked together!
-    head->next     = tail;
+    head->next = tail;
     tail->previous = head;
 }
 

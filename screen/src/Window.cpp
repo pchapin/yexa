@@ -8,9 +8,9 @@
 #include <utility>
 
 #include "Manager.hpp"
+#include "Window.hpp"
 #include "scr.hpp"
 #include "scrtools.hpp"
-#include "Window.hpp"
 
 using namespace std;
 
@@ -28,12 +28,11 @@ namespace scr {
      * \param row Pointer to location to receive the row coordinate.
      * \param column Pointer to location to receive the column coordinate.
      */
-    void window_center_coordinates( int width, int height, int *row, int *column )
+    void window_center_coordinates(int width, int height, int *row, int *column)
     {
-        *row = 1 + ( number_of_rows( ) - height ) / 2;
-        *column = 1 + ( number_of_columns( ) - width  ) / 2;
+        *row = 1 + (number_of_rows() - height) / 2;
+        *column = 1 + (number_of_columns() - width) / 2;
     }
-
 
     /*========================================*/
     /*           Class SimpleWindow           */
@@ -44,27 +43,24 @@ namespace scr {
      * The constructor sets the pointer to the window image and the pointer to the saved
      * background to nullptr. This ensures no problem when an undefined window is destroyed.
      */
-    SimpleWindow::SimpleWindow( ) :
-        hidden    ( NULL  ),
-        save_data ( NULL  ),
-        is_defined( false ),
-        is_hidden ( false )
-    { }
-
+    SimpleWindow::SimpleWindow()
+        : hidden(NULL), save_data(NULL), is_defined(false), is_hidden(false)
+    {
+    }
 
     //! Destructor
     /*!
      * The destructor does nothing if the window has never been opened. It hides the window
      * first to ensure that the background material is properly restored.
      */
-    SimpleWindow::~SimpleWindow( )
+    SimpleWindow::~SimpleWindow()
     {
-        if( !is_defined ) return;
-        hide( );
-        delete [] hidden;
-        delete [] save_data;
+        if (!is_defined)
+            return;
+        hide();
+        delete[] hidden;
+        delete[] save_data;
     }
-
 
     //! Open a window.
     /*!
@@ -83,17 +79,11 @@ namespace scr {
      * \throws std::bad_alloc if resources for storing the window image can't be allocated.
      * \todo Sanity checking on the parameters is needed.
      */
-    bool SimpleWindow::open(
-        int row,
-        int column,
-        int width,
-        int height,
-        int color,
-        BoxType border_type,
-        int border_color
-    )
+    bool SimpleWindow::open(int row, int column, int width, int height, int color,
+                            BoxType border_type, int border_color)
     {
-        if( is_defined ) return false;
+        if (is_defined)
+            return false;
 
         // Try to allocate memory for background and image.
         std::size_t size = 2 * width * height;
@@ -109,29 +99,24 @@ namespace scr {
         total_height = window_height = height;
         window_color = color;
         window_border_type = border_type;
-        window_border_color = ( border_color == WINDOW_COLOR ) ? window_color : border_color;
+        window_border_color = (border_color == WINDOW_COLOR) ? window_color : border_color;
 
         // Draw the window on the screen.
-        read( total_row, total_column, total_width, total_height, save_data );
-        scr::clear( total_row, total_column, total_width, total_height, window_color );
-        if( window_border_type != NO_BORDER ) {
+        read(total_row, total_column, total_width, total_height, save_data);
+        scr::clear(total_row, total_column, total_width, total_height, window_color);
+        if (window_border_type != NO_BORDER) {
             window_row++;
             window_column++;
-            window_width  -= 2;
+            window_width -= 2;
             window_height -= 2;
-            draw_box( total_row,
-                      total_column,
-                      total_width,
-                      total_height,
-                      window_border_type,
-                      window_border_color );
+            draw_box(total_row, total_column, total_width, total_height, window_border_type,
+                     window_border_color);
         }
         is_defined = true;
-        is_hidden  = false;
+        is_hidden = false;
 
         return true;
     }
-
 
     //! Draw a new border for an existing window.
     /*!
@@ -144,58 +129,61 @@ namespace scr {
      * \param border_type The new border type for the window.
      * \param attribute The color attribute to use for the new border.
      */
-    void SimpleWindow::redraw_border( BoxType border_type, int attribute )
+    void SimpleWindow::redraw_border(BoxType border_type, int attribute)
     {
-        if( !is_defined ) return;
+        if (!is_defined)
+            return;
 
         // Disregard attempts to turn border on or off.
-        if( border_type == NO_BORDER || window_border_type == NO_BORDER ) return;
+        if (border_type == NO_BORDER || window_border_type == NO_BORDER)
+            return;
 
         bool was_hidden = is_hidden;
-        show( );
+        show();
 
-        if( attribute == WINDOW_COLOR ) attribute = window_color;
-        draw_box( total_row, total_column, total_width, total_height, border_type, attribute );
-        window_border_type  = border_type;
+        if (attribute == WINDOW_COLOR)
+            attribute = window_color;
+        draw_box(total_row, total_column, total_width, total_height, border_type, attribute);
+        window_border_type = border_type;
         window_border_color = attribute;
 
-        if( was_hidden ) hide( );
+        if (was_hidden)
+            hide();
     }
-
 
     //! Hides a window.
     /*!
      * This method copies the screen image into memory and restores the background. If the
      * window is already hidden, there is no effect.
      */
-    void SimpleWindow::hide( )
+    void SimpleWindow::hide()
     {
-        if( !is_defined ) return;
+        if (!is_defined)
+            return;
 
-        if( !is_hidden ) {
-            read( total_row, total_column, total_width, total_height, hidden );
-            write( total_row, total_column, total_width, total_height, save_data );
+        if (!is_hidden) {
+            read(total_row, total_column, total_width, total_height, hidden);
+            write(total_row, total_column, total_width, total_height, save_data);
             is_hidden = true;
         }
     }
-
 
     //! Shows a window.
     /*!
      * This method copies the background into memory and restores the window's image. If the
      * window is already showing, there is no effect.
      */
-    void SimpleWindow::show( )
+    void SimpleWindow::show()
     {
-        if( !is_defined ) return;
+        if (!is_defined)
+            return;
 
-        if( is_hidden ) {
-            read( total_row, total_column, total_width, total_height, save_data );
-            write( total_row, total_column, total_width, total_height, hidden );
+        if (is_hidden) {
+            read(total_row, total_column, total_width, total_height, save_data);
+            write(total_row, total_column, total_width, total_height, hidden);
             is_hidden = false;
         }
     }
-
 
     //! Moves a window.
     /*!
@@ -204,24 +192,25 @@ namespace scr {
      * \param new_row The row coordinate of the window's new location.
      * \param new_column The column coordinate of the window's new location.
      */
-    void SimpleWindow::move( int new_row, int new_column )
+    void SimpleWindow::move(int new_row, int new_column)
     {
-        if( !is_defined ) return;
+        if (!is_defined)
+            return;
 
         // Do the actual move. For hidden windows, just adjust records.
-        if( is_hidden ) {
+        if (is_hidden) {
             total_row = new_row;
             total_column = new_column;
         }
         else {
-            hide( );
+            hide();
             total_row = new_row;
             total_column = new_column;
-            show( );
+            show();
         }
 
         // Adjust window_row and window_column.
-        if( window_border_type != NO_BORDER ) {
+        if (window_border_type != NO_BORDER) {
             window_row = total_row + 1;
             window_column = total_column + 1;
         }
@@ -236,28 +225,30 @@ namespace scr {
      * This method resets a window image to its initial state. This includes the border as well
      * as the printable area.
      */
-    void SimpleWindow::clear( )
+    void SimpleWindow::clear()
     {
-        if( !is_defined ) return;
+        if (!is_defined)
+            return;
 
         bool was_hidden = is_hidden;
 
-        show( );
-        scr::clear( window_row, window_column, window_width, window_height, window_color );
-        redraw_border( window_border_type, window_border_color );
+        show();
+        scr::clear(window_row, window_column, window_width, window_height, window_color);
+        redraw_border(window_border_type, window_border_color);
 
-        if( was_hidden ) hide( );
+        if (was_hidden)
+            hide();
     }
-
 
     //! Closes a window.
     /*!
      * This method cleans up a window and then re-initializes it.
      */
-    void SimpleWindow::close( )
+    void SimpleWindow::close()
     {
-        if( !is_defined ) return;
-        hide( );
+        if (!is_defined)
+            return;
+        hide();
         save_data = NULL;
         hidden = NULL;
         is_hidden = false;
@@ -280,27 +271,26 @@ namespace scr {
      * \param width Initial window width.
      * \param height Initial window height.
      */
-    Window::Window( Manager *my_manager, int row, int column, int width, int height ) :
-        my_manager( my_manager ), image( width, height )
+    Window::Window(Manager *my_manager, int row, int column, int width, int height)
+        : my_manager(my_manager), image(width, height)
     {
         is_registered = false;
 
-        if( my_manager->register_window( this, row, column, width, height ) )
+        if (my_manager->register_window(this, row, column, width, height))
             is_registered = true;
     }
 
-
     //! Destructor
-    Window::~Window( )
+    Window::~Window()
     {
         // Don't do anything if registration failed.
-        if( !is_registered ) return;
+        if (!is_registered)
+            return;
 
         // Remove this window from the display list and fix the display.
-        my_manager->deregister_window( this );
-        my_manager->update_display( );
+        my_manager->deregister_window(this);
+        my_manager->update_display();
     }
-
 
     //! Process a keystroke.
     /*!
@@ -314,11 +304,10 @@ namespace scr {
      * function is free to modify the key code it is given and then return false to "trick" the
      * window manager into also processing the key.
      */
-    bool Window::process_keystroke( int & )
+    bool Window::process_keystroke(int &)
     {
         return false;
     }
-
 
     //! Returns the window's image.
     /*!
@@ -330,25 +319,22 @@ namespace scr {
      * not attempt to free this memory. The data is invalidated after a call to any other Window
      * method.
      */
-    ImageBuffer *Window::get_image( )
+    ImageBuffer *Window::get_image()
     {
         return &image;
     }
 
-
     //! Return the cursor row coordinate relative to the printable area.
-    int Window::cursor_row( )
+    int Window::cursor_row()
     {
         return 1;
     }
-
 
     //! Return the cursor column coordinate relative to the printable area.
-    int Window::cursor_column( )
+    int Window::cursor_column()
     {
         return 1;
     }
-
 
     //! Reposition the window.
     /*!
@@ -360,11 +346,10 @@ namespace scr {
      * \param new_column The new column position of the upper left corner of the border.
      * \return true if the new position is accepted; false otherwise.
      */
-    bool Window::reposition( int, int )
+    bool Window::reposition(int, int)
     {
         return true;
     }
-
 
     //! Resize the window.
     /*!
@@ -377,10 +362,10 @@ namespace scr {
      * \param new_height The new height of the printable area.
      * \return true if the new size accepted; false otherwise.
      */
-    bool Window::resize( int new_width, int new_height)
+    bool Window::resize(int new_width, int new_height)
     {
-        image.resize( new_width, new_height );
-        return true ;
+        image.resize(new_width, new_height);
+        return true;
     }
 
-}
+} // namespace scr

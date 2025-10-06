@@ -27,36 +27,36 @@
  * without appropriate consideration.
  */
 class EditBuffer {
-public:
+  public:
     // Constructors and destructor.
-    EditBuffer( );
-    EditBuffer( const char * );
-    EditBuffer( const EditBuffer & );
-    EditBuffer &operator=( const EditBuffer & );
-    //EditBuffer( EditBuffer && );
-    //EditBuffer &operator=( EditBuffer && );
-   ~EditBuffer( );
+    EditBuffer();
+    EditBuffer(const char *);
+    EditBuffer(const EditBuffer &);
+    EditBuffer &operator=(const EditBuffer &);
+    // EditBuffer( EditBuffer && );
+    // EditBuffer &operator=( EditBuffer && );
+    ~EditBuffer();
 
     // Access.
-    char operator[]( std::size_t offset ) const;
-    std::size_t length( ) const;
-    std::string to_string( ) const;
+    char operator[](std::size_t offset) const;
+    std::size_t length() const;
+    std::string to_string() const;
 
     // Manipulation.
-    void insert( char letter, std::size_t offset );
-    void replace( char letter, std::size_t offset );
-    char erase( std::size_t offset );
-    void erase( );
-    void append( char );
-    void append( const char * );
-    void append( const EditBuffer & );
-    EditBuffer subbuffer( std::size_t start_offset, std::size_t end_offset ) const;
-    void trim( std::size_t offset );
+    void insert(char letter, std::size_t offset);
+    void replace(char letter, std::size_t offset);
+    char erase(std::size_t offset);
+    void erase();
+    void append(char);
+    void append(const char *);
+    void append(const EditBuffer &);
+    EditBuffer subbuffer(std::size_t start_offset, std::size_t end_offset) const;
+    void trim(std::size_t offset);
 
-private:
-    char       *workspace; //!< Pointer to buffer data.
-    std::size_t capacity;  //!< Size of the raw buffer.
-    std::size_t size;      //!< Number of bytes in buffer, not including null.
+  private:
+    char *workspace;      //!< Pointer to buffer data.
+    std::size_t capacity; //!< Size of the raw buffer.
+    std::size_t size;     //!< Number of bytes in buffer, not including null.
 
     // Invariant: If workspace == NULL, capacity and size are zero; otherwise capacity > size.
     // The buffer's contents are null terminated. The capacity must always contain space for
@@ -83,36 +83,29 @@ private:
 // Inline Methods
 // ==============
 
-
-inline
-EditBuffer::~EditBuffer( )
+inline EditBuffer::~EditBuffer()
 {
-    delete [] workspace;
+    delete[] workspace;
     return;
 }
-
 
 /*!
  * If an out of bounds offset is used, the effect is undefined.
  *
  * \param offset The index of the desired character.
  */
-inline
-char EditBuffer::operator[]( const std::size_t offset ) const
+inline char EditBuffer::operator[](const std::size_t offset) const
 {
-    return( workspace[offset] );
+    return (workspace[offset]);
 }
-
 
 /*!
  * This operation completes in constant time.
  */
-inline
-std::size_t EditBuffer::length( ) const
+inline std::size_t EditBuffer::length() const
 {
-    return( size );
+    return (size);
 }
-
 
 /*!
  * Returns a string containing the content of this EditBuffer. The behavior is undefined if the
@@ -122,23 +115,20 @@ std::size_t EditBuffer::length( ) const
  * places where std::string should be used in the first place (the EditBuffers should probably
  * be removed from those places).
  */
-inline
-std::string EditBuffer::to_string( ) const
+inline std::string EditBuffer::to_string() const
 {
-    return( std::string( workspace ) );
+    return (std::string(workspace));
 }
-
 
 // ==============
 // Free Functions
 // ==============
 
-bool operator==( const EditBuffer &left, const EditBuffer &right );
+bool operator==(const EditBuffer &left, const EditBuffer &right);
 
-inline
-bool operator!=( const EditBuffer &left, const EditBuffer &right )
+inline bool operator!=(const EditBuffer &left, const EditBuffer &right)
 {
-    return !( left == right );
+    return !(left == right);
 }
 
 #endif

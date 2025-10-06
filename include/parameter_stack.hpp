@@ -11,18 +11,18 @@
 #include "mystack.hpp"
 
 class Parameter {
-private:
-    EditList    input_data;     // Parameter data.
-    const char *prompt_string;  // Points at prompt. Leading and trailing space added.
+  private:
+    EditList input_data;       // Parameter data.
+    const char *prompt_string; // Points at prompt. Leading and trailing space added.
 
-    int edit( EditBuffer & );
+    int edit(EditBuffer &);
 
-public:
+  public:
     //! Constructor sets the prompt string.
-    explicit Parameter( const char *prompt_string );
+    explicit Parameter(const char *prompt_string);
 
-    int get( bool pop = true );   // Read a parameter. Return YES if no abort.
-    std::string value( );         // Returns the most recent parameter.
+    int get(bool pop = true); // Read a parameter. Return YES if no abort.
+    std::string value();      // Returns the most recent parameter.
 };
 
 extern Stack<EditBuffer> parameter_stack;

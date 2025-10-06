@@ -5,16 +5,15 @@
 
 #include <cstring>
 
-#include "EditBuffer.hpp"
 #include "CharacterEditFile.hpp"
+#include "EditBuffer.hpp"
 #include "support.hpp"
 
 //! Toggles the insert/replace mode.
 void CharacterEditFile::toggle_insert()
 {
-    insert_state = ( insert_state == INSERT ) ? REPLACE : INSERT;
+    insert_state = (insert_state == INSERT) ? REPLACE : INSERT;
 }
-
 
 //! Changes the insert mode.
 /*!
@@ -24,7 +23,6 @@ void CharacterEditFile::set_insert(InsertMode new_mode)
 {
     insert_state = new_mode;
 }
-
 
 //! Insert a new line.
 /*!
@@ -44,45 +42,47 @@ bool CharacterEditFile::new_line()
     file_data.jump_to(current_point.cursor_line());
 
     // Do nothing if the cursor is off the end of the file.
-    if( file_data.get( ) == NULL ) return true;
+    if (file_data.get() == NULL)
+        return true;
 
     is_changed = true;
 
     // See if cursor is off the end of the line.
-    if( file_data.get( )->length( ) < current_point.cursor_column( ) ) {
+    if (file_data.get()->length() < current_point.cursor_column()) {
 
         // If so, just insert a blank line after the current line.
-        EditBuffer *blank = new EditBuffer( "" );
-        file_data.next( );
-        if( blank == NULL ) return_value = false;
-            else return_value = static_cast< bool >( file_data.insert( blank ) != NULL );
+        EditBuffer *blank = new EditBuffer("");
+        file_data.next();
+        if (blank == NULL)
+            return_value = false;
+        else
+            return_value = static_cast<bool>(file_data.insert(blank) != NULL);
     }
     else {
         // Otherwise, transfer text to next line.
-        EditBuffer *current_buffer = file_data.get( );
+        EditBuffer *current_buffer = file_data.get();
         EditBuffer *new_stuff = new EditBuffer(
-            current_buffer->subbuffer( current_point.cursor_column( ),
-                                       current_buffer->length( ) ) );
-        file_data.next( );
-        if( new_stuff == NULL ) return_value = false;
+            current_buffer->subbuffer(current_point.cursor_column(), current_buffer->length()));
+        file_data.next();
+        if (new_stuff == NULL)
+            return_value = false;
         else {
-            return_value = static_cast<bool>( file_data.insert( new_stuff ) != NULL );
-            file_data.previous( );
-            file_data.previous( );
+            return_value = static_cast<bool>(file_data.insert(new_stuff) != NULL);
+            file_data.previous();
+            file_data.previous();
 
             // Now, delete the text on the old line only if the above worked.
-            if( return_value != false ) {
-                file_data.get( )->trim( current_point.cursor_column( ) );
+            if (return_value != false) {
+                file_data.get()->trim(current_point.cursor_column());
             }
         }
     }
 
-    if( !return_value ) {
-        memory_message( "Can't insert a new line into the file" );
+    if (!return_value) {
+        memory_message("Can't insert a new line into the file");
     }
     return return_value;
 }
-
 
 //! Insert a single character.
 /*!
@@ -95,7 +95,7 @@ bool CharacterEditFile::new_line()
  * \param letter The character to insert. [Are there restrictions?]
  * \return false if the insert operation fails (out of memory?); true otherwise.
  */
-bool CharacterEditFile::insert_char( char letter )
+bool CharacterEditFile::insert_char(char letter)
 {
     bool return_value = true;
 
@@ -104,22 +104,22 @@ bool CharacterEditFile::insert_char( char letter )
 
     // Set list to top of block (block may be one line).
     long top, Bottom;
-    block_limits( top, Bottom );
+    block_limits(top, Bottom);
 
-    if( !top_of_block( ) ) return false;
+    if (!top_of_block())
+        return false;
 
     // Loop over all lines in the block, inserting as we go.
-    while( top++ <= Bottom && return_value == true ) {
-        file_data.get( )->insert( letter, current_point.cursor_column( ) );
-        file_data.next( );
+    while (top++ <= Bottom && return_value == true) {
+        file_data.get()->insert(letter, current_point.cursor_column());
+        file_data.next();
     }
 
-    if( return_value == false ) {
-        memory_message( "Can't insert character into file" );
+    if (return_value == false) {
+        memory_message("Can't insert character into file");
     }
     return return_value;
-  }
-
+}
 
 //! Replace a single character.
 /*!
@@ -131,33 +131,33 @@ bool CharacterEditFile::insert_char( char letter )
  * \param letter The letter that will replace the current letter.
  * \return false if the replacement fails (out of memory?); true otherwise.
  */
-bool CharacterEditFile::replace_char( char letter )
-  {
-    bool    return_value = true;
-    char    new_letter;
+bool CharacterEditFile::replace_char(char letter)
+{
+    bool return_value = true;
+    char new_letter;
 
     // Make changes.
     is_changed = true;
 
     // Set list to top of block (block may be one line).
     long top, bottom;
-    block_limits( top, bottom );
+    block_limits(top, bottom);
 
-    if( !top_of_block( ) ) return false;
+    if (!top_of_block())
+        return false;
 
     // Loop over all lines in the block, inserting as we go.
-    while( top++ <= bottom && return_value == true ) {
-        new_letter   = letter;
-        file_data.get( )->replace( new_letter, current_point.cursor_column( ) );
-        file_data.next( );
+    while (top++ <= bottom && return_value == true) {
+        new_letter = letter;
+        file_data.get()->replace(new_letter, current_point.cursor_column());
+        file_data.next();
     }
 
-    if( return_value == false ) {
-        memory_message( "Can't extend current line" );
+    if (return_value == false) {
+        memory_message("Can't extend current line");
     }
     return return_value;
-  }
-
+}
 
 //! Deletes the character to the left of the current point.
 /*!
@@ -167,29 +167,30 @@ bool CharacterEditFile::replace_char( char letter )
  *
  * \return false if the deletion fails (out of memory?); true otherwise.
  */
-bool CharacterEditFile::backspace( )
+bool CharacterEditFile::backspace()
 {
     // If we're at the start of a line and in block mode, do nothing.
-    if( current_point.cursor_column( ) == 0  &&  get_block_state( ) ) return true;
+    if (current_point.cursor_column() == 0 && get_block_state())
+        return true;
     is_changed = true;
 
     // If we're at the start of a line and not in block mode, join lines.
-    if( current_point.cursor_column( ) == 0  && !get_block_state( ) ) {
+    if (current_point.cursor_column() == 0 && !get_block_state()) {
 
         // Make sure there is a line above us.
-        if( current_point.cursor_line( ) > 0 ) {
+        if (current_point.cursor_line() > 0) {
 
             // Synchronize list.
-            file_data.jump_to( current_point.cursor_line( ) );
+            file_data.jump_to(current_point.cursor_line());
 
             // Do the dirty deed.
-            EditBuffer *current = file_data.get( );
-            if( current != NULL ) {
-                file_data.previous( );
-                file_data.get( )->append( *current );
-                file_data.next( );
+            EditBuffer *current = file_data.get();
+            if (current != NULL) {
+                file_data.previous();
+                file_data.get()->append(*current);
+                file_data.next();
                 delete current;
-                file_data.erase( );
+                file_data.erase();
             }
         }
     }
@@ -199,23 +200,23 @@ bool CharacterEditFile::backspace( )
 
         // If the block is entirely off the end of the file, do nothing.
         long top, bottom;
-        block_limits( top, bottom );
+        block_limits(top, bottom);
 
-        if( top > file_data.size( ) ) return true;
+        if (top > file_data.size())
+            return true;
 
         // Synchronize list.
-        file_data.jump_to( top );
+        file_data.jump_to(top);
 
         // Loop over all lines in the block, backspacing as we go.
-        while( top++ <= bottom && file_data.get( ) != NULL ) {
-            file_data.get( )->erase( current_point.cursor_column( ) - 1 );
-            file_data.next( );
+        while (top++ <= bottom && file_data.get() != NULL) {
+            file_data.get()->erase(current_point.cursor_column() - 1);
+            file_data.next();
         }
     }
 
     return true;
-  }
-
+}
 
 //! Delete the character under the cursor.
 /*!
@@ -232,25 +233,25 @@ bool CharacterEditFile::delete_char()
     is_changed = true;
 
     // Get the goods about the current line.
-    file_data.jump_to( current_point.cursor_line( ) );
-    EditBuffer *Current = file_data.get( );
+    file_data.jump_to(current_point.cursor_line());
+    EditBuffer *Current = file_data.get();
 
     // If off the end of the line, try to join lines (only if not in block mode).
-    if(Current != NULL                               &&
-       current_point.cursor_column( ) >= Current->length( )  &&
-      !get_block_state( )                               ) {
+    if (Current != NULL && current_point.cursor_column() >= Current->length() &&
+        !get_block_state()) {
 
         // Extend the current line and append the next line.
         char Space_Character = ' ';
-        Current->replace( Space_Character, current_point.cursor_column( ) );
-        file_data.next( );
-        if( file_data.get( ) != NULL && return_value != false ) {
-            Current->append( *file_data.get( ) );
-            if( return_value != false ) file_data.erase( );
+        Current->replace(Space_Character, current_point.cursor_column());
+        file_data.next();
+        if (file_data.get() != NULL && return_value != false) {
+            Current->append(*file_data.get());
+            if (return_value != false)
+                file_data.erase();
         }
 
         // Delete extra character introduced in the replace action.
-        Current->erase( current_point.cursor_column( ) );
+        Current->erase(current_point.cursor_column());
     }
 
     // Otherwise try to do the delete for the whole block (or line).
@@ -258,24 +259,25 @@ bool CharacterEditFile::delete_char()
 
         // If the block is entirely off the end of the file, do nothing.
         long top, bottom;
-        block_limits( top, bottom );
+        block_limits(top, bottom);
 
-        if( top > file_data.size( ) ) return true;
+        if (top > file_data.size())
+            return true;
 
         // Synchronize list.
-        file_data.jump_to( top );
+        file_data.jump_to(top);
 
         // Loop over all lines in the block, deleting as we go.
-        while( return_value == true && top++ <= bottom && file_data.get( ) != NULL ) {
-            return_value =
-                static_cast< bool >( file_data.get( )->erase( current_point.cursor_column( ) ) != '\0' );
-            file_data.next( );
+        while (return_value == true && top++ <= bottom && file_data.get() != NULL) {
+            return_value = static_cast<bool>(
+                file_data.get()->erase(current_point.cursor_column()) != '\0');
+            file_data.next();
         }
     }
 
-    if( return_value == false ) {
-        memory_message( "Can't manipulate text" );
+    if (return_value == false) {
+        memory_message("Can't manipulate text");
     }
 
     return return_value;
-  }
+}

@@ -26,27 +26,25 @@ namespace scr {
      *
      *  \param use A pointer to the first element of an array of InputWindowDescriptors.
      */
-    void InputWindow::set_descriptors( InputWindowDescriptor *use )
+    void InputWindow::set_descriptors(InputWindowDescriptor *use)
     {
         descriptor_list = use;
     }
-
 
     //! Constructor.
     /*!
      * The default constructor builds an uninitialized InputWindow. The set( ) method can be
      * later used to configure the window.
      */
-    InputWindow::InputWindow( )
+    InputWindow::InputWindow()
     {
         static char dummy_buffer[1 + 1];
 
-        prompt_text   = "Error: Opened a scr::InputWindow without Set( ): ";
-        buffer        = dummy_buffer;
-        buffer_size   = 1;
+        prompt_text = "Error: Opened a scr::InputWindow without Set( ): ";
+        buffer = dummy_buffer;
+        buffer_size = 1;
         current_level = 0;
     }
-
 
     //! Constructor.
     /*!
@@ -60,15 +58,14 @@ namespace scr {
      * \param level The 'level' of the InputWindow. An index into the previously provided
      * descriptor array.
      */
-    InputWindow::InputWindow( char *prompt_text, char *buffer, int buffer_size, int level )
+    InputWindow::InputWindow(char *prompt_text, char *buffer, int buffer_size, int level)
     {
-        this->prompt_text   = prompt_text;
-        this->buffer        = buffer;
-        this->buffer_size   = buffer_size;
+        this->prompt_text = prompt_text;
+        this->buffer = buffer;
+        this->buffer_size = buffer_size;
         this->current_level = level;
-        open( );
+        open();
     }
-
 
     //! Configure an InputWindow.
     /*!
@@ -84,16 +81,15 @@ namespace scr {
      * \param level The 'level' of the InputWindow. An index into the previously provided
      * descriptor array.
      */
-    void InputWindow::set( char *prompt_text, char *buffer, int buffer_size, int level )
+    void InputWindow::set(char *prompt_text, char *buffer, int buffer_size, int level)
     {
-        this->prompt_text   = prompt_text;
-        this->buffer        = buffer;
-        this->buffer_size   = buffer_size;
+        this->prompt_text = prompt_text;
+        this->buffer = buffer;
+        this->buffer_size = buffer_size;
         this->current_level = level;
     }
 
-
-    #define ACTIVE_DESC descriptor_list[current_level]
+#define ACTIVE_DESC descriptor_list[current_level]
 
     //! Opens an InputWindow.
     /*!
@@ -107,63 +103,53 @@ namespace scr {
      *
      * \return True if successful; false otherwise.
      */
-    bool InputWindow::open( int row, int column )
+    bool InputWindow::open(int row, int column)
     {
         bool return_value;
-        int  current_row, current_column;
+        int current_row, current_column;
 
         // Make sure the window has a border.
-        if( ACTIVE_DESC.border_type == NO_BORDER )
+        if (ACTIVE_DESC.border_type == NO_BORDER)
             ACTIVE_DESC.border_type = BLANK_BOX;
 
         // Compute size of window.
-        int width = static_cast<int>( std::strlen( prompt_text ) ) + buffer_size;
+        int width = static_cast<int>(std::strlen(prompt_text)) + buffer_size;
         width += 4;
-        if( width > 80 ) width = 80;
+        if (width > 80)
+            width = 80;
 
         // Compute starting row and column for the window.
         int center_row, center_column;
-        window_center_coordinates( width, 3, &center_row, &center_column );
-        if( row == 0 ) row = center_row;
-        if( column == 0 ) column = center_column;
+        window_center_coordinates(width, 3, &center_row, &center_column);
+        if (row == 0)
+            row = center_row;
+        if (column == 0)
+            column = center_column;
 
         // Make the shadow.
-        the_shadow.open( row + 1, column + 2, width, 3 );
+        the_shadow.open(row + 1, column + 2, width, 3);
 
         // Try to open the window itself.
-        if ( ( return_value = SimpleWindow::open(
-                row, column, width, 3,
-                ACTIVE_DESC.primary_attribute,
-                ACTIVE_DESC.border_type,
-                ACTIVE_DESC.primary_attribute ) ) == true ) {
+        if ((return_value = SimpleWindow::open(
+                 row, column, width, 3, ACTIVE_DESC.primary_attribute, ACTIVE_DESC.border_type,
+                 ACTIVE_DESC.primary_attribute)) == true) {
 
             // Display the prompt and learn about the current cursor location.
-            print(
-                SimpleWindow::row( ),
-                SimpleWindow::column( ) + 1,
-                SimpleWindow::width( ) - 2,
-                SimpleWindow::color( ),
-                prompt_text,
-                SimpleWindow::color( )
-            );
-            get_cursor_position( current_row, current_column );
+            print(SimpleWindow::row(), SimpleWindow::column() + 1, SimpleWindow::width() - 2,
+                  SimpleWindow::color(), prompt_text, SimpleWindow::color());
+            get_cursor_position(current_row, current_column);
 
             // Get the data from the user.
-            gets(
-                SimpleWindow::row( ),
-                SimpleWindow::column( ) + static_cast<int>( std::strlen( prompt_text ) ) + 1,
-                buffer_size,
-                ACTIVE_DESC.secondary_attribute,
-                buffer
-            );
+            gets(SimpleWindow::row(),
+                 SimpleWindow::column() + static_cast<int>(std::strlen(prompt_text)) + 1,
+                 buffer_size, ACTIVE_DESC.secondary_attribute, buffer);
 
             // Restore the cursor and hide the window.
-            set_cursor_position( current_row, current_column );
-            hide( );
+            set_cursor_position(current_row, current_column);
+            hide();
         }
         return return_value;
     }
-
 
     //! Display an already existing InputWindow.
     /*!
@@ -172,51 +158,44 @@ namespace scr {
      * InputWindow, the data previously entered by the user will be displayed. This method hides
      * the window the user is done.
      */
-    int InputWindow::show( )
+    int InputWindow::show()
     {
         int return_value;
         int current_row, current_column;
 
         // Draw the shadow.
-        if( is_hidden ) {
-            the_shadow.open( row( ) - 1 + 1, column( ) - 1 + 2, width( ) + 2, 3 );
+        if (is_hidden) {
+            the_shadow.open(row() - 1 + 1, column() - 1 + 2, width() + 2, 3);
         }
 
         // Show the main window (prompt still there).
-        SimpleWindow::show( );
+        SimpleWindow::show();
 
         // Learn about the current cursor position.
-        get_cursor_position( current_row, current_column );
+        get_cursor_position(current_row, current_column);
 
         // Get data from the user.
-        return_value = gets(
-            row( ),
-            column( ) + static_cast<int>( std::strlen( prompt_text ) ) + 1,
-            buffer_size,
-            ACTIVE_DESC.secondary_attribute,
-            buffer
-        );
+        return_value = gets(row(), column() + static_cast<int>(std::strlen(prompt_text)) + 1,
+                            buffer_size, ACTIVE_DESC.secondary_attribute, buffer);
 
         // Reposition the cursor and hide the window.
-        set_cursor_position( current_row, current_column );
-        hide( );
+        set_cursor_position(current_row, current_column);
+        hide();
         return return_value;
     }
 
-
     //! Hide the InputWindow.
-    void InputWindow::hide( )
+    void InputWindow::hide()
     {
-        SimpleWindow::hide( );
-        the_shadow.close( );
+        SimpleWindow::hide();
+        the_shadow.close();
     }
-
 
     //! Close the InputWindow.
-    void InputWindow::close( )
+    void InputWindow::close()
     {
-        SimpleWindow::close( );
-        the_shadow.close( );
+        SimpleWindow::close();
+        the_shadow.close();
     }
 
-}
+} // namespace scr

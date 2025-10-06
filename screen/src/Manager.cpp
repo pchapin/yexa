@@ -24,11 +24,10 @@ namespace scr {
      *
      *  \throws std::runtime_error if the screen initialization fails.
      */
-    Manager::Manager( ) :
-        the_windows( ), system_mode( false ), key_array( 0 ), key_count( 0 )
+    Manager::Manager() : the_windows(), system_mode(false), key_array(0), key_count(0)
     {
-        if( !initialize( ) ) {
-            throw runtime_error( "scr::Manager::Manager failed" );
+        if (!initialize()) {
+            throw runtime_error("scr::Manager::Manager failed");
         }
     }
 
@@ -40,20 +39,20 @@ namespace scr {
      * Manager destructor also calls the underlying screen Terminate() function which causes the
      * screen to clear as a side effect.
      */
-    Manager::~Manager( )
+    Manager::~Manager()
     {
         // Copy the window list so that the iteration is not confused by window deregistrations.
-        std::list< WindowInformation > temp_list( the_windows );
+        std::list<WindowInformation> temp_list(the_windows);
 
-        std::list< WindowInformation >::iterator stepper = temp_list.begin( );
-        while( stepper != temp_list.end( ) ) {
+        std::list<WindowInformation>::iterator stepper = temp_list.begin();
+        while (stepper != temp_list.end()) {
             delete stepper->the_window;
             stepper++;
         }
         key_array = 0;
 
         // Clean up the display.
-        terminate( );
+        terminate();
     }
 
     //! Register a window with the Manager.
@@ -70,36 +69,45 @@ namespace scr {
      *
      * \return true if registration successful; false otherwise.
      */
-    bool Manager::register_window( Window *new_window, int row, int column, int width, int height )
+    bool Manager::register_window(Window *new_window, int row, int column, int width,
+                                  int height)
     {
-        int total_rows = number_of_rows( );
-        int total_columns = number_of_columns( );
-        
+        int total_rows = number_of_rows();
+        int total_columns = number_of_columns();
+
         // General sanity checks. Make empty windows illegal.
-        if( width  < 1 ) width = 1;
-        if( height < 1 ) height = 1;
+        if (width < 1)
+            width = 1;
+        if (height < 1)
+            height = 1;
 
         // Sanity checks. Keep the window on screen.
-        if( row    < 2 ) row = 2;
-        if( column < 2 ) column = 2;
-        if( row    > total_rows - 1         ) row    = total_rows - 1;
-        if( column > total_columns - 1      ) column = total_columns - 1;
-        if( width  > total_columns - column ) width  = total_columns - column;
-        if( height > total_rows - row       ) height = total_rows - row;
+        if (row < 2)
+            row = 2;
+        if (column < 2)
+            column = 2;
+        if (row > total_rows - 1)
+            row = total_rows - 1;
+        if (column > total_columns - 1)
+            column = total_columns - 1;
+        if (width > total_columns - column)
+            width = total_columns - column;
+        if (height > total_rows - row)
+            height = total_rows - row;
 
         // If the window doesn't like its initial position and size, we give up.
-        if( !new_window->reposition( row, column ) ) return false;
-        if( !new_window->resize( width, height ) ) return false;
+        if (!new_window->reposition(row, column))
+            return false;
+        if (!new_window->resize(width, height))
+            return false;
 
         // Build a new WindowInformation object with info about the new window.
-        const WindowInformation new_information =
-            { new_window, row, column, width, height };
+        const WindowInformation new_information = {new_window, row, column, width, height};
 
         // Put it at the end. The new window is in the foreground.
-        the_windows.push_back( new_information );
+        the_windows.push_back(new_information);
         return true;
     }
-
 
     //! Deregister a window from the window manager.
     /*!
@@ -107,13 +115,13 @@ namespace scr {
      *
      * \param old_window A pointer to the window object being deregistered.
      */
-    void Manager::deregister_window( const Window *old_window )
+    void Manager::deregister_window(const Window *old_window)
     {
-        list< WindowInformation >::iterator stepper = the_windows.begin( );
+        list<WindowInformation>::iterator stepper = the_windows.begin();
 
-        while( stepper != the_windows.end( ) ) {
-            if( stepper->the_window == old_window ) {
-                the_windows.erase( stepper );
+        while (stepper != the_windows.end()) {
+            if (stepper->the_window == old_window) {
+                the_windows.erase(stepper);
                 break;
             }
             ++stepper;
@@ -132,11 +140,11 @@ namespace scr {
      * \param width Location to receive the window's width.
      * \param height Location to recieve the window's height.
      */
-    void Manager::get_size( Window *w, int &width, int &height )
+    void Manager::get_size(Window *w, int &width, int &height)
     {
-        list< WindowInformation >::iterator stepper = the_windows.begin( );
-        while( stepper != the_windows.end( ) ) {
-            if( stepper->the_window == w ) {
+        list<WindowInformation>::iterator stepper = the_windows.begin();
+        while (stepper != the_windows.end()) {
+            if (stepper->the_window == w) {
                 width = stepper->width;
                 height = stepper->height;
                 return;
@@ -148,52 +156,51 @@ namespace scr {
         return;
     }
 
-
     //! Refresh the entire display.
     /*!
      * This function builds the display with all windows shown in the correct order, with the
      * correct positioning, and using the correct attributes. Every character on the display is
      * recomputed.
      */
-    void Manager::update_display( )
+    void Manager::update_display()
     {
         // This sets the background. For now let's just use a plain background.
-        clear( 1, 1, number_of_columns( ), number_of_rows( ), WHITE|REV_BLACK );
+        clear(1, 1, number_of_columns(), number_of_rows(), WHITE | REV_BLACK);
 
         // Step down the list of WindowInformation structures.
-        list< WindowInformation >::iterator stepper = the_windows.begin( );
-        while( stepper != the_windows.end( ) ) {
+        list<WindowInformation>::iterator stepper = the_windows.begin();
+        while (stepper != the_windows.end()) {
 
             // Get a pointer to the current image.
-            ImageBuffer *ptr = stepper->the_window->get_image( );
+            ImageBuffer *ptr = stepper->the_window->get_image();
 
             // Write the image into the virtual screen. This assumes a border is present.
-            ptr->write( stepper->row_position, stepper->column_position );
+            ptr->write(stepper->row_position, stepper->column_position);
 
             // Draw the border around the window.
-            draw_box( stepper->row_position - 1, stepper->column_position - 1, stepper->width + 2, stepper->height + 2, SINGLE_LINE, WHITE );
+            draw_box(stepper->row_position - 1, stepper->column_position - 1,
+                     stepper->width + 2, stepper->height + 2, SINGLE_LINE, WHITE);
 
             ++stepper;
         }
 
         // If the list wasn't empty...
-        if( the_windows.size( ) != 0 ) {
+        if (the_windows.size() != 0) {
             --stepper;
 
             // Draw the foreground window with a different border.
-            draw_box( stepper->row_position - 1, stepper->column_position - 1, stepper->width + 2, stepper->height + 2, DOUBLE_LINE, BRIGHT|WHITE );
+            draw_box(stepper->row_position - 1, stepper->column_position - 1,
+                     stepper->width + 2, stepper->height + 2, DOUBLE_LINE, BRIGHT | WHITE);
 
             // Position the cursor on the screen correctly.
-            set_cursor_position(
-                stepper->row_position + stepper->the_window->cursor_row( ) - 1,
-                stepper->column_position + stepper->the_window->cursor_column( ) - 1
-            );
+            set_cursor_position(stepper->row_position + stepper->the_window->cursor_row() - 1,
+                                stepper->column_position +
+                                    stepper->the_window->cursor_column() - 1);
         }
 
         // Copy stuff to the physical screen.
-        refresh( );
+        refresh();
     }
-
 
     //! Read and process input key strokes infinitely.
     /*!
@@ -209,49 +216,51 @@ namespace scr {
      * Ctrl+LeftArrow and Ctrl+RightArrow (resize the current window horizontally, and TAB
      * (switch to another window).
      */
-    void Manager::input_loop( )
+    void Manager::input_loop()
     {
         int ch;
         int desired_row, desired_column;
         int desired_width, desired_height;
 
-        while( true ) {
+        while (true) {
 
-            update_display( );
-            ch = key( );
+            update_display();
+            ch = key();
 
-            // First, scan the special key list (if non-empty) and deal with any matches found there.
+            // First, scan the special key list (if non-empty) and deal with any matches found
+            // there.
             bool found_special = false;
-            int  special_index;
-            for( special_index = 0; special_index < key_count; special_index++ ) {
-                if( ch == key_array[special_index].key_code ) {
-                    key_array[special_index].key_function( );
+            int special_index;
+            for (special_index = 0; special_index < key_count; special_index++) {
+                if (ch == key_array[special_index].key_code) {
+                    key_array[special_index].key_function();
                     found_special = true;
                     break;
                 }
             }
-            if( found_special ) continue;
+            if (found_special)
+                continue;
 
             // The keystroke Alt+S is always a system key. It toggles system mode.
-            if( ch == K_ALTS ) {
+            if (ch == K_ALTS) {
                 system_mode = !system_mode;
                 continue;
             }
 
             // Do things only if the window list isn't empty.
-            if( the_windows.size( ) != 0 ) {
-                std::list< WindowInformation >::iterator top = the_windows.end( );
+            if (the_windows.size() != 0) {
+                std::list<WindowInformation>::iterator top = the_windows.end();
                 --top;
 
                 bool handle_key = false;
 
-                if( system_mode )
+                if (system_mode)
                     handle_key = true;
                 else
-                    handle_key = !top->the_window->process_keystroke( ch );
-        
-                if( handle_key ) {
-                    switch( ch ) {
+                    handle_key = !top->the_window->process_keystroke(ch);
+
+                if (handle_key) {
+                    switch (ch) {
 
                     // An ESC character while in system mode exits the loop.
                     case K_ESC:
@@ -260,8 +269,9 @@ namespace scr {
                     // Move the window up.
                     case K_UP:
                         desired_row = top->row_position - 1;
-                        if( desired_row <= 2 ) desired_row = 2;
-                        if( top->the_window->reposition( desired_row, top->column_position ) ) {
+                        if (desired_row <= 2)
+                            desired_row = 2;
+                        if (top->the_window->reposition(desired_row, top->column_position)) {
                             top->row_position = desired_row;
                         }
                         break;
@@ -269,10 +279,10 @@ namespace scr {
                     // Move the window down.
                     case K_DOWN:
                         desired_row = top->row_position + 1;
-                        if( ( desired_row + top->height ) > number_of_rows( ) ) {
+                        if ((desired_row + top->height) > number_of_rows()) {
                             desired_row--;
                         }
-                        if( top->the_window->reposition( desired_row, top->column_position ) ) {
+                        if (top->the_window->reposition(desired_row, top->column_position)) {
                             top->row_position = desired_row;
                         }
                         break;
@@ -280,8 +290,9 @@ namespace scr {
                     // Move the window to the left.
                     case K_LEFT:
                         desired_column = top->column_position - 1;
-                        if( desired_column <= 2 ) desired_column = 2;
-                        if( top->the_window->reposition( top->row_position, desired_column ) ) {
+                        if (desired_column <= 2)
+                            desired_column = 2;
+                        if (top->the_window->reposition(top->row_position, desired_column)) {
                             top->column_position = desired_column;
                         }
                         break;
@@ -289,54 +300,57 @@ namespace scr {
                     // Move the window to the right.
                     case K_RIGHT:
                         desired_column = top->column_position + 1;
-                        if( ( desired_column + top->width ) > number_of_columns( ) ) {
+                        if ((desired_column + top->width) > number_of_columns()) {
                             desired_column--;
                         }
-                        if( top->the_window->reposition( top->row_position, desired_column ) ) {
+                        if (top->the_window->reposition(top->row_position, desired_column)) {
                             top->column_position = desired_column;
                         }
                         break;
 
                     // Select the next window on the list.
                     case K_TAB: {
-                            const WindowInformation temp = the_windows.back( );
-                            the_windows.pop_back( );
-                            the_windows.push_front( temp );
-                        }
-                        break;
+                        const WindowInformation temp = the_windows.back();
+                        the_windows.pop_back();
+                        the_windows.push_front(temp);
+                    } break;
 
                     // Try to resize the window vertically. (Making it smaller).
                     case K_CUP:
                         desired_height = top->height - 1;
-                        if( desired_height < 1 ) desired_height = 1;
-                        if( top->the_window->resize( top->width, desired_height ) ) {
+                        if (desired_height < 1)
+                            desired_height = 1;
+                        if (top->the_window->resize(top->width, desired_height)) {
                             top->height = desired_height;
                         }
                         break;
-          
+
                     // Try to resize the window vertically. (Making it larger).
                     case K_CDOWN:
                         desired_height = top->height + 1;
-                        if( ( top->row_position + desired_height ) > number_of_rows( ) ) desired_height--;
-                        if( top->the_window->resize( top->width, desired_height ) ) {
+                        if ((top->row_position + desired_height) > number_of_rows())
+                            desired_height--;
+                        if (top->the_window->resize(top->width, desired_height)) {
                             top->height = desired_height;
                         }
                         break;
-          
+
                     // Try to resize the window horizontally. (Making it narrower).
                     case K_CLEFT:
                         desired_width = top->width - 1;
-                        if( desired_width < 1 ) desired_width = 1;
-                        if( top->the_window->resize( desired_width, top->height ) ) {
+                        if (desired_width < 1)
+                            desired_width = 1;
+                        if (top->the_window->resize(desired_width, top->height)) {
                             top->width = desired_width;
                         }
                         break;
-          
+
                     // Try to resize the window horizontally. (Making it wider).
                     case K_CRIGHT:
                         desired_width = top->width + 1;
-                        if( (top->column_position + desired_width ) > number_of_columns( ) ) desired_width--;
-                        if( top->the_window->resize( desired_width, top->height ) ) {
+                        if ((top->column_position + desired_width) > number_of_columns())
+                            desired_width--;
+                        if (top->the_window->resize(desired_width, top->height)) {
                             top->width = desired_width;
                         }
                         break;
@@ -356,27 +370,27 @@ namespace scr {
      * rotation of the order, it is quite limited. Eventually the Manager class should provide a
      * more comprehensive way of manipulating display order.
      */
-    void Manager::swap_top( )
+    void Manager::swap_top()
     {
         // Forget the whole thing if there isn't at least two windows on the screen.
-        if( the_windows.size( ) < 2 ) return;
+        if (the_windows.size() < 2)
+            return;
 
-        const WindowInformation temp = the_windows.back( );
-        the_windows.pop_back( );
-        the_windows.push_front( temp );
-    }
-
-
-    //! This is semantically meaningless. It only exists to satisfy OW's eager instantiation.
-    bool Manager::WindowInformation::operator==( const WindowInformation & )
-    {
-        return( false );
+        const WindowInformation temp = the_windows.back();
+        the_windows.pop_back();
+        the_windows.push_front(temp);
     }
 
     //! This is semantically meaningless. It only exists to satisfy OW's eager instantiation.
-    bool Manager::WindowInformation::operator< ( const WindowInformation & )
+    bool Manager::WindowInformation::operator==(const WindowInformation &)
     {
-        return( false );
+        return (false);
     }
-  
-}
+
+    //! This is semantically meaningless. It only exists to satisfy OW's eager instantiation.
+    bool Manager::WindowInformation::operator<(const WindowInformation &)
+    {
+        return (false);
+    }
+
+} // namespace scr

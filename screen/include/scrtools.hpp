@@ -8,10 +8,10 @@
 
 namespace scr {
 
-    void center  ( int row, int column, int width, int attribute, const char *text );
-    void draw_box( int row, int column, int width, int height, BoxType the_type, int attribute );
-    int  gets    ( int row, int column, int length, int attribute, char *buffer );
+    void center(int row, int column, int width, int attribute, const char *text);
+    void draw_box(int row, int column, int width, int height, BoxType the_type, int attribute);
+    int gets(int row, int column, int length, int attribute, char *buffer);
 
-}
+} // namespace scr
 
 #endif

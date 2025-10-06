@@ -21,33 +21,34 @@ namespace scr {
      */
     class CommandWindow : public Window {
 
-    private:
+      private:
         std::string prompt;
 
-    protected:
+      protected:
         std::string command_text;
         std::string::size_type cursor_offset;
 
-    public:
-        CommandWindow( Manager *my_manager, int row, int column, int width, int height ) :
-            Window( my_manager, row, column, width, height ), cursor_offset( 0 )
-            { }
+      public:
+        CommandWindow(Manager *my_manager, int row, int column, int width, int height)
+            : Window(my_manager, row, column, width, height), cursor_offset(0)
+        {
+        }
 
         //! Set the prompt.
-        void set_prompt( const char * );
+        void set_prompt(const char *);
 
-        bool process_keystroke( int &key_code );
+        bool process_keystroke(int &key_code);
 
         //! Returns the CommandWindow's on-screen image.
-        ImageBuffer *get_image( );
+        ImageBuffer *get_image();
 
         //! Returns the command cursor's row position.
-        int cursor_row( );
+        int cursor_row();
 
         //! Returns the command cursor's column position.
-        int cursor_column( );
+        int cursor_column();
     };
 
-}
+} // namespace scr
 
 #endif

@@ -15,29 +15,27 @@
 /*=========================================================*/
 
 //! Constructor
-EditFile::EditFile( )
+EditFile::EditFile()
 {
-    block          = false;
-    anchor         = 0L;
-    is_changed     = false;
+    block = false;
+    anchor = 0L;
+    is_changed = false;
     constructed_ok = true;
 }
 
-
 //! Destructor
-EditFile::~EditFile( )
+EditFile::~EditFile()
 {
     return;
 }
 
-
 //! Erases the data in this EditFile object.
-void EditFile::erase( )
+void EditFile::erase()
 {
-    if( file_data.size( ) > 0L ) is_changed = true;
-    file_data.clear( );
+    if (file_data.size() > 0L)
+        is_changed = true;
+    file_data.clear();
 }
-
 
 //! Extends, if necessary, the file's data to include a particular line.
 /*!
@@ -57,38 +55,37 @@ void EditFile::erase( )
  * \bug There is a memory leak if a blank like is allocated successfully but insertion into the
  * file data fails.
  */
-bool EditFile::extend_to_line( long line_number )
+bool EditFile::extend_to_line(long line_number)
 {
     bool return_value = true;
 
     // If the file is already big enough, just return.
-    if( file_data.size( ) > line_number ) return true;
+    if (file_data.size() > line_number)
+        return true;
 
     // Position the list to the end.
-    file_data.set_end( );
+    file_data.set_end();
 
     // Compute number of new lines required.
-    long line_count = line_number - file_data.size( ) + 1;
+    long line_count = line_number - file_data.size() + 1;
 
     // Insert the new lines.
-    while( return_value == true  &&  line_count-- ) {
-        EditBuffer *blank = new EditBuffer( "" );
-        file_data.insert( blank );
+    while (return_value == true && line_count--) {
+        EditBuffer *blank = new EditBuffer("");
+        file_data.insert(blank);
     }
 
     return return_value;
 }
 
-
 //! Return True if the EditFile was constructed successfully.
 /*!
  * \todo What is the point of this method? The constructor assigns primitives so it can't fail.
  */
-bool EditFile::built_ok( )
+bool EditFile::built_ok()
 {
     return constructed_ok;
 }
-
 
 //! Return the range of the current block, if any.
 /*!
@@ -101,22 +98,21 @@ bool EditFile::built_ok( )
  * \param top [out] The variable to recieve the line number of the first line in the block.
  * \param bottom [out] The variable to receive the line number of the last line in the block.
  */
-void EditFile::block_limits( long &top, long &bottom )
+void EditFile::block_limits(long &top, long &bottom)
 {
-    if( !block ) {
-        top    = current_point.cursor_line( );
-        bottom = current_point.cursor_line( );
+    if (!block) {
+        top = current_point.cursor_line();
+        bottom = current_point.cursor_line();
     }
-    else if( anchor <= current_point.cursor_line( ) ) {
-        top    = anchor;
-        bottom = current_point.cursor_line( );
+    else if (anchor <= current_point.cursor_line()) {
+        top = anchor;
+        bottom = current_point.cursor_line();
     }
     else {
-        top    = current_point.cursor_line( );
+        top = current_point.cursor_line();
         bottom = anchor;
     }
 }
-
 
 //! Turn block mode on or off.
 /*!
@@ -125,14 +121,13 @@ void EditFile::block_limits( long &top, long &bottom )
  *
  * \param new_info Block mode is turned on if True and off otherwise.
  */
-void EditFile::set_block_state( bool new_info )
+void EditFile::set_block_state(bool new_info)
 {
     block = new_info;
-    if( block ) {
-        anchor = current_point.cursor_line( );
+    if (block) {
+        anchor = current_point.cursor_line();
     }
 }
-
 
 //! Returns the current state of block mode.
 /*!
@@ -141,11 +136,10 @@ void EditFile::set_block_state( bool new_info )
  * \todo It would probably be better to use an enumeration type to represent block mode than the
  * plain bool type.
  */
-bool EditFile::get_block_state( )
+bool EditFile::get_block_state()
 {
     return block;
 }
-
 
 //! Jump the current point to the top line of the active block.
 /*!
@@ -161,13 +155,14 @@ bool EditFile::get_block_state( )
  * \todo If extend_to_line( ) is changed to return void, this function can also be changed to
  * return void.
  */
-bool EditFile::top_of_block( )
+bool EditFile::top_of_block()
 {
     // Set list to top of block (block may be one line).
     long top, bottom;
-    block_limits( top, bottom );
+    block_limits(top, bottom);
 
-    if( !extend_to_line( bottom ) ) return false;
-    file_data.jump_to( top );
+    if (!extend_to_line(bottom))
+        return false;
+    file_data.jump_to(top);
     return true;
 }

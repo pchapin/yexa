@@ -15,7 +15,7 @@
  * Each symbol defined here is prefixed with 'e' (for "environment"). This is done because
  * several of the symbol names are fairly generic and they tend to collide with similarly named
  * symbols in other libraries.
-*/
+ */
 
 #ifndef ENVIRON_HPP
 #define ENVIRON_HPP
@@ -30,14 +30,14 @@
 //-----------------------------
 
 // The following are the allowed values of eCOMPILER.
-#define eVANILLA     1  // Generic, Standard C++ 2020 only
-#define eCLANG       2  // clang++
-#define eCOMPAQ      3  // Compaq C++ (remove?)
-#define eGCC         4  // g++
-#define eIBM         5  // IBM's Visual Age C++ (remove?)
-#define eMETROWERKS  6  // Metrowerks CodeWarrior (remove?)
-#define eMICROSOFT   7  // Microsoft Visual C++
-#define eOPENWATCOM  8  // Open Watcom C++
+#define eVANILLA 1    // Generic, Standard C++ 2020 only
+#define eCLANG 2      // clang++
+#define eCOMPAQ 3     // Compaq C++ (remove?)
+#define eGCC 4        // g++
+#define eIBM 5        // IBM's Visual Age C++ (remove?)
+#define eMETROWERKS 6 // Metrowerks CodeWarrior (remove?)
+#define eMICROSOFT 7  // Microsoft Visual C++
+#define eOPENWATCOM 8 // Open Watcom C++
 // TODO: What about Intel's compiler?
 
 // Choose your compiler! This file can autodetect all of the compilers mentioned above. If the
@@ -83,14 +83,14 @@
 //-------------------------------------
 
 // The following are the allowed values of eOPSYS.
-#define eDOS     1  // DOS and its variations.
-#define eMAC     2  // macOS (modern system).
-#define eNETWARE 3  // NetWare NLM. Assume v4.x or higher (NDS support).
-#define eOS2     4  // OS/2 (32 bit only).
-#define ePOSIX   5  // POSIX is intended to support all Unix flavors including macOS.
-#define eVMS     6  // DEC's VMS operating system.
-#define eWINDOWS 7  // Windows NT+ only. Win95/98/Me are obsolete.
-#define eWIN32   7  // Same as "eWINDOWS". This macro is for compatibility. It is deprecated.
+#define eDOS 1     // DOS and its variations.
+#define eMAC 2     // macOS (modern system).
+#define eNETWARE 3 // NetWare NLM. Assume v4.x or higher (NDS support).
+#define eOS2 4     // OS/2 (32 bit only).
+#define ePOSIX 5   // POSIX is intended to support all Unix flavors including macOS.
+#define eVMS 6     // DEC's VMS operating system.
+#define eWINDOWS 7 // Windows NT+ only. Win95/98/Me are obsolete.
+#define eWIN32 7   // Same as "eWINDOWS". This macro is for compatibility. It is deprecated.
 
 // Choose your operating system! In most cases this file can autodetect the operating system
 // from the compiler that is being used. If that is not the case, you will have to specify the
@@ -142,7 +142,7 @@
 
 // Open Watcom supports a variety of different systems.
 #if eCOMPILER == eOPENWATCOM
-#if defined (__DOS__)
+#if defined(__DOS__)
 #define eOPSYS eDOS
 #elif defined(__OS2__)
 #define eOPSYS eOS2
@@ -160,10 +160,10 @@
 //---------------------------------------------
 
 // The following are the allowed values of eGUI.
-#define eNONE   1   // Text mode application.
-#define ePM     2   // The OS/2 graphical interface. This also implies WPS.
-#define eWIN    3   // Windows NT+ only. (Consider renaming; too similar to eWINDOWS)
-#define eXWIN   4   // X Windows.
+#define eNONE 1 // Text mode application.
+#define ePM 2   // The OS/2 graphical interface. This also implies WPS.
+#define eWIN 3  // Windows NT+ only. (Consider renaming; too similar to eWINDOWS)
+#define eXWIN 4 // X Windows.
 
 // Choose your GUI. This file does not currently autodetect any GUI. The default GUI is eNONE.
 

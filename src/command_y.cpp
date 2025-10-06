@@ -5,13 +5,14 @@
 
 #include <cstdlib>
 
-#include "command.hpp"
 #include "FileList.hpp"
+#include "command.hpp"
 #include "yfile.hpp"
 
-bool yexit_command( )
+bool yexit_command()
 {
-    write_yfile( );
-    if( FileList::save_changes( ) == true ) std::exit( 0 );
+    write_yfile();
+    if (FileList::save_changes() == true)
+        std::exit(0);
     return false;
 }

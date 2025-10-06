@@ -10,9 +10,9 @@
 
 //! Adds simple word processing featurs to an EditFile.
 class WPEditFile : private virtual EditFile {
-public:
+  public:
     //! Reformats paragraph containing the current point.
-    bool reformat_paragraph( );
+    bool reformat_paragraph();
 };
 
 #endif

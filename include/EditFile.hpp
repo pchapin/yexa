@@ -31,32 +31,31 @@ class EditFile {
 
     friend class Block_EditFile;
 
-private:
-    bool constructed_ok;         //!< True if this object is ok.
+  private:
+    bool constructed_ok; //!< True if this object is ok.
 
-protected:
+  protected:
     // Constructors and destructors.
-    EditFile( );
-    virtual ~EditFile( );
+    EditFile();
+    virtual ~EditFile();
 
-    EditList     file_data;      //!< The actual data in the file.
-    FilePosition current_point;  //!< This file's current point.
-    bool         block;          //!< True when block mode is ON.
-    long         anchor;         //!< Line number of one side of the block.
-    bool         is_changed;     //!< True if data "changed."
+    EditList file_data;         //!< The actual data in the file.
+    FilePosition current_point; //!< This file's current point.
+    bool block;                 //!< True when block mode is ON.
+    long anchor;                //!< Line number of one side of the block.
+    bool is_changed;            //!< True if data "changed."
 
-    void erase( );
-    bool extend_to_line( long );
-    bool built_ok( );
+    void erase();
+    bool extend_to_line(long);
+    bool built_ok();
 
-public:
+  public:
     // NOTE **** The following functions should really be virtual ****
 
-    void block_limits( long &top_line, long &bottom_line );
-    void set_block_state( bool );
-    bool get_block_state( );
-    bool top_of_block( );
-  };
+    void block_limits(long &top_line, long &bottom_line);
+    void set_block_state(bool);
+    bool get_block_state();
+    bool top_of_block();
+};
 
 #endif
-

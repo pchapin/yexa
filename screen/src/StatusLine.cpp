@@ -3,23 +3,21 @@
  *  \author  Peter Chapin <spicacality@kelseymountain.org>
  */
 
-#include "scr.hpp"
 #include "StatusLine.hpp"
+#include "scr.hpp"
 
-static const char *default_status( )
+static const char *default_status()
 {
     return "Uninitialized scr::Status_Line object used";
 }
 
-
 namespace scr {
 
     //! Constructor.
-    StatusLine::StatusLine( )
+    StatusLine::StatusLine()
     {
         make_line = default_status;
     }
-
 
     //! Opens and prints the StatusLine.
     /*!
@@ -31,17 +29,16 @@ namespace scr {
      * \param width The width of the space where the line is drawn.
      * \param attribute The color attribute used for the line.
      */
-    bool StatusLine::open( int row, int column, int width, int attribute )
+    bool StatusLine::open(int row, int column, int width, int attribute)
     {
         bool return_value =
-            SimpleWindow::open( row, column, width, 1, attribute, NO_BORDER, attribute );
+            SimpleWindow::open(row, column, width, 1, attribute, NO_BORDER, attribute);
 
-        if( return_value == true )
-            print_text( row, column, width, make_line( ) );
+        if (return_value == true)
+            print_text(row, column, width, make_line());
 
         return return_value;
     }
-
 
     //! Shows and updates a StatusLine
     /*!
@@ -49,12 +46,12 @@ namespace scr {
      * already visible has no effect on that window, this method can also be used to update a
      * visible status line.
      */
-    void StatusLine::show( )
+    void StatusLine::show()
     {
-        if( is_defined ) {
-            SimpleWindow::show( );
-            print_text( row( ), column( ), width( ), make_line( ) );
+        if (is_defined) {
+            SimpleWindow::show();
+            print_text(row(), column(), width(), make_line());
         }
     }
 
-}
+} // namespace scr

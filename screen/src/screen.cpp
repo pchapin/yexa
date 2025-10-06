@@ -3,7 +3,7 @@
 
 namespace screen {
 
-    void initialize( )
+    void initialize()
     {
         // This function initializes the screen module.
         // Currently, it does nothing.
