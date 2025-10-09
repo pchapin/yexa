@@ -7,13 +7,14 @@
 #include <cstdlib>
 #include <string>
 
+#include <screen/scr.hpp>
+
 #include "FileList.hpp"
 #include "command.hpp"
 #include "global.hpp"
 #include "help.hpp"
 #include "macro_stack.hpp"
 #include "parameter_stack.hpp"
-#include "screen/scr.hpp"
 #include "support.hpp"
 #include "yfile.hpp"
 

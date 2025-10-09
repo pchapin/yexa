@@ -12,11 +12,12 @@
 #include <cstdlib>
 #include <cstring>
 
+#include <screen/scr.hpp>
+#include <screen/scrtools.hpp>
+
 #include "EditBuffer.hpp"
 #include "FileList.hpp"
 #include "YEditFile.hpp"
-#include "screen/scr.hpp"
-#include "screen/scrtools.hpp"
 #include "support.hpp"
 #include "yfile.hpp"
 

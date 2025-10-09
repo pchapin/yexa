@@ -8,13 +8,14 @@
 #include <cstdlib>
 #include <cstring>
 
+#include <screen/MessageWindow.hpp>
+#include <screen/scr.hpp>
+
 #include "FileList.hpp"
 #include "YEditFile.hpp"
 #include "command.hpp"
 #include "global.hpp"
 #include "parameter_stack.hpp"
-#include "screen/MessageWindow.hpp"
-#include "screen/scr.hpp"
 #include "support.hpp"
 
 static void do_replacement(YEditFile &the_file, Parameter &search_parameter,

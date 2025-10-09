@@ -11,8 +11,9 @@
 #include <cstdlib>
 #include <cstring>
 
+#include <screen/scr.hpp>
+
 #include "FileList.hpp"
-#include "screen/scr.hpp"
 #include "support.hpp"
 #include "yfile.hpp"
 

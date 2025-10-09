@@ -6,8 +6,9 @@
 #ifndef FILENAMEMATCHER_HPP
 #define FILENAMEMATCHER_HPP
 
-#include "screen/environ.hpp"
 #include <ctime>
+
+#include <screen/environ.hpp>
 
 // There are different definitions of this class depending on the OS.
 

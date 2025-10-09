@@ -6,17 +6,18 @@
 #include <cstdlib>
 #include <cstring>
 
-#include "screen/environ.hpp"
+#include <screen/environ.hpp>
 
 #if eOPSYS != ePOSIX
 #include <dos.h>
 #endif
 
+#include <screen/MessageWindow.hpp>
+#include <screen/scr.hpp>
+
 #include "DiskEditFile.hpp"
 #include "EditBuffer.hpp"
 #include "FileNameMatcher.hpp"
-#include "screen/MessageWindow.hpp"
-#include "screen/scr.hpp"
 #include "support.hpp"
 
 /*=======================================*/

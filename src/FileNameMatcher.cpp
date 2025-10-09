@@ -6,11 +6,12 @@
  * filenames.
  */
 
-#include "screen/environ.hpp"
-
 #include <ctype.h>
 #include <stddef.h>
 #include <string.h>
+
+#include <screen/environ.hpp>
+
 #if eOPSYS == ePOSIX
 #include <sys/stat.h>
 #include <unistd.h>

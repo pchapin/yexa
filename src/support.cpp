@@ -3,20 +3,20 @@
  *  \author  Peter Chapin <spicacality@kelseymountain.org>
  */
 
-#include "screen/environ.hpp"
-
 #include <cctype>
 #include <cstdarg>
 #include <cstdio>
 #include <cstring>
+
+#include <screen/MessageWindow.hpp>
+#include <screen/environ.hpp>
+#include <screen/scr.hpp>
 
 #include "FileList.hpp"
 #include "FileNameMatcher.hpp"
 #include "Timer.hpp"
 #include "YEditFile.hpp"
 #include "global.hpp"
-#include "screen/MessageWindow.hpp"
-#include "screen/scr.hpp"
 #include "support.hpp"
 
 //! Simple adjustments to the __DATE__ macro.

@@ -7,12 +7,13 @@
 #include <cstring>
 #include <string>
 
+#include <screen/scr.hpp>
+
 #include "EditFile.hpp"
 #include "FileList.hpp"
 #include "YEditFile.hpp"
 #include "command.hpp"
 #include "global.hpp"
-#include "screen/scr.hpp"
 #include "support.hpp"
 #include "yfile.hpp"
 

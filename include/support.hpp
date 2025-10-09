@@ -6,9 +6,11 @@
 #ifndef SUPPORT_HPP
 #define SUPPORT_HPP
 
-#include "EditBuffer.hpp"
-#include "screen/environ.hpp"
 #include <string>
+
+#include <screen/environ.hpp>
+
+#include "EditBuffer.hpp"
 
 char *adjust_date(const char *raw_date);
 

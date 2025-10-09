@@ -7,12 +7,13 @@
 #include <cstring>
 #include <sstream>
 
+#include <screen/scr.hpp>
+
 #include "EditBuffer.hpp"
 #include "WordSource.hpp"
 #include "keyboard.hpp"
 #include "macro_stack.hpp"
 #include "parameter_stack.hpp"
-#include "screen/scr.hpp"
 #include "support.hpp"
 
 //! Returns true if ch is "whitespace".

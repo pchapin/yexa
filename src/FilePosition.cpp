@@ -3,8 +3,9 @@
  *  \author  Peter Chapin <spicacality@kelseymountain.org>
  */
 
+#include <screen/scr.hpp>
+
 #include "FilePosition.hpp"
-#include "screen/scr.hpp"
 
 // When moving the cursor off the edge of the window these values hold the number of lines (or
 // columns) that the window moves in response. Setting these values to 1 results in "smooth"

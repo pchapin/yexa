@@ -6,8 +6,9 @@
 #ifndef SPECIAL_HPP
 #define SPECIAL_HPP
 
+#include <screen/scr.hpp>
+
 #include "YEditFile.hpp"
-#include "screen/scr.hpp"
 
 #define FILE_CLASS(language, color, tab_stop)                                                  \
     class language##_YEditFile : public YEditFile {                                            \

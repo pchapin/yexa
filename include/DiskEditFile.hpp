@@ -9,8 +9,9 @@
 #include <cstdio>
 #include <ctime>
 
+#include <screen/environ.hpp>
+
 #include "EditFile.hpp"
-#include "screen/environ.hpp"
 
 //! Adds disk I/O features to EditFile.
 /*!

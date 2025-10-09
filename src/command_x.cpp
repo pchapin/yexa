@@ -6,9 +6,10 @@
 #include <cctype>
 #include <cstdlib>
 
+#include <screen/scr.hpp>
+
 #include "command.hpp"
 #include "parameter_stack.hpp"
-#include "screen/scr.hpp"
 #include "support.hpp"
 
 // Parameter stack commands for the macro language.

@@ -8,6 +8,8 @@
 #include <cstdlib>
 #include <cstring>
 
+#include <screen/MessageWindow.hpp>
+
 #include "FileList.hpp"
 #include "FileNameMatcher.hpp"
 #include "YEditFile.hpp"
@@ -16,7 +18,6 @@
 #include "global.hpp"
 #include "macro_stack.hpp"
 #include "parameter_stack.hpp"
-#include "screen/MessageWindow.hpp"
 #include "support.hpp"
 #include "yfile.hpp"
 

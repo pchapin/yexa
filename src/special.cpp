@@ -6,8 +6,9 @@
 #include <cctype>
 #include <cstring>
 
+#include <screen/scr.hpp>
+
 #include "EditBuffer.hpp"
-#include "screen/scr.hpp"
 #include "special.hpp"
 #include "support.hpp"
 
