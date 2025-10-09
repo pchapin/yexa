@@ -3,14 +3,14 @@
  *  \author  Peter Chapin <spicacality@kelseymountain.org>
  */
 
-#include "environ.hpp"
+#include "screen/environ.hpp"
 
 #include <cstdio>
 #include <cstdlib>
 
 #include "global.hpp"
 #include "parameter_stack.hpp"
-#include "scr.hpp"
+#include "screen/scr.hpp"
 #include "support.hpp"
 
 //================================================================

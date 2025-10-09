@@ -3,7 +3,7 @@
  *  \author  Peter Chapin <spicacality@kelseymountain.org>
  */
 
-#include "environ.hpp"
+#include "screen/environ.hpp"
 
 // Produce an error for alien operating systems.
 #if !(eOPSYS == eWINDOWS || eOPSYS == ePOSIX)
@@ -33,7 +33,7 @@
 #undef max_colors
 #endif
 
-#include "scr.hpp"
+#include "screen/scr.hpp"
 
 namespace scr {
 

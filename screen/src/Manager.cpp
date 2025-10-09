@@ -6,9 +6,9 @@
 #include <list>
 #include <stdexcept>
 
-#include "ImageBuffer.hpp"
-#include "Manager.hpp"
-#include "scrtools.hpp"
+#include "screen/ImageBuffer.hpp"
+#include "screen/Manager.hpp"
+#include "screen/scrtools.hpp"
 
 using namespace std;
 

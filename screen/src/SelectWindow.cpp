@@ -3,9 +3,9 @@
  *  \author  Peter Chapin <spicacality@kelseymountain.org>
  */
 
-#include "SelectWindow.hpp"
-#include "scr.hpp"
-#include "scrtools.hpp"
+#include "screen/SelectWindow.hpp"
+#include "screen/scr.hpp"
+#include "screen/scrtools.hpp"
 #include <climits>
 
 using namespace std;

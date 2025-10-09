@@ -9,12 +9,12 @@
 #include <cstring>
 
 #include "FileList.hpp"
-#include "MessageWindow.hpp"
 #include "YEditFile.hpp"
 #include "command.hpp"
 #include "global.hpp"
 #include "parameter_stack.hpp"
-#include "scr.hpp"
+#include "screen/MessageWindow.hpp"
+#include "screen/scr.hpp"
 #include "support.hpp"
 
 static void do_replacement(YEditFile &the_file, Parameter &search_parameter,

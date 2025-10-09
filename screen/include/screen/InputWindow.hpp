@@ -1,4 +1,4 @@
-/*! \file    InputWindow.cpp
+/*! \file    ../../src/InputWindow.cpp
  *  \brief   Interface to class InputWindow.
  *  \author  Peter Chapin <spicacality@kelseymountain.org>
  */

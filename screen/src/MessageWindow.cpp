@@ -6,9 +6,9 @@
 #include <cstddef>
 #include <cstring>
 
-#include "MessageWindow.hpp"
-#include "scr.hpp"
-#include "scrtools.hpp"
+#include "screen/MessageWindow.hpp"
+#include "screen/scr.hpp"
+#include "screen/scrtools.hpp"
 
 using namespace std;
 

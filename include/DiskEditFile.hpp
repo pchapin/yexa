@@ -10,7 +10,7 @@
 #include <ctime>
 
 #include "EditFile.hpp"
-#include "environ.hpp"
+#include "screen/environ.hpp"
 
 //! Adds disk I/O features to EditFile.
 /*!

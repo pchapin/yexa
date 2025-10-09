@@ -6,8 +6,8 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
-#include "ImageBuffer.hpp"
-#include "scr.hpp"
+#include "screen/ImageBuffer.hpp"
+#include "screen/scr.hpp"
 #include <memory>
 
 namespace scr {

@@ -12,7 +12,7 @@
 #include "YEditFile.hpp"
 #include "command.hpp"
 #include "global.hpp"
-#include "scr.hpp"
+#include "screen/scr.hpp"
 #include "support.hpp"
 #include "yfile.hpp"
 

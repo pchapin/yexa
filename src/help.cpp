@@ -11,9 +11,9 @@
 
 #include <cstdio>
 
-#include "TextWindow.hpp"
 #include "help.hpp"
-#include "scr.hpp"
+#include "screen/TextWindow.hpp"
+#include "screen/scr.hpp"
 #include "support.hpp"
 
 static const char *const help_1[] = {

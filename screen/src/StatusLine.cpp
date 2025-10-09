@@ -3,8 +3,8 @@
  *  \author  Peter Chapin <spicacality@kelseymountain.org>
  */
 
-#include "StatusLine.hpp"
-#include "scr.hpp"
+#include "screen/StatusLine.hpp"
+#include "screen/scr.hpp"
 
 static const char *default_status()
 {

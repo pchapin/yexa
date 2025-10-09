@@ -15,8 +15,8 @@
 #include "EditBuffer.hpp"
 #include "FileList.hpp"
 #include "YEditFile.hpp"
-#include "scr.hpp"
-#include "scrtools.hpp"
+#include "screen/scr.hpp"
+#include "screen/scrtools.hpp"
 #include "support.hpp"
 #include "yfile.hpp"
 

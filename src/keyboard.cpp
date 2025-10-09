@@ -9,7 +9,7 @@
 #include "YEditFile.hpp"
 #include "command.hpp"
 #include "keyboard.hpp"
-#include "scr.hpp"
+#include "screen/scr.hpp"
 #include "support.hpp"
 
 #define MAX_MACRO_LENGTH 256 // Max number of keystrokes in the keyboard macro.

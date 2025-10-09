@@ -12,7 +12,7 @@
 #include <cstring>
 
 #include "FileList.hpp"
-#include "scr.hpp"
+#include "screen/scr.hpp"
 #include "support.hpp"
 #include "yfile.hpp"
 

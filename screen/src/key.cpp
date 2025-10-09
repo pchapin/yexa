@@ -7,7 +7,7 @@
  * constants in scr.h.
  */
 
-#include "environ.hpp"
+#include "screen/environ.hpp"
 #include <cctype>
 #include <map>
 #include <utility>
@@ -33,7 +33,7 @@
 #include <ncurses.h>
 #endif
 
-#include "scr.hpp"
+#include "screen/scr.hpp"
 
 static bool key_refresh = false;
 

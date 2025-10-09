@@ -3,7 +3,7 @@
  *  \author  Peter Chapin <spicacality@kelseymountain.org>
  */
 
-#include "environ.hpp"
+#include "screen/environ.hpp"
 
 #include <cctype>
 #include <cstdarg>
@@ -12,11 +12,11 @@
 
 #include "FileList.hpp"
 #include "FileNameMatcher.hpp"
-#include "MessageWindow.hpp"
 #include "Timer.hpp"
 #include "YEditFile.hpp"
 #include "global.hpp"
-#include "scr.hpp"
+#include "screen/MessageWindow.hpp"
+#include "screen/scr.hpp"
 #include "support.hpp"
 
 //! Simple adjustments to the __DATE__ macro.

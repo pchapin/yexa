@@ -21,7 +21,7 @@
 #ifdef DEBUG
 
 #include "TextWindow.hpp"
-#include "scr.hpp"
+#include "screen/scr.hpp"
 
 #define DBG_TOP 1
 #define DBG_BOTTOM 2

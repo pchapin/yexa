@@ -6,7 +6,7 @@
 #include <cstdlib>
 #include <cstring>
 
-#include "environ.hpp"
+#include "screen/environ.hpp"
 
 #if eOPSYS != ePOSIX
 #include <dos.h>
@@ -15,8 +15,8 @@
 #include "DiskEditFile.hpp"
 #include "EditBuffer.hpp"
 #include "FileNameMatcher.hpp"
-#include "MessageWindow.hpp"
-#include "scr.hpp"
+#include "screen/MessageWindow.hpp"
+#include "screen/scr.hpp"
 #include "support.hpp"
 
 /*=======================================*/

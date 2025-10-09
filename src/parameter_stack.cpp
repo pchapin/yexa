@@ -8,11 +8,11 @@
 #include <cstring>
 
 #include "EditBuffer.hpp"
-#include "Shadow.hpp"
-#include "Window.hpp"
 #include "global.hpp"
 #include "parameter_stack.hpp"
-#include "scr.hpp"
+#include "screen/Shadow.hpp"
+#include "screen/Window.hpp"
+#include "screen/scr.hpp"
 #include "support.hpp"
 
 Parameter::Parameter(const char *prompt_string)

@@ -3,8 +3,8 @@
  *  \author  Peter Chapin <spicacality@kelseymountain.org>
  */
 
-#include "DisplayWindow.hpp"
-#include "scr.hpp"
+#include "screen/DisplayWindow.hpp"
+#include "screen/scr.hpp"
 #include <climits>
 #include <cstring>
 

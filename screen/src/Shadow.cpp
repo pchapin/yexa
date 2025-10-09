@@ -5,8 +5,8 @@
 
 #include <cstring>
 
-#include "Shadow.hpp"
-#include "scr.hpp"
+#include "screen/Shadow.hpp"
+#include "screen/scr.hpp"
 
 namespace scr {
 

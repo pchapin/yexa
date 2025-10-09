@@ -6,9 +6,9 @@
 #include <cstdlib>
 #include <cstring>
 
-#include "CommandWindow.hpp"
-#include "scr.hpp"
-#include "scrtools.hpp"
+#include "screen/CommandWindow.hpp"
+#include "screen/scr.hpp"
+#include "screen/scrtools.hpp"
 
 using namespace std;
 

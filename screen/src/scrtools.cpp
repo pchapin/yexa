@@ -6,8 +6,8 @@
 #include <cctype>
 #include <cstring>
 
-#include "scr.hpp"
-#include "scrtools.hpp"
+#include "screen/scr.hpp"
+#include "screen/scrtools.hpp"
 
 namespace scr {
 

@@ -3,8 +3,8 @@
  *  \author  Peter Chapin <spicacality@kelseymountain.org>
  */
 
-#include "ImageBuffer.hpp"
-#include "scr.hpp"
+#include "screen/ImageBuffer.hpp"
+#include "screen/scr.hpp"
 #include <cstring>
 
 static void check_region(int row, int column, int width, int height)

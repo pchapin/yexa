@@ -9,8 +9,8 @@
 #include <list>
 #include <string>
 
-#include "ImageBuffer.hpp"
 #include "Manager.hpp"
+#include "screen/ImageBuffer.hpp"
 
 namespace scr {
 

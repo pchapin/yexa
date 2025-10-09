@@ -6,7 +6,7 @@
  * filenames.
  */
 
-#include "environ.hpp"
+#include "screen/environ.hpp"
 
 #include <ctype.h>
 #include <stddef.h>

@@ -7,9 +7,9 @@
 #include <cstdio>
 #include <cstring>
 
-#include "TextWindow.hpp"
-#include "scr.hpp"
-#include "scrtools.hpp"
+#include "screen/TextWindow.hpp"
+#include "screen/scr.hpp"
+#include "screen/scrtools.hpp"
 
 using namespace std;
 

@@ -12,7 +12,7 @@
 #include "global.hpp"
 #include "help.hpp"
 #include "parameter_stack.hpp"
-#include "scr.hpp"
+#include "screen/scr.hpp"
 #include "support.hpp"
 #include "yfile.hpp"
 

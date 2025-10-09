@@ -6,7 +6,7 @@
 #ifndef SELECTWINDOW_HPP
 #define SELECTWINDOW_HPP
 
-#include "DisplayWindow.hpp"
+#include "screen/DisplayWindow.hpp"
 
 namespace scr {
 

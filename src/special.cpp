@@ -7,7 +7,7 @@
 #include <cstring>
 
 #include "EditBuffer.hpp"
-#include "scr.hpp"
+#include "screen/scr.hpp"
 #include "special.hpp"
 #include "support.hpp"
 

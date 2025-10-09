@@ -10,13 +10,13 @@
 
 #include "FileList.hpp"
 #include "FileNameMatcher.hpp"
-#include "MessageWindow.hpp"
 #include "YEditFile.hpp"
 #include "command.hpp"
 #include "command_table.hpp"
 #include "global.hpp"
 #include "macro_stack.hpp"
 #include "parameter_stack.hpp"
+#include "screen/MessageWindow.hpp"
 #include "support.hpp"
 #include "yfile.hpp"
 
