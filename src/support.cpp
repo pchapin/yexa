@@ -10,7 +10,7 @@
 
 #include <screen/MessageWindow.hpp>
 #include <screen/environ.hpp>
-#include <screen/scr.hpp>
+#include <screen/screen.hpp>
 
 #include "FileList.hpp"
 #include "FileNameMatcher.hpp"

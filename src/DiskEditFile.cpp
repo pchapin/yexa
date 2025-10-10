@@ -13,7 +13,7 @@
 #endif
 
 #include <screen/MessageWindow.hpp>
-#include <screen/scr.hpp>
+#include <screen/screen.hpp>
 
 #include "DiskEditFile.hpp"
 #include "EditBuffer.hpp"

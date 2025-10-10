@@ -9,7 +9,7 @@
 #include <cstring>
 
 #include <screen/MessageWindow.hpp>
-#include <screen/scr.hpp>
+#include <screen/screen.hpp>
 
 #include "FileList.hpp"
 #include "YEditFile.hpp"

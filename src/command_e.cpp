@@ -7,7 +7,7 @@
 #include <cstdlib>
 #include <string>
 
-#include <screen/scr.hpp>
+#include <screen/screen.hpp>
 
 #include "FileList.hpp"
 #include "command.hpp"

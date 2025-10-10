@@ -9,7 +9,6 @@ add_library(screen STATIC
     src/ListWindow.cpp
     src/Manager.cpp
     src/MessageWindow.cpp
-    src/scr.cpp
     src/screen.cpp
     src/scrtools.cpp
     src/SelectWindow.cpp

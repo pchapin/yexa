@@ -6,7 +6,7 @@
 #include <cctype>
 #include <cstring>
 
-#include "screen/scr.hpp"
+#include "screen/screen.hpp"
 #include "screen/scrtools.hpp"
 
 namespace scr {

@@ -6,7 +6,7 @@
 #include <cctype>
 #include <cstdlib>
 
-#include <screen/scr.hpp>
+#include <screen/screen.hpp>
 
 #include "command.hpp"
 #include "parameter_stack.hpp"

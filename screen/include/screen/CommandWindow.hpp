@@ -10,7 +10,7 @@
 
 #include "Manager.hpp"
 #include "screen/ImageBuffer.hpp"
-#include "screen/scr.hpp"
+#include "screen/screen.hpp"
 
 namespace scr {
 

@@ -4,7 +4,7 @@
  */
 
 #include "screen/StatusLine.hpp"
-#include "screen/scr.hpp"
+#include "screen/screen.hpp"
 
 static const char *default_status()
 {

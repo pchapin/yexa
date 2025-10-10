@@ -6,7 +6,7 @@
 #ifndef SPECIAL_HPP
 #define SPECIAL_HPP
 
-#include <screen/scr.hpp>
+#include <screen/screen.hpp>
 
 #include "YEditFile.hpp"
 

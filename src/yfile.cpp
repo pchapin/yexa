@@ -11,7 +11,7 @@
 #include <cstdlib>
 #include <cstring>
 
-#include <screen/scr.hpp>
+#include <screen/screen.hpp>
 
 #include "FileList.hpp"
 #include "support.hpp"

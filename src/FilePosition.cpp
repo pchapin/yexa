@@ -3,7 +3,7 @@
  *  \author  Peter Chapin <spicacality@kelseymountain.org>
  */
 
-#include <screen/scr.hpp>
+#include <screen/screen.hpp>
 
 #include "FilePosition.hpp"
 

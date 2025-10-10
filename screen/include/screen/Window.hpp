@@ -7,7 +7,7 @@
 #define WINDOW_H
 
 #include "screen/ImageBuffer.hpp"
-#include "screen/scr.hpp"
+#include "screen/screen.hpp"
 #include <memory>
 
 namespace scr {

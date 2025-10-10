@@ -4,7 +4,7 @@
  */
 
 #include "screen/DisplayWindow.hpp"
-#include "screen/scr.hpp"
+#include "screen/screen.hpp"
 #include <climits>
 #include <cstring>
 

@@ -4,7 +4,7 @@
  */
 
 #include "screen/ImageBuffer.hpp"
-#include "screen/scr.hpp"
+#include "screen/screen.hpp"
 #include <cstring>
 
 static void check_region(int row, int column, int width, int height)

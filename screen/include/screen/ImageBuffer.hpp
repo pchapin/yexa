@@ -6,7 +6,7 @@
 #ifndef IMAGEBUFFER_HPP
 #define IMAGEBUFFER_HPP
 
-#include "screen/scr.hpp"
+#include "screen/screen.hpp"
 #include <cstddef>
 #include <string>
 

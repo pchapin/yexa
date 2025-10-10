@@ -5,7 +5,7 @@
 
 #include <cstring>
 
-#include <screen/scr.hpp>
+#include <screen/screen.hpp>
 
 #include "FileList.hpp"
 #include "YEditFile.hpp"

@@ -4,7 +4,7 @@
  */
 
 #include "screen/SelectWindow.hpp"
-#include "screen/scr.hpp"
+#include "screen/screen.hpp"
 #include "screen/scrtools.hpp"
 #include <climits>
 

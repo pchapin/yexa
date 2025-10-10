@@ -7,7 +7,7 @@
 #include <cstring>
 #include <string>
 
-#include <screen/scr.hpp>
+#include <screen/screen.hpp>
 
 #include "EditFile.hpp"
 #include "FileList.hpp"

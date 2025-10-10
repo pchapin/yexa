@@ -9,7 +9,7 @@
 
 #include <screen/Shadow.hpp>
 #include <screen/Window.hpp>
-#include <screen/scr.hpp>
+#include <screen/screen.hpp>
 
 #include "EditBuffer.hpp"
 #include "global.hpp"

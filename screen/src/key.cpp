@@ -33,7 +33,7 @@
 #include <ncurses.h>
 #endif
 
-#include "screen/scr.hpp"
+#include "screen/screen.hpp"
 
 static bool key_refresh = false;
 

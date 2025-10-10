@@ -12,7 +12,7 @@
 #include <cstdio>
 
 #include <screen/TextWindow.hpp>
-#include <screen/scr.hpp>
+#include <screen/screen.hpp>
 
 #include "help.hpp"
 #include "support.hpp"

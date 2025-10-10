@@ -7,7 +7,7 @@
 #include <cstring>
 
 #include "screen/MessageWindow.hpp"
-#include "screen/scr.hpp"
+#include "screen/screen.hpp"
 #include "screen/scrtools.hpp"
 
 using namespace std;

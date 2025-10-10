@@ -7,7 +7,7 @@
 #include <cstring>
 #include <sstream>
 
-#include <screen/scr.hpp>
+#include <screen/screen.hpp>
 
 #include "EditBuffer.hpp"
 #include "WordSource.hpp"

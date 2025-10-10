@@ -7,7 +7,7 @@
 #include <cstdlib>
 
 #include <screen/environ.hpp>
-#include <screen/scr.hpp>
+#include <screen/screen.hpp>
 
 #include "global.hpp"
 #include "parameter_stack.hpp"

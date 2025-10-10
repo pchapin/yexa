@@ -12,7 +12,7 @@
 #include <cstdlib>
 #include <cstring>
 
-#include <screen/scr.hpp>
+#include <screen/screen.hpp>
 #include <screen/scrtools.hpp>
 
 #include "EditBuffer.hpp"

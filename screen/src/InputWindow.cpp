@@ -6,7 +6,7 @@
 #include <cstring>
 
 #include "screen/InputWindow.hpp"
-#include "screen/scr.hpp"
+#include "screen/screen.hpp"
 #include "screen/scrtools.hpp"
 
 static scr::InputWindowDescriptor *descriptor_list = NULL;
