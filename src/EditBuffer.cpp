@@ -47,15 +47,15 @@ EditBuffer::EditBuffer()
 
 //! Builds an EditBuffer from a c-style string
 /*!
- * Copies the given string into the EditBuffer. If the input parameter is NULL, this constructor
+ * Copies the given string into the EditBuffer. If the input parameter is nullptr, this constructor
  * behaves identically to the default constructor.
  *
  * \param str Pointer to a null terminated array of characters.
  * \throws std::bad_alloc if insufficient memory available.
  */
-EditBuffer::EditBuffer(const char *const str) : workspace(NULL), capacity(0), size(0)
+EditBuffer::EditBuffer(const char *const str) : workspace(nullptr), capacity(0), size(0)
 {
-    if (str == NULL) {
+    if (str == nullptr) {
         capacity = initial_capacity;
         workspace = new char[capacity];
         size = 0;
@@ -78,7 +78,7 @@ EditBuffer::EditBuffer(const char *const str) : workspace(NULL), capacity(0), si
  * \param existing The EditBuffer to copy.
  * \throws std::bad_alloc if there is insufficient memory.
  */
-EditBuffer::EditBuffer(const EditBuffer &existing) : workspace(NULL), capacity(0), size(0)
+EditBuffer::EditBuffer(const EditBuffer &existing) : workspace(nullptr), capacity(0), size(0)
 {
     capacity = round_up(existing.size);
     workspace = new char[capacity];
@@ -292,12 +292,12 @@ void EditBuffer::append(const char letter)
  * If an exception is thrown during the execution of this method, there is no effect on the
  * original object.
  *
- * \param additional The null terminated c-style string to append. If NULL there is no effect.
+ * \param additional The null terminated c-style string to append. If nullptr there is no effect.
  * \throws std::bad_alloc if there is insufficient memory.
  */
 void EditBuffer::append(const char *const additional)
 {
-    if (additional == NULL)
+    if (additional == nullptr)
         return;
     const size_t additional_size = strlen(additional);
 

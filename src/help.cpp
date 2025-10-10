@@ -33,7 +33,7 @@ static const char *const help_1[] = {
     "",
     "Shift+F5       Technical information on Y\'s file list.",
     "Shift+F6       Technical information on the current file.",
-    NULL};
+    nullptr};
 
 static const char *const help_2[] = {
     "INVOKING AND TERMINATING",
@@ -50,7 +50,7 @@ static const char *const help_2[] = {
     "Alt+Y          Exit, save changes, save state information.",
     "Alt+X          Exit, save changes.",
     "Alt+Q          Exit, abandon changes.",
-    NULL};
+    nullptr};
 
 static const char *const help_3[] = {
     "MOVING THE CURSOR",
@@ -70,7 +70,7 @@ static const char *const help_3[] = {
     "",
     "F9                       Jump to line number.",
     "Alt+F9                   Jump to column number.",
-    NULL};
+    nullptr};
 
 static const char *const help_4[] = {
     "CREATING AND DESTROYING TEXT",
@@ -90,7 +90,7 @@ static const char *const help_4[] = {
     "Certain control characters must be prefixed with ^Q  to be",
     "put into the file. Namely  ^E, ^I (TAB), ^K, ^M (CR),  ^Q,",
     "^R, and ^[ (ESC). Don\'t try to put ^J or ^@ into the file.",
-    NULL};
+    nullptr};
 
 static const char *const help_5[] = {"HANDLING FILES",
                                      "",
@@ -109,7 +109,7 @@ static const char *const help_5[] = {"HANDLING FILES",
                                      "",
                                      "F8        Insert a file into the current file.",
                                      "Alt+F8    Insert current file or block into a file.",
-                                     NULL};
+                                     nullptr};
 
 static const char *const help_6[] = {
     "BLOCK MODE",
@@ -128,7 +128,7 @@ static const char *const help_6[] = {
     "",
     "If block mode is not on, F6 will cut the current line to",
     "the clipboard. Alt+F6 works similarly.",
-    NULL};
+    nullptr};
 
 static const char *const help_7[] = {
     "USING EXTERNAL COMMANDS",
@@ -148,7 +148,7 @@ static const char *const help_7[] = {
     "",
     "Shft+F10  Pipe file or block into STDIN of external",
     "          program.",
-    NULL};
+    nullptr};
 
 static const char *const help_8[] = {
     "SEARCH AND REPLACE",
@@ -167,7 +167,7 @@ static const char *const help_8[] = {
     "",
     "If block mode is on, a search and replace operation is",
     "done only over the block.",
-    NULL};
+    nullptr};
 
 static const char *const help_9[] = {
     "KEYBOARD MACROS",
@@ -187,7 +187,7 @@ static const char *const help_9[] = {
     "",
     "Keyboard macros can contain repeat sequences. Keyboard",
     "macros can be repeated.",
-    NULL};
+    nullptr};
 
 static const char *const help_10[] = {
     "MISC COMMANDS",
@@ -200,7 +200,7 @@ static const char *const help_10[] = {
     "          wrapped and short lines are filled.",
     "",
     "Alt+T     Change tab stop distance for the current file.",
-    NULL};
+    nullptr};
 
 const HelpScreen h_screens[] = {
     {help_1, &h_screens[1], &h_screens[9]}, {help_2, &h_screens[2], &h_screens[0]},
@@ -223,7 +223,7 @@ static const char *const editor_1[] = {
     "Randolph Center, VT. I\'d like to thank the students and",
     "faculty of VTC  for finding so many bugs in the earlier",
     "versions of this program.",
-    NULL};
+    nullptr};
 
 const HelpScreen e_screens[] = {{editor_1, &e_screens[0], &e_screens[0]}};
 
@@ -241,7 +241,7 @@ static const char *const legal_1[] = {
     "warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR",
     "PURPOSE. See the GNU General Public License for more",
     "details.",
-    NULL};
+    nullptr};
 
 static const char *const legal_2[] = {"                  CONTACT INFORMATION",
                                       "",
@@ -251,7 +251,7 @@ static const char *const legal_2[] = {"                  CONTACT INFORMATION",
                                       "     Vermont Technical College",
                                       "     Williston, VT 05495 (USA)",
                                       "     chapinp@acm.org",
-                                      NULL};
+                                      nullptr};
 
 const HelpScreen l_screens[] = {{legal_1, &l_screens[1], &l_screens[1]},
                                 {legal_2, &l_screens[0], &l_screens[0]}};
@@ -283,7 +283,7 @@ const HelpScreen *display_screens(const HelpScreen *const base, const HelpScreen
         bool stop = false;
         view_port.home();
         for (i = 1; !stop && i <= viewer_height - 2; i++) {
-            if (current->current_screen[i - 1] == NULL)
+            if (current->current_screen[i - 1] == nullptr)
                 stop = true;
             else
                 view_port.print(current->current_screen[i - 1]);

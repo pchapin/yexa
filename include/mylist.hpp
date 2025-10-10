@@ -88,7 +88,7 @@ template <typename T> class List {
 
     //! Used to iterate over a list.
     /*!
-     * The constructor starts the iteration. Use operator() repeatedly until NULL is returned.
+     * The constructor starts the iteration. Use operator() repeatedly until nullptr is returned.
      * Note that the original current point of the list is restored after the iteration has
      * finished.
      */
@@ -97,7 +97,7 @@ template <typename T> class List {
         //! Constructor remembers the list's current point and sets CP to zero.
         explicit Iterator(List &L) : Mark(L) { Mark::the_list.jump_to(0); }
 
-        //! Returns pointer to next item on the list or NULL of none left.
+        //! Returns pointer to next item on the list or nullptr of none left.
         T *operator()() { return Mark::the_list.next(); }
     };
 };
@@ -160,7 +160,7 @@ template <typename T> List<T>::List(const List &existing)
 
     initialize();
     Iterator stepper(const_cast<List &>(existing));
-    while ((object_ptr = stepper()) != NULL) {
+    while ((object_ptr = stepper()) != nullptr) {
         insert(*object_ptr);
     }
 }
@@ -176,7 +176,7 @@ template <typename T> List<T> &List<T>::operator=(const List &existing)
     List temp;
 
     Iterator stepper(const_cast<List &>(existing));
-    while ((object_ptr = stepper()) != NULL) {
+    while ((object_ptr = stepper()) != nullptr) {
         temp.insert(*object_ptr);
     }
     std::swap(head, temp.head);
@@ -269,12 +269,12 @@ template <typename T> void List<T>::jump_to(const long new_index)
 
 //! Like *p++.
 /*!
- * \return NULL if nothing left in the list. Current point not changed in that case.
+ * \return nullptr if nothing left in the list. Current point not changed in that case.
  */
 template <typename T> T *List<T>::next()
 {
     if (index == item_count)
-        return NULL;
+        return nullptr;
 
     T *const result = &(static_cast<Node *>(current)->data);
     current = current->next;
@@ -284,12 +284,12 @@ template <typename T> T *List<T>::next()
 
 //! Like *--p.
 /*!
- * \return NULL if nothing left in the list. Current point not changed in that case.
+ * \return nullptr if nothing left in the list. Current point not changed in that case.
  */
 template <typename T> T *List<T>::previous()
 {
     if (index == 0)
-        return NULL;
+        return nullptr;
 
     current = current->previous;
     index--;

@@ -9,7 +9,7 @@
 #include "screen/screen.hpp"
 #include "screen/scrtools.hpp"
 
-static scr::InputWindowDescriptor *descriptor_list = NULL;
+static scr::InputWindowDescriptor *descriptor_list = nullptr;
 
 namespace scr {
 

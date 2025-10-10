@@ -17,7 +17,7 @@ class EditBuffer;
  *  allocated. They should not be shared between two instances of EditList, except perhaps
  *  temporarily. The destructor of EditList deletes all the pointers on the list as a service.
  *
- *  Note that the underlying List template allows one to put NULL pointers on the list. However,
+ *  Note that the underlying List template allows one to put nullptr pointers on the list. However,
  *  EditList do not allow this, trading in generality for an easier interface. In effect,
  *  EditList removes a level of indirection allowing its clients to deal with pointers to
  *  EditBuffers rather than pointers to pointers to EditBuffers.
@@ -35,22 +35,22 @@ class EditList : private List<EditBuffer *> {
 
     //! Returns the next EditBuffer* in the list.
     /*!
-     * \return NULL if there are no other elements.
+     * \return nullptr if there are no other elements.
      */
     EditBuffer *next()
     {
         EditBuffer *const *const result = List<EditBuffer *>::next();
-        return (result == NULL ? NULL : *result);
+        return (result == nullptr ? nullptr : *result);
     }
 
     //! Returns the previous EditBuffer* in the list.
     /*!
-     * \return NULL if there are no other elements.
+     * \return nullptr if there are no other elements.
      */
     EditBuffer *previous()
     {
         EditBuffer *const *const result = List<EditBuffer *>::previous();
-        return (result == NULL ? NULL : *result);
+        return (result == nullptr ? nullptr : *result);
     }
 
     //! Inserts a new EditBuffer* before the list's current point.
@@ -70,7 +70,7 @@ class EditList : private List<EditBuffer *> {
     EditBuffer *get()
     {
         EditBuffer *const *const result = List<EditBuffer *>::get();
-        return (result == NULL ? NULL : *result);
+        return (result == nullptr ? nullptr : *result);
     }
 
     void clear();

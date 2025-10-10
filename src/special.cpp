@@ -12,21 +12,21 @@
 #include "special.hpp"
 #include "support.hpp"
 
-const char *asm_keys[] = {"MACRO", "macro", "PROC", "proc", "STRUCT", "struct", NULL};
+const char *asm_keys[] = {"MACRO", "macro", "PROC", "proc", "STRUCT", "struct", nullptr};
 
 const char *ada_keys[] = {"FUNCTION",  "function", "Function",  "PACKAGE",
                           "package",   "Package",  "PROCEDURE", "procedure",
                           "Procedure", "TASK",     "task",      "Task",
-                          "ACCEPT",    "accept",   "Accept",    NULL};
+                          "ACCEPT",    "accept",   "Accept",    nullptr};
 
-const char *pseudocode_keys[] = {"CLASS", "FUNCTION", "TYPE", NULL};
+const char *pseudocode_keys[] = {"CLASS", "FUNCTION", "TYPE", nullptr};
 
 static const char *check_keys(const std::string &line, const char **keys)
 {
-    const char *subline = NULL;
+    const char *subline = nullptr;
 
-    while (*keys != NULL) {
-        if ((subline = std::strstr(line.c_str(), *keys)) != NULL)
+    while (*keys != nullptr) {
+        if ((subline = std::strstr(line.c_str(), *keys)) != nullptr)
             return subline;
         keys++;
     }
@@ -58,14 +58,14 @@ bool ADA_YEditFile::next_procedure()
     file_data.jump_to(current_point.cursor_line());
     file_data.next();
 
-    while (!found && ((line = file_data.next()) != NULL)) {
+    while (!found && ((line = file_data.next()) != nullptr)) {
         std::string temp = line->to_string();
         const char *substring = check_keys(temp, ada_keys);
         const char *comment;
         if (substring) {
 
             // Ignore keywords inside of comments.
-            if ((comment = std::strstr(temp.c_str(), "--")) == NULL)
+            if ((comment = std::strstr(temp.c_str(), "--")) == nullptr)
                 found = true;
             else if (substring < comment)
                 found = true;
@@ -89,14 +89,14 @@ bool ADA_YEditFile::previous_procedure()
 
     file_data.jump_to(current_point.cursor_line());
 
-    while (!found && ((line = file_data.previous()) != NULL)) {
+    while (!found && ((line = file_data.previous()) != nullptr)) {
         std::string temp = line->to_string();
         const char *substring = check_keys(temp, ada_keys);
         const char *comment;
         if (substring) {
 
             // Ignore keywords inside of comments.
-            if ((comment = std::strstr(temp.c_str(), "--")) == NULL)
+            if ((comment = std::strstr(temp.c_str(), "--")) == nullptr)
                 found = true;
             else if (substring < comment)
                 found = true;
@@ -125,7 +125,7 @@ bool ASM_YEditFile::next_procedure()
     file_data.jump_to(current_point.cursor_line());
     file_data.next();
 
-    while (!found && ((line = file_data.next()) != NULL)) {
+    while (!found && ((line = file_data.next()) != nullptr)) {
         std::string temp = line->to_string();
         const char *substring = check_keys(temp, asm_keys);
         if (substring) {
@@ -153,7 +153,7 @@ bool ASM_YEditFile::previous_procedure()
 
     file_data.jump_to(current_point.cursor_line());
 
-    while (!found && ((line = file_data.previous()) != NULL)) {
+    while (!found && ((line = file_data.previous()) != nullptr)) {
         std::string temp = line->to_string();
         const char *substring = check_keys(temp, asm_keys);
         if (substring) {
@@ -333,7 +333,7 @@ bool PCD_YEditFile::next_procedure()
     file_data.jump_to(current_point.cursor_line());
     file_data.next();
 
-    while (!found && ((line = file_data.next()) != NULL)) {
+    while (!found && ((line = file_data.next()) != nullptr)) {
         std::string temp = line->to_string();
         const char *substring = check_keys(temp, pseudocode_keys);
         if (substring)
@@ -357,7 +357,7 @@ bool PCD_YEditFile::previous_procedure()
 
     file_data.jump_to(current_point.cursor_line());
 
-    while (!found && ((line = file_data.previous()) != NULL)) {
+    while (!found && ((line = file_data.previous()) != nullptr)) {
         std::string temp = line->to_string();
         const char *substring = check_keys(temp, pseudocode_keys);
         if (substring)
@@ -397,7 +397,7 @@ bool SCALA_YEditFile::next_procedure()
 
     file_data.jump_to(0);
 
-    while ((line = file_data.next()) != NULL) {
+    while ((line = file_data.next()) != nullptr) {
         std::string temp = line->to_string();
         line_count = brace_count(temp);
         if (total_count == 0 && line_count > 0 && file_data.current_index() - 1 > line_number) {
@@ -432,7 +432,7 @@ bool SCALA_YEditFile::previous_procedure()
 
     file_data.jump_to(0);
 
-    while ((line = file_data.next()) != NULL) {
+    while ((line = file_data.next()) != nullptr) {
         if (file_data.current_index() - 1 == line_number)
             break;
         std::string temp = line->to_string();

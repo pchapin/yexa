@@ -50,7 +50,7 @@ namespace scr {
         bool show_trace;             //!< True if destructor is to activate a breakpoint.
 
       public:
-        Tracer(const char *trace_name, int trace_level, const char *format = NULL, ...);
+        Tracer(const char *trace_name, int trace_level, const char *format = nullptr, ...);
 
         // ~Tracer( );
     };

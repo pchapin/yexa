@@ -13,7 +13,7 @@
 const EditBuffer *LineEditFile::get_line()
 {
     if (!extend_to_line(current_point.cursor_line()))
-        return NULL;
+        return nullptr;
     file_data.jump_to(current_point.cursor_line());
     return file_data.get();
 }
@@ -28,7 +28,7 @@ unsigned LineEditFile::CP_line_length()
 
     file_data.jump_to(current_point.cursor_line());
     current_line = file_data.get();
-    if (current_line == NULL)
+    if (current_line == nullptr)
         return 0;
     return current_line->length();
 }
@@ -47,7 +47,7 @@ bool LineEditFile::insert_line(const EditBuffer *new_line)
     // Make changes.
     is_changed = true;
     EditBuffer *new_stuff = new EditBuffer(*new_line);
-    if (file_data.insert(new_stuff) == NULL) {
+    if (file_data.insert(new_stuff) == nullptr) {
         memory_message("Can't insert line into file");
         return false;
     }
@@ -71,7 +71,7 @@ bool LineEditFile::replace_line(const EditBuffer *new_line)
     file_data.erase();
 
     EditBuffer *new_stuff = new EditBuffer(*new_line);
-    if (file_data.insert(new_stuff) == NULL) {
+    if (file_data.insert(new_stuff) == nullptr) {
         memory_message("Can't insert line into file");
         return false;
     }
@@ -109,7 +109,7 @@ void LineEditFile::delete_to_EOL()
     while (top++ <= bottom) {
 
         // If there's nothing left in the file, just break out.
-        if (file_data.get() == NULL)
+        if (file_data.get() == nullptr)
             break;
 
         // Delete all the characters on this line to the end.

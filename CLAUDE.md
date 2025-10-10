@@ -1,10 +1,14 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this
+repository.
 
 ## Project Overview
 
-Yexa is a cross-platform terminal text editor written in C++17, inspired by the legacy "Y" editor. It's a fresh modernization of an editor originally designed for DOS in the early 1990s. The codebase is currently a light refactoring of the original Y editor and requires significant modernization work.
+Yexa is a cross-platform terminal text editor written in C++17, inspired by the legacy "Y"
+editor. It's a fresh modernization of an editor originally designed for DOS in the early 1990s.
+The codebase is currently a light refactoring of the original Y editor and requires significant
+modernization work.
 
 **Target platforms**: Linux, macOS, and Windows using GCC, clang, and MSVC
 **Build system**: CMake
@@ -26,7 +30,8 @@ The build is configured in `CMakeLists.txt` and produces the `yexa` executable.
 
 ### Core Design Pattern: Multiple Inheritance Hierarchy
 
-The editor uses a sophisticated multiple inheritance pattern where functionality is composed through "mixins". The central class is `YEditFile`, which combines multiple capabilities:
+The editor uses a sophisticated multiple inheritance pattern where functionality is composed
+through "mixins". The central class is `YEditFile`, which combines multiple capabilities:
 
 ```cpp
 class YEditFile : public virtual EditFile,     // Base (virtual base class)
@@ -39,7 +44,8 @@ class YEditFile : public virtual EditFile,     // Base (virtual base class)
                   public WPEditFile             // Word processing
 ```
 
-All these classes inherit from `EditFile` as a virtual base class. This design allows mixing and matching functionality to create specialized editor file types.
+All these classes inherit from `EditFile` as a virtual base class. This design allows mixing and
+matching functionality to create specialized editor file types.
 
 ### Key Components
 

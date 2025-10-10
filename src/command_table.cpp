@@ -107,7 +107,7 @@ static DispatchTableEntry command_table[] = {{"add_text", add_text_command},
                                              {"getch", getch_command},
 
                                              // Special marker at end.
-                                             {NULL, NULL}};
+                                             {nullptr, nullptr}};
 
 //! Scan the command table looking for index of the specified macro word.
 /*!
@@ -120,7 +120,7 @@ static int scan_table(const std::string &word)
     int index = 0;
 
     // While there is more to the table, return the current index if this is right entry.
-    while (command_table[index].macro_word != NULL) {
+    while (command_table[index].macro_word != nullptr) {
         if (std::strcmp(command_table[index].macro_word, word.c_str()) == 0)
             return index;
         index++;

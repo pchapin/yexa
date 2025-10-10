@@ -12,7 +12,7 @@
 
 using namespace std;
 
-static const struct scr::MessageWindowDescriptor *descriptor_list = NULL;
+static const struct scr::MessageWindowDescriptor *descriptor_list = nullptr;
 
 namespace scr {
 
@@ -96,7 +96,7 @@ namespace scr {
 
         // Calculate width. Header text considered only if it exists.
         int width = strlen(current_text);
-        if (ACTIVE_DESC.header_text != NULL)
+        if (ACTIVE_DESC.header_text != nullptr)
             if (strlen(ACTIVE_DESC.header_text) > static_cast<size_t>(width))
                 width = strlen(ACTIVE_DESC.header_text);
         width += 4;
@@ -105,7 +105,7 @@ namespace scr {
 
         // Calculate height.
         int height = 4;
-        if (ACTIVE_DESC.header_text == NULL)
+        if (ACTIVE_DESC.header_text == nullptr)
             height--;
 
         // Calculate position of window.
@@ -128,7 +128,7 @@ namespace scr {
             row = SimpleWindow::row();
 
             // Print text into window.
-            if (ACTIVE_DESC.header_text != NULL) {
+            if (ACTIVE_DESC.header_text != nullptr) {
                 center(row, SimpleWindow::column(), SimpleWindow::width(),
                        ACTIVE_DESC.header_attribute, ACTIVE_DESC.header_text);
                 row++;

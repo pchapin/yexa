@@ -26,7 +26,7 @@ static void get_time_as_integer(mytimer_t &result)
 
 #if eOPSYS == ePOSIX
     struct timeval time_info;
-    gettimeofday(&time_info, NULL);
+    gettimeofday(&time_info, nullptr);
     result.seconds = time_info.tv_sec;
     result.milliseconds = time_info.tv_usec / 1000;
 #endif

@@ -13,7 +13,7 @@ class LineEditFile : private virtual EditFile {
   public:
     /*!
      * Returns a pointer to the text of the current line. This function will cause the file to
-     * extend if the current line is off the end of the data. It returns NULL if the extension
+     * extend if the current line is off the end of the data. It returns nullptr if the extension
      * fails.
      */
     const EditBuffer *get_line();

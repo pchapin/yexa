@@ -84,7 +84,7 @@ bool DiskEditFile::read_disk(std::FILE *disk)
     // Get some memory for the incoming line. Start with chunk_size bytes.
     workspace = static_cast<char *>(std::malloc(chunk_size * sizeof(char)));
     chunk_count = 1;
-    if (workspace == NULL)
+    if (workspace == nullptr)
         return false;
 
     // Loop until an error occurs or the entire file is read.
@@ -101,14 +101,14 @@ bool DiskEditFile::read_disk(std::FILE *disk)
             // Terminate the workspace (there will always be room) and install the line.
             workspace[count] = '\0';
             EditBuffer *new_copy = new EditBuffer(workspace);
-            if (file_data.insert(new_copy) == NULL)
+            if (file_data.insert(new_copy) == nullptr)
                 abort = true;
 
             // Release the current workspace and grab another initial one.
             std::free(workspace);
             workspace = static_cast<char *>(std::malloc(chunk_size * sizeof(char)));
             chunk_count = 1;
-            if (workspace == NULL)
+            if (workspace == nullptr)
                 abort = true;
 
             // Reset character counter.
@@ -130,7 +130,7 @@ bool DiskEditFile::read_disk(std::FILE *disk)
                 workspace = static_cast<char *>(
                     std::realloc(workspace, chunk_size * (chunk_count + 1)));
                 chunk_count++;
-                if (workspace == NULL)
+                if (workspace == nullptr)
                     abort = true;
             }
         }
@@ -140,7 +140,7 @@ bool DiskEditFile::read_disk(std::FILE *disk)
     workspace[count] = '\0';
     if (!std::ferror(disk) && std::strlen(workspace) > 0) {
         EditBuffer *new_copy = new EditBuffer(workspace);
-        if (file_data.insert(new_copy) == NULL)
+        if (file_data.insert(new_copy) == nullptr)
             abort = true;
     }
 
@@ -173,7 +173,7 @@ bool DiskEditFile::write_disk(std::FILE *disk)
 
     // For each line in the EditFile object...
     file_data.jump_to(0);
-    while (result != EOF && (line = file_data.next()) != NULL) {
+    while (result != EOF && (line = file_data.next()) != nullptr) {
         result = write_line(line, disk);
     }
 
@@ -197,7 +197,7 @@ bool DiskEditFile::write_disk_block(std::FILE *disk)
 
     // For each line in the block...
     file_data.jump_to(top);
-    while (result != EOF && top++ <= bottom && (line = file_data.next()) != NULL) {
+    while (result != EOF && top++ <= bottom && (line = file_data.next()) != nullptr) {
         result = write_line(line, disk);
     }
 
@@ -272,7 +272,7 @@ bool DiskEditFile::load(const char *the_name)
 
     // Try to open the file.
     std::FILE *disk;
-    if ((disk = std::fopen(the_name, "r")) == NULL) {
+    if ((disk = std::fopen(the_name, "r")) == nullptr) {
         error_message("Can't open %s for reading", the_name);
         return false;
     }
@@ -346,7 +346,7 @@ bool DiskEditFile::save(const char *the_name, Mode save_mode)
 
     // Try to open the file.
     std::FILE *disk;
-    if ((disk = std::fopen(the_name, "w")) == NULL) {
+    if ((disk = std::fopen(the_name, "w")) == nullptr) {
         error_message("Can't open %s for output", the_name);
 
 #if eOPSYS != ePOSIX

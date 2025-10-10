@@ -1,4 +1,4 @@
-/*! \file    y.cpp
+/*! \file    yexa.cpp
  *  \brief   Main program of the Y editor.
  *  \author  Peter Chapin <spicacality@kelseymountain.org>
  */
@@ -30,8 +30,8 @@ const int W_attr = scr::REV_WHITE;
 
 // Descriptors for message windows. See documentation for MessageWindow for details.
 static scr::MessageWindowDescriptor my_mdescriptors[] = {
-    {W_attr, scr::SINGLE_LINE, W_attr, NULL, W_attr, '\0'},
-    {W_attr, scr::SINGLE_LINE, W_attr, NULL, W_attr, scr::MESSAGE_WINDOW_ANY},
+    {W_attr, scr::SINGLE_LINE, W_attr, nullptr, W_attr, '\0'},
+    {W_attr, scr::SINGLE_LINE, W_attr, nullptr, W_attr, scr::MESSAGE_WINDOW_ANY},
     {W_attr, scr::SINGLE_LINE, W_attr, "Warning", W_attr, scr::K_ESC},
     {W_attr, scr::SINGLE_LINE, W_attr, "Sorry", W_attr, scr::K_ESC},
     {W_attr, scr::SINGLE_LINE, W_attr, "Bug Found!", W_attr | scr::BLINK, scr::K_ESC}};
@@ -43,7 +43,7 @@ static scr::MessageWindowDescriptor my_mdescriptors[] = {
 /*!
  * Search for and execute the startup macro. The command line has been placed onto the parameter
  * stack before this function is called. When this function returns, the material on the
- * parameter stack is processed as the command line. Thus a command line directive to put the
+ * parameter stack is processed as the command line. Thus, a command line directive to put the
  * editor into restricted mode will not be in force during the starup macro.
  *
  * The parameter EXE_Directory is the name of the directory containing the executable. That
@@ -56,14 +56,14 @@ static void execute_startup_macro(EditBuffer &EXE_directory)
 
     startup_file.set_name("ystart.ymy");
 
-    // First let's see if it's in the current directory (project specific).
-    if (startup_file.next() != NULL) {
+    // First let's see if it's in the current directory (project-specific).
+    if (startup_file.next() != nullptr) {
         parameter_stack.push("ystart.ymy");
         execute_file_command();
     }
 
     // Next, let's see if it's in the environment.
-    else if ((file_name = std::getenv("YSTART")) != NULL) {
+    else if ((file_name = std::getenv("YSTART")) != nullptr) {
         parameter_stack.push(file_name);
         execute_file_command();
     }
@@ -75,7 +75,7 @@ static void execute_startup_macro(EditBuffer &EXE_directory)
         EXE_directory.append("ystart.ymy");
         startup_file.set_name(EXE_directory.to_string().c_str());
 
-        if (startup_file.next() != NULL) {
+        if (startup_file.next() != nullptr) {
             parameter_stack.push(EXE_directory);
             execute_file_command();
         }
@@ -109,7 +109,7 @@ static bool process_yfile()
 {
     EditBuffer active_name;
 
-    // First, read the file into the descriptors array.
+    // First, read the file into the descriptor array.
     read_yfile();
 
     // Save filelist.yfy when doing external commands.
@@ -118,7 +118,7 @@ static bool process_yfile()
     // Scan the descriptor list and load up the non deleted files.
     List<FileDescriptor>::Iterator stepper(descriptor_list);
     FileDescriptor *next;
-    while ((next = stepper()) != NULL) {
+    while ((next = stepper()) != nullptr) {
 
         // Only process files that are not "deleted."
         if (!next->is_deleted()) {
@@ -160,7 +160,7 @@ static bool process_command_line()
     bool first_file = true;  // =false if at least one file loaded.
     YEditFile *leading_file; // Reference to the first file loaded.
 
-    // Default value for initial position = no change.
+    // Default value for the initial position = no change.
     long line_number = -1;
     int column_number = -1;
 
@@ -176,13 +176,13 @@ static bool process_command_line()
         if (parameter[0U] == '-' || parameter[0U] == '/') {
             switch (parameter[1U]) {
 
-            // Set initial line number. Note that user's line number 1 based.
+            // Set the initial line number. Note that the user's line number is 1-based.
             case 'l':
             case 'L':
                 line_number = std::atol(parameter.c_str() + 2) - 1L;
                 break;
 
-                // Set initial column number. Note that user's column number 1 based.
+                // Set the initial column number. Note that the user's column number is 1-based.
             case 'c':
             case 'C':
                 column_number = std::atoi(parameter.c_str() + 2) - 1;
@@ -236,13 +236,13 @@ static bool process_command_line()
             wild_match.set_name(workspace_string.c_str());
 
             // If no files match the spec, assume the spec is the name of a new file.
-            if ((file_name = wild_match.next()) == NULL) {
+            if ((file_name = wild_match.next()) == nullptr) {
 
                 // Tell the user if they tried a wildcard and there were no matches. DON'T take
                 // the failed wildcard string as a filename!
                 //
-                if (std::strchr(workspace_string.c_str(), '*') != NULL ||
-                    std::strchr(workspace_string.c_str(), '?') != NULL) {
+                if (std::strchr(workspace_string.c_str(), '*') != nullptr ||
+                    std::strchr(workspace_string.c_str(), '?') != nullptr) {
                     warning_message("No files match %s", workspace_string.c_str());
                 }
                 else {
@@ -261,8 +261,8 @@ static bool process_command_line()
             // It is a valid wildcard spec (there are matching files).
             else {
 
-                // Loop over all names which match the wildcard spec and load them.
-                while (file_name != NULL) {
+                // Loop over all names that match the wildcard spec and load them.
+                while (file_name != nullptr) {
 
                     load_file(file_name, line_number, column_number);
 

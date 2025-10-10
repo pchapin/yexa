@@ -254,10 +254,10 @@ static bool trace_state = true;  //!< True if traces are to be done.
 static bool initialized = false; //!< True when debugging system initialized.
 static char show_names[MAX_SHOWS][MAX_NAME_LEN + 1]; //!< Identifies start points.
 static SnapInfo snappers[MAX_SNAPS];                 //!< Holds snap shot functions.
-static int number_of_shows = 0;                      //!< Number of start points in Start_Names.
-static int number_of_snaps = 0;              //!< Number of snapshot functions in snappers.
-static int window_position;                  //!< Location of command window.
-static scr::DebugWindow *command_window = 0; //!< Pointer to the command window.
+static int number_of_shows = 0;                          //!< Number of start points in Start_Names.
+static int number_of_snaps = 0;                  //!< Number of snapshot functions in snappers.
+static int window_position;                      //!< Location of command window.
+static scr::DebugWindow *command_window = nullptr; //!< Pointer to the command window.
 
 #endif
 
@@ -672,12 +672,12 @@ namespace scr {
         // Create the command window.
         command_window =
             new DebugWindow("Debugging Command Window", number_of_columns() - 8, 5);
-        if (command_window == 0)
+        if (command_window == nullptr)
             return;
 
         // Create the title window.
         title_window = new TextWindow;
-        if (title_window != NULL) {
+        if (title_window != nullptr) {
             title_window->open(command_window->row() - 4, command_window->column() - 3, 23, 6,
                                BRIGHT | WHITE | REV_MAGENTA, DOUBLE_LINE);
             title_window->print("C++ Debugging System");
@@ -760,7 +760,7 @@ namespace scr {
 
         // Prepare buffer for information output. BUG: problem if buffer overflows!
         va_start(args, format_string);
-        if (format_string != NULL)
+        if (format_string != nullptr)
             vsnprintf(buffer, MAX_NAME_LEN + GENERIC_BUF_SIZE + 1, format_string, args);
         else
             buffer[0] = '\0';

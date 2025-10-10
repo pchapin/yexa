@@ -27,7 +27,7 @@ namespace scr {
         char *workspace;
 
         // Ignore call if shadow already open.
-        if (background != NULL)
+        if (background != nullptr)
             return;
 
         // Adjust size so that shadow does not overlap the boundary of the screen.
@@ -38,7 +38,7 @@ namespace scr {
 
         // Get memory to hold the true image. Only attributes are really necessary.
         background = new char[2 * width * height];
-        if (background != NULL) {
+        if (background != nullptr) {
 
             // Copy true image into storage.
             read(row, column, width, height, background);
@@ -49,7 +49,7 @@ namespace scr {
 
             // Get workspace.
             workspace = new char[2 * width * height];
-            if (workspace != NULL) {
+            if (workspace != nullptr) {
 
                 // Get another copy of the image.
                 std::memcpy(workspace, background, 2 * width * height);
@@ -70,12 +70,12 @@ namespace scr {
     void Shadow::close()
     {
         // Do something only if there exists a saved background.
-        if (background != NULL) {
+        if (background != nullptr) {
 
             // Write the original attributes (and text) back onto the screen.
             write(top_row, left_column, shadow_width, shadow_height, background);
             delete background;
-            background = NULL;
+            background = nullptr;
         }
     }
 

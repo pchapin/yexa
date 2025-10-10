@@ -152,10 +152,10 @@ bool find_file_command()
     // Casting away const here is gross. When the TODO above is handled this will be fixed.
     argv[1] = std::strtok(const_cast<char *>(workspace.c_str()), " ");
     int i;
-    for (i = 2; i < WORDS + 1 && argv[i - 1] != NULL; i++) {
-        argv[i] = std::strtok(NULL, " ");
+    for (i = 2; i < WORDS + 1 && argv[i - 1] != nullptr; i++) {
+        argv[i] = std::strtok(nullptr, " ");
     }
-    argv[i] = NULL;
+    argv[i] = nullptr;
 
     return load_files(argv);
 }
@@ -190,14 +190,14 @@ bool foreground_color_command()
 
     // Search the colors array looking for a match.
     ColorInfo *current = colors;
-    while (current->color_name != NULL) {
+    while (current->color_name != nullptr) {
         if (my_stricmp(current->color_name, color_word) == 0)
             break;
         current++;
     }
 
     // Let's see if this color is legal.
-    if (current->color_name == NULL) {
+    if (current->color_name == nullptr) {
         error_message("Unknown Color: %s", color_word);
         return false;
     }

@@ -86,5 +86,5 @@ ColorInfo colors[] = {
     {"CYAN", scr::CYAN, scr::REV_CYAN},
     {"MAGENTA", scr::MAGENTA, scr::REV_MAGENTA},
     {"BROWN", scr::BROWN, scr::REV_BROWN},
-    {NULL, -1, -1},
+    {nullptr, -1, -1},
 };

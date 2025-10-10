@@ -16,7 +16,7 @@ void EditList::clear()
     EditBuffer *p;
 
     jump_to(0);
-    while ((p = next()) != NULL) {
+    while ((p = next()) != nullptr) {
         delete p;
     }
     List<EditBuffer *>::clear();

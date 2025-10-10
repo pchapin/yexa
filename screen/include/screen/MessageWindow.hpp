@@ -16,7 +16,7 @@ namespace scr {
         int border_attribute;     //!< Color of border.
         enum BoxType border_type; //!< Type of border.
         int interior_attribute;   //!< Color of message text.
-        const char *header_text;  //!< Header. NULL means no header.
+        const char *header_text;  //!< Header. nullptr means no header.
         int header_attribute;     //!< Color of header text.
         int exit_char;            //!< Character to escape window (see below).
     };

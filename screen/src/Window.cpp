@@ -44,7 +44,7 @@ namespace scr {
      * background to nullptr. This ensures no problem when an undefined window is destroyed.
      */
     SimpleWindow::SimpleWindow()
-        : hidden(NULL), save_data(NULL), is_defined(false), is_hidden(false)
+        : hidden(nullptr), save_data(nullptr), is_defined(false), is_hidden(false)
     {
     }
 
@@ -249,8 +249,8 @@ namespace scr {
         if (!is_defined)
             return;
         hide();
-        save_data = NULL;
-        hidden = NULL;
+        save_data = nullptr;
+        hidden = nullptr;
         is_hidden = false;
         is_defined = false;
     }

@@ -42,7 +42,7 @@ bool CharacterEditFile::new_line()
     file_data.jump_to(current_point.cursor_line());
 
     // Do nothing if the cursor is off the end of the file.
-    if (file_data.get() == NULL)
+    if (file_data.get() == nullptr)
         return true;
 
     is_changed = true;
@@ -53,10 +53,10 @@ bool CharacterEditFile::new_line()
         // If so, just insert a blank line after the current line.
         EditBuffer *blank = new EditBuffer("");
         file_data.next();
-        if (blank == NULL)
+        if (blank == nullptr)
             return_value = false;
         else
-            return_value = static_cast<bool>(file_data.insert(blank) != NULL);
+            return_value = static_cast<bool>(file_data.insert(blank) != nullptr);
     }
     else {
         // Otherwise, transfer text to next line.
@@ -64,10 +64,10 @@ bool CharacterEditFile::new_line()
         EditBuffer *new_stuff = new EditBuffer(
             current_buffer->subbuffer(current_point.cursor_column(), current_buffer->length()));
         file_data.next();
-        if (new_stuff == NULL)
+        if (new_stuff == nullptr)
             return_value = false;
         else {
-            return_value = static_cast<bool>(file_data.insert(new_stuff) != NULL);
+            return_value = static_cast<bool>(file_data.insert(new_stuff) != nullptr);
             file_data.previous();
             file_data.previous();
 
@@ -185,7 +185,7 @@ bool CharacterEditFile::backspace()
 
             // Do the dirty deed.
             EditBuffer *current = file_data.get();
-            if (current != NULL) {
+            if (current != nullptr) {
                 file_data.previous();
                 file_data.get()->append(*current);
                 file_data.next();
@@ -209,7 +209,7 @@ bool CharacterEditFile::backspace()
         file_data.jump_to(top);
 
         // Loop over all lines in the block, backspacing as we go.
-        while (top++ <= bottom && file_data.get() != NULL) {
+        while (top++ <= bottom && file_data.get() != nullptr) {
             file_data.get()->erase(current_point.cursor_column() - 1);
             file_data.next();
         }
@@ -237,14 +237,14 @@ bool CharacterEditFile::delete_char()
     EditBuffer *Current = file_data.get();
 
     // If off the end of the line, try to join lines (only if not in block mode).
-    if (Current != NULL && current_point.cursor_column() >= Current->length() &&
+    if (Current != nullptr && current_point.cursor_column() >= Current->length() &&
         !get_block_state()) {
 
         // Extend the current line and append the next line.
         char Space_Character = ' ';
         Current->replace(Space_Character, current_point.cursor_column());
         file_data.next();
-        if (file_data.get() != NULL && return_value != false) {
+        if (file_data.get() != nullptr && return_value != false) {
             Current->append(*file_data.get());
             if (return_value != false)
                 file_data.erase();
@@ -268,7 +268,7 @@ bool CharacterEditFile::delete_char()
         file_data.jump_to(top);
 
         // Loop over all lines in the block, deleting as we go.
-        while (return_value == true && top++ <= bottom && file_data.get() != NULL) {
+        while (return_value == true && top++ <= bottom && file_data.get() != nullptr) {
             return_value = static_cast<bool>(
                 file_data.get()->erase(current_point.cursor_column()) != '\0');
             file_data.next();

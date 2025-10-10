@@ -38,7 +38,7 @@ YFileList::~YFileList()
     YEditFile **File;
 
     jump_to(0);
-    while ((File = next()) != NULL)
+    while ((File = next()) != nullptr)
         delete *File;
 }
 
@@ -169,16 +169,16 @@ namespace FileList {
             new_thing = new OTHER_YEditFile(name);
             break;
         default:
-            new_thing = NULL;
+            new_thing = nullptr;
             break;
         }
 
         // Do the following only if a YEditFile was created.
-        if (new_thing != NULL) {
+        if (new_thing != nullptr) {
 
             // Try to insert the new file into the list after the current file.
             the_list.next();
-            if (the_list.insert(new_thing) == NULL) {
+            if (the_list.insert(new_thing) == nullptr) {
                 // It didn't work. Get rid of the file and go back where we were.
                 delete new_thing;
                 the_list.previous();
@@ -203,7 +203,7 @@ namespace FileList {
         long current_index = the_list.current_index();
 
         the_list.jump_to(0);
-        while ((file = the_list.next()) != NULL)
+        while ((file = the_list.next()) != nullptr)
             if (my_stricmp((*file)->name(), the_name) == 0) {
                 the_list.previous();
                 return true;
@@ -217,14 +217,14 @@ namespace FileList {
     {
         // Try to advance. If it fails, wrap to the head of the list.
         the_list.next();
-        if (the_list.get() == NULL)
+        if (the_list.get() == nullptr)
             the_list.jump_to(0);
     }
 
     void previous()
     {
         // Try to back up. If it fails, wrap to the far end.
-        if (the_list.previous() == NULL) {
+        if (the_list.previous() == nullptr) {
             the_list.jump_to(YFileList::off_end);
             the_list.previous();
         }
@@ -343,7 +343,7 @@ namespace FileList {
         YFileList::Iterator stepper(the_list);
 
         // Look for files which have changed and save those files.
-        while ((file = stepper()) != NULL) {
+        while ((file = stepper()) != nullptr) {
 
             if ((*file)->changed()) {
                 // Try saving the file. Update records if save worked.
@@ -365,14 +365,14 @@ namespace FileList {
         YEditFile **file;
         YFileList::Iterator stepper(the_list);
 
-        while ((file = stepper()) != NULL) {
+        while ((file = stepper()) != nullptr) {
 
             // Read date and time stamp for disk versions of files.
             FileNameMatcher stamper;
             char *name_string;
 
             stamper.set_name((*file)->name());
-            if ((name_string = stamper.next()) != NULL) {
+            if ((name_string = stamper.next()) != nullptr) {
 
                 // Check to see if disk version is more recent. If so, reload.
                 if (stamper.modify_time() > (*file)->time()) {
@@ -405,7 +405,7 @@ namespace FileList {
         YEditFile **file;
         YFileList::Iterator stepper(the_list);
 
-        while ((file = stepper()) != NULL)
+        while ((file = stepper()) != nullptr)
             if ((*file)->changed())
                 return false;
 

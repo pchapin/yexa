@@ -87,7 +87,7 @@ static long last_line(EditList &list)
     // Step forward until we step off the end of the current paragraph.
     do {
         list.next();
-    } while (list.get() != NULL && paragraph_char((*list.get())[0]));
+    } while (list.get() != nullptr && paragraph_char((*list.get())[0]));
 
     // Record the line number just past the end and reset the object.
     long return_value = list.current_index();
@@ -115,7 +115,7 @@ static bool process_paragraph(EditList &list, long first, long last)
     // Copy pointers to lines into temporary and delete free nodes from the list.
     long count = last - first;
     while (!abort && count--) {
-        if (temp.insert(list.get()) == NULL)
+        if (temp.insert(list.get()) == nullptr)
             abort = true;
         else
             list.erase();
@@ -131,7 +131,7 @@ static bool process_paragraph(EditList &list, long first, long last)
     EditBuffer *new_line = new EditBuffer(indentor);
 
     // Loop over all the lines in the temporary list.
-    for (temp.jump_to(0); !abort && temp.get() != NULL; temp.next()) {
+    for (temp.jump_to(0); !abort && temp.get() != nullptr; temp.next()) {
 
         // TODO: Clean this mess up!
         std::string string_buffer = temp.get()->to_string();
@@ -140,7 +140,7 @@ static bool process_paragraph(EditList &list, long first, long last)
         char *word = std::strtok(buffer, " ");
 
         // Loop over all words in the line from the temporary list.
-        while (word != NULL) {
+        while (word != nullptr) {
 
             // If this line will become too long, insert what we've got and start next line.
             if (new_line->length() + std::strlen(word) > 96) {
@@ -156,7 +156,7 @@ static bool process_paragraph(EditList &list, long first, long last)
             }
 
             // Try to extract the next word.
-            word = std::strtok(NULL, " ");
+            word = std::strtok(nullptr, " ");
         }
 
         delete buffer;
@@ -196,7 +196,7 @@ bool WPEditFile::reformat_paragraph()
     EditBuffer *current_line = file_data.get();
 
     // Do interesting stuff only if the line exists and it starts with a paragraph character.
-    if (current_line != NULL &&
+    if (current_line != nullptr &&
         ((*current_line)[0] == ' ' || paragraph_char((*current_line)[0]))) {
 
         // Compute range of paragraph.

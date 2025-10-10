@@ -23,14 +23,14 @@ bool background_color_command()
 
     // Search the Colors array looking for a match.
     ColorInfo *current = colors;
-    while (current->color_name != NULL) {
+    while (current->color_name != nullptr) {
         if (my_stricmp(current->color_name, parameter_value.c_str()) == 0)
             break;
         current++;
     }
 
     // Let's see if this color is legal.
-    if (current->color_name == NULL) {
+    if (current->color_name == nullptr) {
         error_message("Unknown Color: %s", parameter_value.c_str());
         return false;
     }

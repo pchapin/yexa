@@ -189,7 +189,7 @@ int Parameter::get(bool pop)
 
         do {
             input_data.jump_to(item_number);
-            if (input_data.get() == NULL)
+            if (input_data.get() == nullptr)
                 workspace = new EditBuffer;
             else
                 workspace = new EditBuffer(*input_data.get());

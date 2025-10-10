@@ -77,11 +77,11 @@ bool BlockEditFile::get_block(EditList &result)
     file_data.jump_to(top);
 
     // While there is something in the list and there's still more to do...
-    while (!abort && (line = file_data.next()) != NULL && top <= bottom) {
+    while (!abort && (line = file_data.next()) != nullptr && top <= bottom) {
 
         // Make a copy of the line and insert it into the parameter.
         EditBuffer *new_copy = new EditBuffer(*line);
-        if (result.insert(new_copy) == NULL)
+        if (result.insert(new_copy) == nullptr)
             abort = true;
         top++;
     }
@@ -89,7 +89,7 @@ bool BlockEditFile::get_block(EditList &result)
     // If we didn't get all the lines (ran out of list), insert blanks.
     while (!abort && top <= bottom) {
         EditBuffer *blank = new EditBuffer("");
-        if (result.insert(blank) == NULL)
+        if (result.insert(blank) == nullptr)
             abort = true;
         top++;
     }
@@ -122,7 +122,7 @@ void BlockEditFile::delete_block()
 
     // For each line in the block trash that line. Stop if we go off the end.
     for (current = top; current <= bottom; current++) {
-        if (file_data.get() == NULL)
+        if (file_data.get() == nullptr)
             break;
         delete file_data.get();
         file_data.erase();
@@ -165,11 +165,11 @@ bool BlockEditFile::insert_block(EditList &new_stuff)
     file_data.jump_to(current_point.cursor_line());
 
     // While there are still lines in the parameter.
-    while (!abort && (line = new_stuff.next()) != NULL) {
+    while (!abort && (line = new_stuff.next()) != nullptr) {
 
         // Build a new copy of the line and stuff it into this object.
         EditBuffer *new_copy = new EditBuffer(*line);
-        if (file_data.insert(new_copy) == NULL)
+        if (file_data.insert(new_copy) == nullptr)
             abort = true;
     }
 

@@ -39,7 +39,7 @@ YEditFile::YEditFile(const char *name_of_file, int tab_distance, int file_color)
 
     // Load the file if it file exists. If does not exist, just stay blank.
     std::FILE *file_to_edit;
-    if ((file_to_edit = std::fopen(file_name.c_str(), "r")) != NULL) {
+    if ((file_to_edit = std::fopen(file_name.c_str(), "r")) != nullptr) {
         std::fclose(file_to_edit);
         load(file_name.c_str());          // Read the file.
         set_timestamp(file_name.c_str()); // Read the time stamp for the first load.
@@ -82,7 +82,7 @@ void YEditFile::set_attributes()
     // First, search the file descriptor list for 'this' file.
     List<FileDescriptor>::Iterator stepper(descriptor_list);
     FileDescriptor *next;
-    while ((next = stepper()) != NULL) {
+    while ((next = stepper()) != nullptr) {
 
         // If we've found it...
         if (my_stricmp(file_name.c_str(), next->name.to_string().c_str()) == 0) {
@@ -248,7 +248,7 @@ void YEditFile::display()
     for (i = 2; i < screen_height; i++) {
 
         // Get a pointer to this line.
-        if ((edit_line = file_data.next()) != NULL) {
+        if ((edit_line = file_data.next()) != nullptr) {
             std::string temp = edit_line->to_string();
             line = temp.c_str();
 

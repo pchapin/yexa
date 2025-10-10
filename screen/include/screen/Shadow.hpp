@@ -17,7 +17,7 @@ namespace scr {
      */
     class Shadow {
       private:
-        char *background;  //!< Points at true background. (NULL if not open)
+        char *background;  //!< Points at true background. (nullptr if not open)
         int top_row;       //!< Row coordinate of shadow's upper left corner.
         int left_column;   //!< Column coordinate of shadow's upper left corner.
         int shadow_width;  //!< Width of shadow.

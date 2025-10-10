@@ -66,7 +66,7 @@ char *FileNameMatcher::next()
 {
     char *return_value = buffer;
 
-    // If we've used up all matches already, return NULL.
+    // If we've used up all matches already, return nullptr.
     if (done)
         return 0;
 
@@ -209,9 +209,9 @@ char *FileNameMatcher::next()
 {
     char *return_value = buffer;
 
-    // If we've used up all matches already, return NULL.
+    // If we've used up all matches already, return nullptr.
     if (done)
-        return NULL;
+        return nullptr;
 
     // Use FindFirstFile() if this is the first attempt.
     if (first_match) {
@@ -219,7 +219,7 @@ char *FileNameMatcher::next()
         // If FindFirstFile() fails, there were no matches.
         if ((search_handle = FindFirstFile(full_name, &file_data)) == INVALID_HANDLE_VALUE) {
             done = true;
-            return_value = NULL;
+            return_value = nullptr;
         }
         else {
             // Otherwise there was a match. Copy the name into the local buffer.
@@ -233,7 +233,7 @@ char *FileNameMatcher::next()
         // If FindNextFile() fails, there are no more matches.
         if (FindNextFile(search_handle, &file_data) == FALSE) {
             done = true;
-            return_value = NULL;
+            return_value = nullptr;
         }
         else {
             // Otherwise, there was a match. Copy the name into the local buffer.
@@ -308,16 +308,16 @@ char *FileNameMatcher::next()
 {
     char *return_value = buffer;
 
-    // If we've used up all matches already, return NULL.
+    // If we've used up all matches already, return nullptr.
     if (done)
-        return NULL;
+        return nullptr;
 
     // Use _dos_findfirst() if this is the first attempt.
     if (first_match) {
         // If _dos_findfirst() fails, there were no matches.
         if (_dos_findfirst(full_name, (int)search_attribute, &file_data) != 0) {
             done = true;
-            return_value = NULL;
+            return_value = nullptr;
         }
         else {
             // Otherwise there was a match. Copy the name into the local buffer.
@@ -331,7 +331,7 @@ char *FileNameMatcher::next()
         // If _dos_findnext() fails, there are no more matches.
         if (_dos_findnext(&file_data) != 0) {
             done = true;
-            return_value = NULL;
+            return_value = nullptr;
         }
         else {
             // Otherwise, there was a match. Copy the name into the local buffer.

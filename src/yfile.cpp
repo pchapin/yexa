@@ -23,7 +23,7 @@ namespace {
     const char *key_words[] = {
         "ACTIVE",  "BLOCK",  "BLOCK_LINE", "COLOR",       "CURSOR_COLUMN", "CURSOR_LINE",
         "DELETED", "INSERT", "NAME",       "TAB_SETTING", "WINDOW_COLUMN", "WINDOW_LINE",
-        0};
+        nullptr};
 
 } // namespace
 
@@ -69,7 +69,7 @@ static int get_keyword(char *line, char **rest)
     char *p = std::strchr(line, '=');
 
     // If there was no '=', this line is invalid. Ignore it.
-    if (p == 0)
+    if (p == nullptr)
         return -1;
 
     // Break the line into two parts and let p point at the end part.
@@ -78,13 +78,13 @@ static int get_keyword(char *line, char **rest)
     // Scan the list of keywords to see if this is one of them. Notice that this is a case
     // insensitive search.
     //
-    for (search = key_words; *search != 0; search++) {
+    for (search = key_words; *search != nullptr; search++) {
         if (my_stricmp(line, *search) == 0)
             break;
     }
 
     // If we didn't find it, oh well.
-    if (*search == 0)
+    if (*search == nullptr)
         return -1;
 
     // Otherwise return the index into the array of keywords.
@@ -127,7 +127,7 @@ void read_yfile()
         char *p;
 
         // Trim the '\n' if there is one.
-        if ((p = std::strchr(line, '\n')) != 0)
+        if ((p = std::strchr(line, '\n')) != nullptr)
             *p = '\0';
 
         // If this line is blank or a comment, skip it.
@@ -270,7 +270,7 @@ void write_yfile()
 
     // Try to open filelist.yfy
     std::FILE *yfile;
-    if ((yfile = std::fopen("filelist.yfy", "w")) == NULL) {
+    if ((yfile = std::fopen("filelist.yfy", "w")) == nullptr) {
         warning_message("Can't open filelist.yfy!");
         return;
     }
@@ -297,7 +297,7 @@ void write_yfile()
     } while (current != start_file);
 
     // Now step down the list of file descriptors.
-    while ((next = stepper()) != NULL) {
+    while ((next = stepper()) != nullptr) {
         write_descriptor(yfile, *next);
     }
 

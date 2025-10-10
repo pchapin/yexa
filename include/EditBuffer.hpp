@@ -58,7 +58,7 @@ class EditBuffer {
     std::size_t capacity; //!< Size of the raw buffer.
     std::size_t size;     //!< Number of bytes in buffer, not including null.
 
-    // Invariant: If workspace == NULL, capacity and size are zero; otherwise capacity > size.
+    // Invariant: If workspace == nullptr, capacity and size are zero; otherwise capacity > size.
     // The buffer's contents are null terminated. The capacity must always contain space for
     // the null byte.
 
@@ -70,12 +70,12 @@ class EditBuffer {
     // However the current design of EditBuffer no longer provides a way to get such a pointer.
     // Thus the requirement to keep the text internally null terminated is now pointless.
 
-    // TODO: Remove the workspace == NULL condition in the invariant.
+    // TODO: Remove the workspace == nullptr condition in the invariant.
 
-    // When Y was first written operator new returned NULL on failure. This lead to the
-    // possibility of an EditBuffer with a NULL workspace. However, modern C++ throws an
+    // When Y was first written operator new returned nullptr on failure. This lead to the
+    // possibility of an EditBuffer with a nullptr workspace. However, modern C++ throws an
     // exception if operator new fails. Thus I believe it is no longer possible for a fully
-    // constructed EditBuffer to have workspace == NULL. The invariant should be reworded
+    // constructed EditBuffer to have workspace == nullptr. The invariant should be reworded
     // accordingly and the implementation adjusted to take advantage of the modern rules.
 };
 

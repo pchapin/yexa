@@ -145,7 +145,7 @@ bool load_files(const char **argv)
     YEditFile *leading_file; // Reference to the first file loaded.
 
     // Tell user if there's a problem.
-    if (argv[1] == NULL) {
+    if (argv[1] == nullptr) {
         error_message("You must specify at least one filename");
         return false;
     }
@@ -203,7 +203,7 @@ bool load_files(const char **argv)
             // Otherwise, save the base part of the current name.
             else {
                 const char *end_pointer = std::strrchr(*argv, '.');
-                if (end_pointer != NULL) {
+                if (end_pointer != nullptr) {
                     base_name.assign(*argv, end_pointer - *argv);
                     base_valid = true;
                 }
@@ -212,8 +212,8 @@ bool load_files(const char **argv)
             wild_match.set_name(*argv);
 
             // If no files match the spec, assume the spec is the name of a new file.
-            if ((file_name = wild_match.next()) == NULL) {
-                if (std::strchr(*argv, '*') != NULL || std::strchr(*argv, '?') != NULL) {
+            if ((file_name = wild_match.next()) == nullptr) {
+                if (std::strchr(*argv, '*') != nullptr || std::strchr(*argv, '?') != nullptr) {
                     warning_message("No files match %s", *argv);
                 }
                 else {
@@ -229,7 +229,7 @@ bool load_files(const char **argv)
             else {
 
                 // Loop over all names which match the wildcard spec and load them.
-                while (file_name != NULL) {
+                while (file_name != nullptr) {
                     load_file(file_name, line_number, column_number);
                     file_count++;
                     if (First_File) {

@@ -220,7 +220,7 @@ namespace scr {
         {"[15;2~", K_SF5}, {"[17;2~", K_SF6},  {"[18;2~", K_SF7}, {"[19;2~", K_SF8},
         {"[20;2~", K_SF9}, {"[21;2~", K_SF10},
 
-        {NULL, 0}};
+        {nullptr, 0}};
 #endif
 
     void initialize_key()
@@ -255,13 +255,13 @@ namespace scr {
 
 #if eOPSYS != ePOSIX
         static char sequence_buffer[8];
-        static char *sequence_ptr = NULL;
+        static char *sequence_ptr = nullptr;
 
         // We are processing the leftovers of an aborted escape sequence...
-        if (sequence_ptr != NULL) {
+        if (sequence_ptr != nullptr) {
             int return_value = *sequence_ptr++;
             if (*sequence_ptr == '\0')
-                sequence_ptr = NULL;
+                sequence_ptr = nullptr;
             return return_value;
         }
 #endif
@@ -299,7 +299,7 @@ namespace scr {
                     if (result == escape_table->escape_sequence) {
                         prefix_found = true;
                         if (std::strcmp(escape_table->escape_sequence, sequence_buffer) == 0) {
-                            sequence_buffer = NULL;
+                            sequence_buffer = nullptr;
                             return escape_table->key_code;
                         }
                     }

@@ -255,7 +255,7 @@ namespace KeyHandler {
             case scr::K_CTRLR: {
                 KeyboardScript *previous = *current_script;
                 *++current_script = new RepeatSequence(previous);
-                if (*current_script == NULL) {
+                if (*current_script == nullptr) {
                     memory_message("Can't process repeat request");
                     current_script--;
                 }
